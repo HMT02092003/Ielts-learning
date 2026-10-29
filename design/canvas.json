@@ -1,0 +1,31 @@
+{
+  "v": 3,
+  "createdOnFiles": {"v": 1, "at": "2026-10-29T09:00:00Z"},
+  "title": "IELTS Practice — lặng (Calm minimal)",
+  "launch": {"view": "canvas"},
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {"x": 0, "y": 0, "w": 1440, "h": 900, "title": "Bìa · Danh mục màn hình"},
+    "C-Login.dc.html": {"x": 0, "y": 1300, "w": 1440, "h": 900, "title": "01 · Login", "expand": "fill"},
+    "C-Dashboard.dc.html": {"x": 1520, "y": 1300, "w": 1440, "h": 1480, "title": "02 · Dashboard", "expand": "fill"},
+    "C-Result.dc.html": {"x": 3040, "y": 1300, "w": 1440, "h": 1480, "title": "03 · Result", "expand": "fill"},
+    "C-Reading.dc.html": {"x": 0, "y": 3200, "w": 1440, "h": 900, "title": "04 · Reading exam", "expand": "fill"},
+    "C-Listening.dc.html": {"x": 1520, "y": 3200, "w": 1440, "h": 900, "title": "05 · Listening exam", "expand": "fill"},
+    "C-Writing.dc.html": {"x": 3040, "y": 3200, "w": 1440, "h": 900, "title": "06 · Writing", "expand": "fill"},
+    "C-Flashcard.dc.html": {"x": 0, "y": 4520, "w": 1440, "h": 900, "title": "07 · Vocabulary flashcard", "expand": "fill"},
+    "C-AdminOCR.dc.html": {"x": 1520, "y": 4520, "w": 1440, "h": 900, "title": "08 · Admin OCR review", "expand": "fill"},
+    "C-Components.dc.html": {"x": 3040, "y": 4520, "w": 1440, "h": 1760, "title": "09 · Design system & component states"}
+  },
+  "order": [
+    "Main.dc.html",
+    "C-Login.dc.html", "C-Dashboard.dc.html", "C-Result.dc.html",
+    "C-Reading.dc.html", "C-Listening.dc.html", "C-Writing.dc.html",
+    "C-Flashcard.dc.html", "C-AdminOCR.dc.html", "C-Components.dc.html"
+  ],
+  "notes": {
+    "row1": {"x": 0, "y": 1000, "text": "Màn chính · Login, Dashboard, Result", "kind": "title1", "maxW": 4480},
+    "row2": {"x": 0, "y": 2900, "text": "Màn thi · Reading, Listening, Writing (không animation)", "kind": "title1", "maxW": 4480},
+    "row3": {"x": 0, "y": 4220, "text": "Học từ vựng · Quản trị OCR · Design system", "kind": "title1", "maxW": 4480}
+  },
+  "designSystems": []
+}

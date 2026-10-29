@@ -1,0 +1,250 @@
+{
+  "schemaVersion": 1,
+  "seriesKey": "dummy-listening",
+  "source": "CUSTOM",
+  "type": "ACADEMIC",
+  "title": "Đề mẫu Listening (dummy)",
+  "description": "Self-written placeholder test. Audio is a generated tone (no speech); questions and names are fictional (CC0).",
+  "listening": {
+    "parts": [
+      {
+        "title": "Part 1",
+        "instructions": "Questions 1–10. Complete the notes below. Write ONE WORD AND/OR A NUMBER for each answer.",
+        "audio": { "file": { "path": "assets/listening-part1.wav" }, "durationMs": 20000 },
+        "groups": [
+          {
+            "type": "NOTE_TABLE_FLOWCHART_COMPLETION",
+            "instructions": "Complete the notes below. Write ONE WORD AND/OR A NUMBER for each answer.",
+            "questionFrom": 1,
+            "questionTo": 10,
+            "title": "Riverside Cycling Club – membership enquiry",
+            "answerMode": "WORDS",
+            "wordLimit": { "maxWords": 1, "allowNumber": true },
+            "template": {
+              "layout": "NOTES",
+              "lines": [
+                { "style": "HEADING", "text": "New member" },
+                { "style": "BULLET", "text": "Caller's surname: {{1}}" },
+                { "style": "BULLET", "text": "Preferred ride day: {{2}}" },
+                { "style": "BULLET", "text": "Meeting point: outside the {{3}}" },
+                { "style": "BULLET", "text": "Beginners' ride: {{4}} km" },
+                { "style": "BULLET", "text": "Membership fee: £{{5}} per year" },
+                { "style": "BULLET", "text": "Must bring a {{6}} and water" },
+                { "style": "HEADING", "text": "Equipment hire" },
+                { "style": "BULLET", "text": "Bikes can be hired from the {{7}} on Mill Road" },
+                { "style": "BULLET", "text": "Price includes a {{8}}" },
+                { "style": "BULLET", "text": "Discount for {{9}}" },
+                { "style": "BULLET", "text": "Contact the secretary by {{10}}" }
+              ]
+            },
+            "questions": [
+              { "number": 1, "answer": "Kowalski" },
+              { "number": 2, "answer": "Sunday" },
+              { "number": 3, "answer": "library" },
+              { "number": 4, "answer": "25", "accepted": ["twenty-five"] },
+              { "number": 5, "answer": "40", "accepted": ["forty"] },
+              { "number": 6, "answer": "helmet" },
+              { "number": 7, "answer": "garage" },
+              { "number": 8, "answer": "lock" },
+              { "number": 9, "answer": "students" },
+              { "number": 10, "answer": "email", "accepted": ["e-mail"] }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Part 2",
+        "instructions": "Questions 11–20.",
+        "audio": { "file": { "path": "assets/listening-part2.wav" }, "durationMs": 20000 },
+        "groups": [
+          {
+            "type": "MULTIPLE_CHOICE_SINGLE",
+            "instructions": "Choose the correct letter, A, B or C.",
+            "questionFrom": 11,
+            "questionTo": 15,
+            "questions": [
+              {
+                "number": 11,
+                "prompt": "Hollowmere Community Park first opened in",
+                "options": [
+                  { "key": "A", "text": "1962." },
+                  { "key": "B", "text": "1972." },
+                  { "key": "C", "text": "1982." }
+                ],
+                "answer": "B"
+              },
+              {
+                "number": 12,
+                "prompt": "The new visitor centre will mainly be used for",
+                "options": [
+                  { "key": "A", "text": "school groups." },
+                  { "key": "B", "text": "concerts." },
+                  { "key": "C", "text": "weddings." }
+                ],
+                "answer": "A"
+              },
+              {
+                "number": 13,
+                "prompt": "Dogs are allowed",
+                "options": [
+                  { "key": "A", "text": "everywhere in the park." },
+                  { "key": "B", "text": "only on the lake path." },
+                  { "key": "C", "text": "only in the east meadow." }
+                ],
+                "answer": "C"
+              },
+              {
+                "number": 14,
+                "prompt": "In winter, the café closes at",
+                "options": [
+                  { "key": "A", "text": "4 pm." },
+                  { "key": "B", "text": "5 pm." },
+                  { "key": "C", "text": "6 pm." }
+                ],
+                "answer": "B"
+              },
+              {
+                "number": 15,
+                "prompt": "Volunteers are especially needed to",
+                "options": [
+                  { "key": "A", "text": "plant trees." },
+                  { "key": "B", "text": "clean the lake." },
+                  { "key": "C", "text": "guide tours." }
+                ],
+                "answer": "A"
+              }
+            ]
+          },
+          {
+            "type": "MAP_DIAGRAM_LABELLING",
+            "instructions": "Label the map below. Write the correct letter, A–H, next to Questions 16–20.",
+            "questionFrom": 16,
+            "questionTo": 20,
+            "variant": "MAP",
+            "answerMode": "OPTIONS",
+            "image": { "path": "assets/park-map.png" },
+            "options": [
+              { "key": "A", "text": "A", "at": { "x": 0.15, "y": 0.2 } },
+              { "key": "B", "text": "B", "at": { "x": 0.3, "y": 0.75 } },
+              { "key": "C", "text": "C", "at": { "x": 0.7, "y": 0.2 } },
+              { "key": "D", "text": "D", "at": { "x": 0.85, "y": 0.8 } },
+              { "key": "E", "text": "E", "at": { "x": 0.55, "y": 0.6 } },
+              { "key": "F", "text": "F", "at": { "x": 0.5, "y": 0.42 } },
+              { "key": "G", "text": "G", "at": { "x": 0.2, "y": 0.6 } },
+              { "key": "H", "text": "H", "at": { "x": 0.65, "y": 0.85 } }
+            ],
+            "questions": [
+              { "number": 16, "prompt": "Boat hire", "answer": "F" },
+              { "number": 17, "prompt": "Rose garden", "answer": "C" },
+              { "number": 18, "prompt": "Playground", "answer": "H" },
+              { "number": 19, "prompt": "Picnic area", "answer": "A" },
+              { "number": 20, "prompt": "Toilets", "answer": "D" }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Part 3",
+        "instructions": "Questions 21–30.",
+        "audio": { "file": { "path": "assets/listening-part3.wav" }, "durationMs": 20000 },
+        "groups": [
+          {
+            "type": "MULTIPLE_CHOICE_MULTI",
+            "instructions": "Choose TWO letters, A–E.",
+            "questionFrom": 21,
+            "questionTo": 22,
+            "stem": "Which TWO problems did the students have with their survey?",
+            "options": [
+              { "key": "A", "text": "too few responses" },
+              { "key": "B", "text": "unclear questions" },
+              { "key": "C", "text": "lost data" },
+              { "key": "D", "text": "a late deadline" },
+              { "key": "E", "text": "high printing costs" }
+            ],
+            "chooseCount": 2,
+            "answer": ["A", "B"],
+            "questions": [{ "number": 21 }, { "number": 22 }]
+          },
+          {
+            "type": "MATCHING_FEATURES",
+            "instructions": "Who will do each task? Choose your answers from the box and write the correct letter, A, B or C, next to Questions 23–26.",
+            "questionFrom": 23,
+            "questionTo": 26,
+            "variant": "FEATURES",
+            "features": [
+              { "key": "A", "text": "Tom" },
+              { "key": "B", "text": "Leah" },
+              { "key": "C", "text": "both students" }
+            ],
+            "allowReuse": true,
+            "questions": [
+              { "number": 23, "prompt": "write the introduction", "answer": "A" },
+              { "number": 24, "prompt": "design the charts", "answer": "B" },
+              { "number": 25, "prompt": "contact the tutor", "answer": "C" },
+              { "number": 26, "prompt": "check the references", "answer": "B" }
+            ]
+          },
+          {
+            "type": "SENTENCE_COMPLETION",
+            "instructions": "Complete the sentences below. Write ONE WORD AND/OR A NUMBER for each answer.",
+            "questionFrom": 27,
+            "questionTo": 30,
+            "wordLimit": { "maxWords": 1, "allowNumber": true },
+            "questions": [
+              {
+                "number": 27,
+                "prompt": "The tutor suggested reading a book about {{27}} methods.",
+                "answer": "research"
+              },
+              {
+                "number": 28,
+                "prompt": "The final report must not be longer than {{28}} pages.",
+                "answer": "12",
+                "accepted": ["twelve"]
+              },
+              {
+                "number": 29,
+                "prompt": "The presentation will take place in the {{29}}.",
+                "answer": "library"
+              },
+              {
+                "number": 30,
+                "prompt": "Each student must hand in a short {{30}} of their work.",
+                "answer": "summary"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Part 4",
+        "instructions": "Questions 31–40.",
+        "audio": { "file": { "path": "assets/listening-part4.wav" }, "durationMs": 20000 },
+        "groups": [
+          {
+            "type": "SUMMARY_COMPLETION",
+            "instructions": "Complete the summary below. Write ONE WORD ONLY for each answer.",
+            "questionFrom": 31,
+            "questionTo": 40,
+            "title": "A short history of glass",
+            "text": "Early glass was made from sand, ash and {{31}}. The first glass objects were small {{32}} used for decoration. Glass-blowing made glass cheaper and allowed the production of {{33}} for everyday use. In medieval Europe, coloured glass was mainly used in {{34}}. The float process made it possible to produce large sheets with a perfectly {{35}} surface. Today glass is important in {{36}} because it carries information as light. Recycling glass saves {{37}}, since broken glass melts at a lower temperature. However, glass of different {{38}} must be separated first. Researchers are developing glass that can {{39}} itself when scratched, and windows that produce {{40}}.",
+            "answerMode": "WORDS",
+            "wordLimit": { "maxWords": 1, "allowNumber": false },
+            "questions": [
+              { "number": 31, "answer": "lime" },
+              { "number": 32, "answer": "beads" },
+              { "number": 33, "answer": "bottles" },
+              { "number": 34, "answer": "churches" },
+              { "number": 35, "answer": "flat" },
+              { "number": 36, "answer": "communications", "accepted": ["communication"] },
+              { "number": 37, "answer": "energy" },
+              { "number": 38, "answer": "colours", "accepted": ["colors"] },
+              { "number": 39, "answer": "repair" },
+              { "number": 40, "answer": "electricity" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

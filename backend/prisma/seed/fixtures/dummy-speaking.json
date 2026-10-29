@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "seriesKey": "dummy-speaking",
+  "source": "CUSTOM",
+  "type": "ACADEMIC",
+  "title": "Đề mẫu Speaking (dummy)",
+  "description": "Self-written placeholder prompts (CC0).",
+  "speaking": {
+    "parts": [
+      {
+        "part": 1,
+        "topic": "Mornings",
+        "questions": [
+          "Are you a morning person?",
+          "What do you usually do in the first hour after you wake up?",
+          "Has your morning routine changed since you were a child?",
+          "Do you prefer to have breakfast at home or outside?"
+        ]
+      },
+      {
+        "part": 2,
+        "cueCard": {
+          "topic": "Describe a tool or device you use often.",
+          "bullets": ["what it is", "how long you have had it", "what you use it for"],
+          "closing": "and explain why it is important to you."
+        },
+        "prepSeconds": 60,
+        "speakSeconds": 120,
+        "followUps": ["Would you recommend it to other people?"]
+      },
+      {
+        "part": 3,
+        "topic": "Technology and skills",
+        "questions": [
+          "Do you think people today rely too much on technology?",
+          "Which practical skills should every young person learn?",
+          "How has technology changed the way people learn new skills?",
+          "Will machines ever replace skilled craftspeople completely?"
+        ]
+      }
+    ]
+  }
+}

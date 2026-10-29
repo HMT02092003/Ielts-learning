@@ -1,0 +1,186 @@
+/*
+ * Design tokens — the ONLY place for colours, fonts, radii, shadows and motion (spec §4).
+ * Source: design/design-system.md (direction C · "lặng", v1.0). Every text/background pair was checked
+ * against WCAG 2.1 AA by the designer; tests/tokens-contrast.test.ts re-checks the key pairs.
+ *
+ * Scopes:
+ *   :root / .force-light / .exam-mode → light values (Exam shell and Admin are always light — spec §4)
+ *   .dark                             → dark values (Study shell only)
+ * Derived tokens (aliases, rings, color-mix) are re-declared in BOTH scopes: var() inside a custom
+ * property is resolved where it is declared, so .exam-mode under html.dark would otherwise inherit
+ * dark-computed values.
+ */
+
+:root,
+.force-light,
+.exam-mode {
+  color-scheme: light;
+
+  /* surfaces */
+  --background: #f4f6f8;
+  --surface: #ffffff;
+  --surface-muted: #eef1f3;
+  --surface-raised: #ffffff;
+  /* text */
+  --ink: #13201c;
+  --ink-secondary: #3b464f;
+  --ink-muted: #5b6670;
+  --ink-subtle: #6b757d;
+  --ink-inverse: #ffffff;
+  /* accent (forest green) */
+  --accent: #1f5e4b;
+  --accent-hover: #184c3c;
+  --accent-soft: #e3efea;
+  --accent-foreground: #ffffff;
+  /* status */
+  --success: #1f7a4d;
+  --success-soft: #e4f3ea;
+  --danger: #b42318;
+  --danger-hover: #912018;
+  --danger-soft: #fdecea;
+  --warning: #a8551f;
+  --warning-ink: #8a4418;
+  --warning-soft: #fbebdd;
+  --info: #1e4e8c;
+  --info-soft: #e4ecf7;
+  /* lines */
+  --border: #e3e7eb;
+  --border-control: #c9d1d8;
+  --border-strong: #8b959d;
+  --divider: #eef1f3;
+  --track-on-background: #dde3e7;
+  --focus-ring: #1f5e4b;
+  /* exam */
+  --highlight: #ffe58a;
+  --highlight-ink: #13201c;
+  /* charts */
+  --series-overall: #1f5e4b;
+  --series-listening: #13201c;
+  --series-reading: #1f5e4b;
+  --series-writing: #a8551f;
+  --series-speaking: #1e4e8c;
+  --heat-0: #eef1f3;
+  --heat-1: #bfdccf;
+  --heat-2: #6fa690;
+  --heat-3: #1f5e4b;
+
+  /* elevation */
+  --elev-xs: 0 1px 2px rgb(19 32 28 / 0.06);
+  --elev-sm: 0 1px 2px rgb(19 32 28 / 0.06), 0 8px 24px -12px rgb(19 32 28 / 0.14);
+  --elev-md: 0 8px 24px -8px rgb(19 32 28 / 0.18);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: #0e1412;
+  --surface: #151c19;
+  --surface-muted: #1b2420;
+  --surface-raised: #1f2925;
+  --ink: #e6ece9;
+  --ink-secondary: #b7c3bd;
+  --ink-muted: #9aa8a1;
+  --ink-subtle: #7d8a84;
+  --ink-inverse: #0e1412;
+  --accent: #5fbf9a;
+  --accent-hover: #7acfae;
+  --accent-soft: #183329;
+  --accent-foreground: #0e1412;
+  --success: #4cc38a;
+  --success-soft: #15301f;
+  --danger: #f2877e;
+  --danger-hover: #f4a29b;
+  --danger-soft: #3a1a17;
+  --warning: #e7a46b;
+  --warning-ink: #e7a46b;
+  --warning-soft: #3a2716;
+  --info: #7faeea;
+  --info-soft: #172638;
+  --border: #26312c;
+  --border-control: #3a4741;
+  --border-strong: #6e7c75;
+  --divider: #1b2420;
+  --track-on-background: #26312c;
+  --focus-ring: #7acfae;
+  --highlight: #5c4a12;
+  --highlight-ink: #e6ece9;
+  --series-overall: #5fbf9a;
+  --series-listening: #e6ece9;
+  --series-reading: #5fbf9a;
+  --series-writing: #e7a46b;
+  --series-speaking: #7faeea;
+  --heat-0: #1b2420;
+  --heat-1: #1f4a3b;
+  --heat-2: #3e8a6d;
+  --heat-3: #5fbf9a;
+
+  --elev-xs: 0 1px 2px rgb(0 0 0 / 0.4);
+  --elev-sm: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6);
+  --elev-md: 0 8px 24px -8px rgb(0 0 0 / 0.7);
+}
+
+/* Derived tokens — declared in both scopes (see header). */
+:root,
+.force-light,
+.exam-mode,
+.dark {
+  --ring-focus: 0 0 0 2px var(--surface), 0 0 0 4px var(--focus-ring);
+  --ring-halo: 0 0 0 3px var(--accent-soft);
+  --ring-halo-danger: 0 0 0 3px var(--danger-soft);
+  --on-accent-muted: color-mix(in oklab, var(--accent-foreground) 80%, var(--accent));
+  --on-accent-track: color-mix(in oklab, var(--accent-foreground) 20%, var(--accent));
+  --danger-border: color-mix(in oklab, var(--danger) 35%, var(--surface));
+  --warning-border: color-mix(in oklab, var(--warning) 35%, var(--surface));
+  --info-fill: color-mix(in oklab, var(--info) 10%, transparent);
+
+  /* shadcn/ui aliases — stock components inherit the theme. NOTE: shadcn's own `accent` means "hover
+     background"; we map that role to surface-muted (see docs/design-tokens.md). */
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface-raised);
+  --popover-foreground: var(--ink);
+  --primary: var(--accent);
+  --primary-foreground: var(--accent-foreground);
+  --secondary: var(--surface-muted);
+  --secondary-foreground: var(--ink);
+  --muted: var(--surface-muted);
+  --muted-foreground: var(--ink-muted);
+  --destructive: var(--danger);
+  --input: var(--border-strong);
+  --ring: var(--focus-ring);
+}
+
+:root {
+  /* type — next/font injects --nf-* on <html> */
+  --ff-ui: var(--nf-ui), ui-sans-serif, system-ui, sans-serif;
+  --ff-display: var(--nf-display), var(--nf-ui), sans-serif;
+  --ff-reading: var(--nf-reading), Georgia, serif;
+
+  /* exam reading size (A / A / A control scales only exam content) */
+  --reading-size: 1.125rem;
+  --reading-leading: 1.7;
+  --reading-q-size: 1.0625rem;
+  --reading-q-leading: 1.55;
+
+  /* motion */
+  --ease-out-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 400ms;
+  --dur-reveal: 800ms;
+}
+
+[data-reading-size='sm'] {
+  --reading-size: 1rem;
+  --reading-leading: 1.65;
+  --reading-q-size: 0.9375rem;
+  --reading-q-leading: 1.5;
+}
+[data-reading-size='lg'] {
+  --reading-size: 1.3125rem;
+  --reading-leading: 1.7;
+  --reading-q-size: 1.25rem;
+  --reading-q-leading: 1.55;
+}

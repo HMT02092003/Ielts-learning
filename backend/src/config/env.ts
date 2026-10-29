@@ -1,0 +1,64 @@
+import path from 'node:path';
+import { config as loadDotenv } from 'dotenv';
+import { z } from 'zod';
+
+/** backend/ directory (this file lives in backend/src/config). */
+export const BACKEND_ROOT = path.resolve(import.meta.dirname, '..', '..');
+
+// Fill only variables that are not already set (tests and CI set their own).
+loadDotenv({ path: path.join(BACKEND_ROOT, '.env'), quiet: true });
+
+const bool = z.enum(['true', 'false']).transform((v) => v === 'true');
+const int = (def: number, min = 0) => z.coerce.number().int().min(min).default(def);
+
+const EnvSchema = z.object({
+  NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+  APP_TIMEZONE: z.string().default('Asia/Ho_Chi_Minh'),
+  API_HOST: z.string().default('127.0.0.1'),
+  API_PORT: int(4000, 1),
+  WEB_ORIGIN: z.url().default('http://localhost:3000'),
+  LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
+
+  DATABASE_URL: z.url(),
+
+  JWT_ACCESS_SECRET: z.string().min(32, 'JWT_ACCESS_SECRET phải dài ít nhất 32 ký tự'),
+  JWT_ISSUER: z.string().default('ielts-api'),
+  JWT_AUDIENCE: z.string().default('ielts-web'),
+  ACCESS_TOKEN_TTL_SECONDS: int(900, 60),
+  REFRESH_TOKEN_TTL_DAYS: int(30, 1),
+  REFRESH_FAMILY_MAX_DAYS: int(90, 1),
+  REFRESH_ROTATION_GRACE_SECONDS: int(30),
+  COOKIE_SECURE: bool.default(false),
+  // OWASP minimums for argon2id: m ≥ 19 MiB, t ≥ 2.
+  ARGON2_MEMORY_KIB: int(65536, 19456),
+  ARGON2_TIME_COST: int(3, 2),
+  ARGON2_PARALLELISM: int(4, 1),
+  PASSWORD_MIN_LENGTH: int(10, 8),
+
+  RATE_LIMIT_LOGIN_PER_15MIN: int(10, 1),
+  RATE_LIMIT_GLOBAL_PER_MIN: int(600, 1),
+
+  STORAGE_DRIVER: z.enum(['local']).default('local'),
+  STORAGE_LOCAL_ROOT: z.string().default('../data/storage'),
+  UPLOAD_TMP_DIR: z.string().default('../data/tmp'),
+
+  LANGUAGETOOL_URL: z.url().default('http://127.0.0.1:8010'),
+  LANGUAGETOOL_LANG: z.enum(['en-GB', 'en-US']).default('en-GB'),
+  LANGUAGETOOL_TIMEOUT_MS: int(8000, 100),
+});
+
+export type Env = z.infer<typeof EnvSchema>;
+
+function parseEnv(): Env {
+  const result = EnvSchema.safeParse(process.env);
+  if (!result.success) {
+    const lines = result.error.issues.map((i) => `  - ${i.path.join('.')}: ${i.message}`).join('\n');
+    throw new Error(`Cấu hình môi trường không hợp lệ (backend/.env):\n${lines}`);
+  }
+  return result.data;
+}
+
+export const env = parseEnv();
+
+/** Relative storage paths in .env resolve from backend/. */
+export const resolveFromBackend = (p: string) => (path.isAbsolute(p) ? p : path.resolve(BACKEND_ROOT, p));

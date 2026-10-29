@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "seriesKey": "dummy-writing-ac",
+  "source": "CUSTOM",
+  "type": "ACADEMIC",
+  "title": "Đề mẫu Writing (dummy)",
+  "description": "Self-written placeholder prompts; the chart data is fictional (CC0).",
+  "writing": {
+    "tasks": [
+      {
+        "task": 1,
+        "kind": "ACADEMIC_REPORT",
+        "visual": "BAR",
+        "image": { "path": "assets/task1-ferry-chart.png" },
+        "prompt": "The chart below shows the number of passengers (in thousands) using three ferry routes on Lake Varden in five different years between 2015 and 2023.\n\nSummarise the information by selecting and reporting the main features, and make comparisons where relevant.\n\nWrite at least 150 words.",
+        "minWords": 150,
+        "suggestedMinutes": 20
+      },
+      {
+        "task": 2,
+        "kind": "ESSAY",
+        "prompt": "Some people believe that city centres should be closed to private cars and given over to pedestrians and cyclists. Others think this would harm local businesses.\n\nDiscuss both views and give your own opinion.\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+        "minWords": 250,
+        "suggestedMinutes": 40
+      }
+    ]
+  }
+}

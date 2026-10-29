@@ -1,0 +1,29 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# env
+.env
+.env.*
+!.env.example
+
+# build / generated
+dist/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+backend/src/generated/
+frontend/test-results/
+frontend/playwright-report/
+frontend/blob-report/
+
+# data: real test content, uploads, backups (spec §3) — keep only README
+data/*
+!data/README.md
+
+# OS / editors
+.DS_Store
+Thumbs.db
+*.log

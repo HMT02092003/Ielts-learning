@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>C · Listening exam</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&amp;family=Lexend:wght@300;400&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+a{color:#1F5E4B}a:hover{color:#123B2F}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #1F5E4B;outline-offset:2px}
+</style>
+</helmet>
+<div style="height: 100vh; min-height: 760px; display: flex; flex-direction: column; background: #FFFFFF; color: #13201C; font-family: 'Be Vietnam Pro', system-ui, sans-serif">
+
+  <header style="flex-shrink: 0; min-height: 60px; padding: 8px 24px; box-sizing: border-box; border-bottom: 1px solid #E3E7EB; display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; justify-content: space-between">
+    <div style="display: flex; align-items: center; gap: 16px">
+      <span style="padding: 3px 8px; border-radius: 6px; background: #E3EFEA; color: #1F5E4B; font-size: 12px; font-weight: 600">CAM 17</span>
+      <span style="font-size: 15px; font-weight: 600">Test 1 · Listening</span>
+      <span style="display: flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; border-radius: 6px; border: 1px solid #C9D1D8; font-size: 12px; font-weight: 600"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Chế độ thi</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px; font-size: 15px">
+      <span style="font-family: 'Lexend', sans-serif; font-size: 18px; font-variant-numeric: tabular-nums">21</span><span style="color: #5B6670">phút còn lại</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B6670" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M19 5a10 10 0 0 1 0 14"></path></svg>
+        <label for="vol" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Âm lượng</label>
+        <input id="vol" type="range" min="0" max="100" value="70" style="width: 120px; accent-color: #1F5E4B">
+      </div>
+      <div role="group" aria-label="Cỡ chữ" style="display: flex; padding: 3px; border-radius: 10px; background: #F4F6F8">
+        <button type="button" aria-pressed="false" aria-label="Cỡ chữ nhỏ" style="width: 40px; height: 34px; border: 0; border-radius: 8px; background: transparent; font: inherit; font-size: 13px; color: #13201C">A</button>
+        <button type="button" aria-pressed="true" aria-label="Cỡ chữ vừa" style="width: 40px; height: 34px; border: 0; border-radius: 8px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(19,32,28,0.1); font: inherit; font-size: 16px; font-weight: 600; color: #13201C">A</button>
+        <button type="button" aria-pressed="false" aria-label="Cỡ chữ lớn" style="width: 40px; height: 34px; border: 0; border-radius: 8px; background: transparent; font: inherit; font-size: 19px; color: #13201C">A</button>
+      </div>
+      <button type="button" style="height: 40px; padding: 0 16px; border-radius: 10px; border: 0; background: #1F5E4B; color: #FFFFFF; font: inherit; font-size: 14px; font-weight: 500">Nộp bài</button>
+    </div>
+  </header>
+
+  <!-- Audio strip -->
+  <div role="region" aria-label="Âm thanh" style="flex-shrink: 0; padding: 12px 24px; background: #F4F6F8; border-bottom: 1px solid #E3E7EB; display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 999px; background: #1F5E4B; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF"><rect x="5" y="4" width="4" height="16" rx="1"></rect><rect x="15" y="4" width="4" height="16" rx="1"></rect></svg></span>
+      <div style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">Đang phát · Part 2</span><span style="font-size: 12px; color: #5B6670">Questions 11–20</span></div>
+    </div>
+    <div style="flex: 1 1 320px; display: flex; align-items: center; gap: 12px">
+      <span style="font-size: 13px; font-variant-numeric: tabular-nums; color: #3B464F">12:48</span>
+      <div role="progressbar" aria-label="Tiến độ bản ghi" aria-valuemin="0" aria-valuemax="100" aria-valuenow="42" style="flex: 1; height: 4px; border-radius: 999px; background: #DDE3E7; position: relative">
+        <div style="width: 42%; height: 100%; border-radius: 999px; background: #1F5E4B"></div>
+        <div aria-hidden="true" style="position: absolute; left: 25%; top: -3px; width: 1px; height: 10px; background: #8B959D"></div>
+        <div aria-hidden="true" style="position: absolute; left: 50%; top: -3px; width: 1px; height: 10px; background: #8B959D"></div>
+        <div aria-hidden="true" style="position: absolute; left: 75%; top: -3px; width: 1px; height: 10px; background: #8B959D"></div>
+      </div>
+      <span style="font-size: 13px; font-variant-numeric: tabular-nums; color: #5B6670">30:00</span>
+    </div>
+    <span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #5B6670"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>Bản ghi chỉ phát một lần — không tạm dừng, không tua.</span>
+  </div>
+
+  <!-- Questions -->
+  <main style="flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 32px 24px 48px">
+    <div style="max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h1 style="margin: 0; font-size: 16px; font-weight: 600">Questions 11–16</h1>
+          <p style="margin: 0; font-family: 'Newsreader', serif; font-size: 17px; line-height: 1.55">Complete the notes below. Write <b>ONE WORD AND/OR A NUMBER</b> for each answer.</p>
+        </div>
+        <div style="padding: 24px 28px; border-radius: 12px; border: 1px solid #E3E7EB; font-family: 'Newsreader', serif; font-size: 17px; line-height: 1.6; display: flex; flex-direction: column; gap: 10px">
+          <div style="font-size: 20px; font-weight: 600; text-align: center; margin-bottom: 6px">Riverside Community Garden — Volunteer Notes</div>
+          <sc-for list="{{notes}}" as="r" hint-placeholder-count="6">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+              <span aria-hidden="true">•</span><span>{{r.before}}</span>
+              <span style="display: inline-flex; align-items: center; gap: 6px">
+                <b style="font-family: 'Be Vietnam Pro', sans-serif; font-size: 13px">{{r.n}}</b>
+                <input aria-label="{{r.aria}}" value="{{r.value}}" style="width: 150px; height: 34px; box-sizing: border-box; padding: 0 10px; border-radius: 6px; border: {{r.border}}; box-shadow: {{r.ring}}; font-family: 'Be Vietnam Pro', sans-serif; font-size: 15px; color: #13201C; background: #FFFFFF">
+              </span>
+              <span>{{r.after}}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h2 style="margin: 0; font-size: 16px; font-weight: 600">Questions 17–20</h2>
+          <p style="margin: 0; font-family: 'Newsreader', serif; font-size: 17px; line-height: 1.55">Choose the correct letter, <b>A</b>, <b>B</b> or <b>C</b>.</p>
+        </div>
+        <sc-for list="{{mcq}}" as="q" hint-placeholder-count="2">
+          <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 8px">
+            <legend style="font-family: 'Newsreader', serif; font-size: 17px; line-height: 1.5; padding: 0; margin-bottom: 8px"><b style="font-family: 'Be Vietnam Pro', sans-serif; font-size: 13px; margin-right: 8px">{{q.n}}</b>{{q.text}}</legend>
+            <sc-for list="{{q.opts}}" as="o" hint-placeholder-count="3">
+              <label style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px; border-radius: 8px; border: 1px solid {{o.border}}; background: {{o.bg}}; font-family: 'Newsreader', serif; font-size: 17px; cursor: pointer"><input type="radio" name="{{q.name}}" checked="{{o.checked}}" style="margin: 0; width: 16px; height: 16px; accent-color: #1F5E4B"><b style="font-family: 'Be Vietnam Pro', sans-serif; font-size: 13px; width: 14px">{{o.l}}</b>{{o.text}}</label>
+            </sc-for>
+          </fieldset>
+        </sc-for>
+      </div>
+    </div>
+  </main>
+
+  <nav aria-label="Điều hướng câu hỏi" style="flex-shrink: 0; border-top: 1px solid #E3E7EB; background: #FFFFFF; padding: 10px 24px; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center">
+    <button type="button" style="height: 40px; padding: 0 14px; border-radius: 8px; border: 1px solid #E3E7EB; background: #F4F6F8; color: #13201C; font: inherit; font-size: 13px">Part 1 · 10/10</button>
+    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+      <span style="font-size: 13px; font-weight: 600; margin-right: 4px">Part 2</span>
+      <sc-for list="{{nav}}" as="b" hint-placeholder-count="10">
+        <button type="button" aria-label="{{b.aria}}" aria-current="{{b.current}}" style="position: relative; width: 40px; height: 40px; border-radius: 8px; border: {{b.border}}; background: {{b.bg}}; color: {{b.fg}}; font: inherit; font-size: 14px; font-weight: {{b.weight}}; padding: 0; box-shadow: {{b.underline}}">{{b.n}}<sc-if value="{{b.flagged}}" hint-placeholder-val="{{false}}"><span aria-hidden="true" style="position: absolute; top: -1px; right: -1px; width: 0; height: 0; border-top: 12px solid #A8551F; border-left: 12px solid transparent; border-top-right-radius: 8px"></span></sc-if></button>
+      </sc-for>
+    </div>
+    <button type="button" style="height: 40px; padding: 0 14px; border-radius: 8px; border: 1px solid #E3E7EB; background: #F4F6F8; color: #13201C; font: inherit; font-size: 13px">Part 3 · 0/10</button>
+    <button type="button" style="height: 40px; padding: 0 14px; border-radius: 8px; border: 1px solid #E3E7EB; background: #F4F6F8; color: #13201C; font: inherit; font-size: 13px">Part 4 · 0/10</button>
+    <div style="margin-left: auto; display: flex; gap: 8px">
+      <button type="button" aria-label="Câu trước" style="width: 44px; height: 44px; border-radius: 10px; border: 1px solid #C9D1D8; background: #FFFFFF; color: #13201C; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button>
+      <button type="button" aria-label="Câu tiếp theo" style="width: 44px; height: 44px; border-radius: 10px; border: 0; background: #1F5E4B; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+    </div>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const notesData = [
+      [11, 'Meeting point: the', 'green shed', 'next to the car park'],
+      [12, 'Volunteers should bring gloves and a', 'bottle', ''],
+      [13, 'Saturday sessions begin at', '9.30', 'a.m.'],
+      [14, 'Main crop this season:', '', ''],
+      [15, 'Contact the coordinator by', '', '(not by phone)'],
+      [16, 'New volunteers must complete a short', '', 'before starting']
+    ];
+    const notes = notesData.map(([n, before, value, after]) => ({
+      n, before, value, after, aria: 'Question ' + n,
+      border: n === 14 ? '2px solid #1F5E4B' : value ? '1px solid #1F5E4B' : '1px solid #8B959D',
+      ring: n === 14 ? '0 0 0 3px #E3EFEA' : 'none'
+    }));
+    const mk = (n, text, opts, ans) => ({ n, text, name: 'l' + n,
+      opts: opts.map((t, i) => { const l = 'ABC'[i]; const on = ans === l; return { l, text: t, checked: on, border: on ? '#1F5E4B' : '#E3E7EB', bg: on ? '#E3EFEA' : '#FFFFFF' }; }) });
+    const mcq = [
+      mk(17, 'What does the speaker say about the compost area?', ['It has recently been moved.', 'Only staff may use it.', 'It is closed during winter.'], null),
+      mk(18, 'Why are volunteers asked to record their hours?', ['To apply for local funding.', 'To plan future sessions.', 'To receive a certificate.'], null)
+    ];
+    const answered = [11, 12, 13];
+    const nav = [];
+    for (let n = 11; n <= 20; n++) {
+      const cur = n === 14, ans = answered.includes(n), fl = n === 13;
+      nav.push({ n, flagged: fl, current: cur ? 'true' : 'false',
+        aria: 'Câu ' + n + (ans ? ', đã trả lời' : ', chưa trả lời') + (fl ? ', đã đánh dấu' : '') + (cur ? ', đang xem' : ''),
+        bg: cur ? '#13201C' : ans ? '#E3EFEA' : '#FFFFFF', fg: cur ? '#FFFFFF' : ans ? '#1F5E4B' : '#13201C',
+        border: cur ? '2px solid #13201C' : ans ? '1px solid #E3EFEA' : '1px solid #8B959D',
+        weight: cur || ans ? 600 : 400, underline: ans && !cur ? 'inset 0 -3px 0 #1F5E4B' : 'none' });
+    }
+    return { notes, mcq, nav };
+  }
+}
+</script>
+</body>
+</html>

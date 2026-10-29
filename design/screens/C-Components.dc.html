@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>C · Design system</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&amp;family=Lexend:wght@200;300;400&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1F5E4B}a:hover{color:#123B2F}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1760px; box-sizing: border-box; padding: 56px 64px; background: #F4F6F8; color: #13201C; font-family: 'Be Vietnam Pro', system-ui, sans-serif; display: flex; flex-direction: column; gap: 28px">
+  <div style="display: flex; justify-content: space-between; align-items: flex-end">
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <span style="font-size: 13px; color: #1F5E4B; font-weight: 600">lặng · design system v1.0</span>
+      <h1 style="margin: 0; font-family: 'Lexend', sans-serif; font-weight: 200; font-size: 44px; letter-spacing: -0.03em">Tokens &amp; trạng thái component</h1>
+    </div>
+    <span style="font-size: 13px; color: #5B6670">Tailwind + shadcn/ui · icon Lucide 1.75px · chi tiết trong design-system.md</span>
+  </div>
+
+  <!-- Tokens -->
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px">
+    <section style="padding: 24px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E3E7EB; display: flex; flex-direction: column; gap: 14px">
+      <h2 style="margin: 0; font-size: 14px; font-weight: 600">Light</h2>
+      <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px">
+        <sc-for list="{{light}}" as="t" hint-placeholder-count="18"><div style="display: flex; flex-direction: column; gap: 4px"><div style="height: 40px; border-radius: 8px; background: {{t.hex}}; border: 1px solid #E3E7EB"></div><span style="font-size: 11px; font-weight: 600">{{t.name}}</span><span style="font-size: 11px; color: #5B6670">{{t.hex}}</span></div></sc-for>
+      </div>
+    </section>
+    <section style="padding: 24px; border-radius: 16px; background: #151C19; border: 1px solid #26312C; color: #E6ECE9; display: flex; flex-direction: column; gap: 14px">
+      <h2 style="margin: 0; font-size: 14px; font-weight: 600">Dark</h2>
+      <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px">
+        <sc-for list="{{dark}}" as="t" hint-placeholder-count="18"><div style="display: flex; flex-direction: column; gap: 4px"><div style="height: 40px; border-radius: 8px; background: {{t.hex}}; border: 1px solid #26312C"></div><span style="font-size: 11px; font-weight: 600">{{t.name}}</span><span style="font-size: 11px; color: #9AA8A1">{{t.hex}}</span></div></sc-for>
+      </div>
+    </section>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px">
+    <!-- Type -->
+    <section style="padding: 24px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E3E7EB; display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0 0 4px; font-size: 14px; font-weight: 600">Typography</h2>
+      <div style="display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid #EEF1F3; padding-bottom: 8px"><span style="width: 96px; font-size: 11px; color: #5B6670">display-xl 168/200</span><span style="font-family: 'Lexend', sans-serif; font-weight: 200; font-size: 64px; line-height: 1; color: #1F5E4B">7.0</span><span style="font-size: 12px; color: #5B6670">Lexend — band score (scaled)</span></div>
+      <div style="display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid #EEF1F3; padding-bottom: 8px"><span style="width: 96px; font-size: 11px; color: #5B6670">h1 48/200</span><span style="font-family: 'Lexend', sans-serif; font-weight: 200; font-size: 40px; letter-spacing: -0.03em">Chào buổi tối</span></div>
+      <div style="display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid #EEF1F3; padding-bottom: 8px"><span style="width: 96px; font-size: 11px; color: #5B6670">h2 28/300</span><span style="font-family: 'Lexend', sans-serif; font-weight: 300; font-size: 28px">Tiếp tục bài đang làm</span></div>
+      <div style="display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid #EEF1F3; padding-bottom: 8px"><span style="width: 96px; font-size: 11px; color: #5B6670">body 16/400</span><span style="font-size: 16px">Đề gợi ý tiếp theo dựa trên dạng câu hỏi yếu.</span></div>
+      <div style="display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid #EEF1F3; padding-bottom: 8px"><span style="width: 96px; font-size: 11px; color: #5B6670">label 14/500</span><span style="font-size: 14px; font-weight: 500">Band ước tính · Mục tiêu</span></div>
+      <div style="display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid #EEF1F3; padding-bottom: 8px"><span style="width: 96px; font-size: 11px; color: #5B6670">caption 12/400</span><span style="font-size: 12px; color: #5B6670">Cập nhật lúc 21:40</span></div>
+      <div style="display: flex; align-items: baseline; gap: 16px"><span style="width: 96px; font-size: 11px; color: #5B6670">reading 18/1.7</span><span style="font-family: 'Newsreader', serif; font-size: 18px; line-height: 1.7">Municipal authorities have responded with caution.</span></div>
+    </section>
+
+    <!-- Buttons -->
+    <section style="padding: 24px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E3E7EB; display: flex; flex-direction: column; gap: 12px">
+      <h2 style="margin: 0 0 4px; font-size: 14px; font-weight: 600">Button</h2>
+      <div style="display: grid; grid-template-columns: 96px repeat(5, minmax(0, 1fr)); gap: 10px; align-items: center; font-size: 11px; color: #5B6670">
+        <span></span><span>default</span><span>hover</span><span>focus-visible</span><span>disabled</span><span>loading</span>
+      </div>
+      <sc-for list="{{buttons}}" as="row" hint-placeholder-count="4">
+        <div style="display: grid; grid-template-columns: 96px repeat(5, minmax(0, 1fr)); gap: 10px; align-items: center">
+          <span style="font-size: 12px; font-weight: 500">{{row.name}}</span>
+          <sc-for list="{{row.states}}" as="s" hint-placeholder-count="5">
+            <button type="button" style="height: 40px; border-radius: 10px; border: {{s.border}}; background: {{s.bg}}; color: {{s.fg}}; box-shadow: {{s.ring}}; font: inherit; font-size: 14px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 6px">{{s.label}}</button>
+          </sc-for>
+        </div>
+      </sc-for>
+      <div style="font-size: 12px; color: #5B6670">Kích thước: sm 32 · md 40 · lg 48 (touch ≥ 44 trên tablet). Icon 16–18px, gap 8.</div>
+    </section>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
+    <!-- Inputs -->
+    <section style="padding: 24px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E3E7EB; display: flex; flex-direction: column; gap: 12px">
+      <h2 style="margin: 0 0 4px; font-size: 14px; font-weight: 600">Input</h2>
+      <sc-for list="{{inputs}}" as="i" hint-placeholder-count="5">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 11px; color: #5B6670">{{i.state}}</span>
+          <div style="height: 44px; box-sizing: border-box; padding: 0 14px; border-radius: 10px; border: {{i.border}}; box-shadow: {{i.ring}}; background: {{i.bg}}; color: {{i.fg}}; font-size: 15px; display: flex; align-items: center">{{i.value}}</div>
+          <sc-if value="{{i.err}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; color: #B42318">Email chưa đúng định dạng</span></sc-if>
+        </div>
+      </sc-for>
+    </section>
+
+    <!-- Select + tooltip -->
+    <section style="padding: 24px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E3E7EB; display: flex; flex-direction: column; gap: 12px">
+      <h2 style="margin: 0 0 4px; font-size: 14px; font-weight: 600">Select · Tooltip</h2>
+      <span style="font-size: 11px; color: #5B6670">select · open</span>
+      <div style="height: 44px; box-sizing: border-box; padding: 0 14px; border-radius: 10px; border: 1px solid #1F5E4B; box-shadow: 0 0 0 3px #E3EFEA; display: flex; align-items: center; justify-content: space-between; font-size: 15px">iii — Official concerns…<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6670" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg></div>
+      <div role="listbox" aria-label="Ví dụ" style="padding: 4px; border-radius: 10px; border: 1px solid #E3E7EB; background: #FFFFFF; box-shadow: 0 8px 24px -8px rgba(19,32,28,0.18); display: flex; flex-direction: column; font-size: 14px">
+        <div style="height: 36px; padding: 0 10px; border-radius: 6px; display: flex; align-items: center">i — A resource rediscovered…</div>
+        <div style="height: 36px; padding: 0 10px; border-radius: 6px; display: flex; align-items: center; background: #EEF1F3">ii — The limits of urban… <span style="margin-left: auto; font-size: 11px; color: #5B6670">hover</span></div>
+        <div style="height: 36px; padding: 0 10px; border-radius: 6px; display: flex; align-items: center; background: #E3EFEA; color: #1F5E4B; font-weight: 500">iii — Official concerns… <svg aria-hidden="true" style="margin-left: auto" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></div>
+        <div style="height: 36px; padding: 0 10px; border-radius: 6px; display: flex; align-items: center; color: #6B757D; text-decoration: line-through">iv — (đã dùng)</div>
+      </div>
+      <span style="font-size: 11px; color: #5B6670; margin-top: 8px">tooltip · delay 400ms</span>
+      <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px">
+        <span role="tooltip" style="max-width: 240px; padding: 8px 10px; border-radius: 8px; background: #13201C; color: #FFFFFF; font-size: 12px; line-height: 1.45">Band ước tính từ 5 bài gần nhất, làm tròn 0.5</span>
+        <button type="button" aria-label="Giải thích" style="width: 32px; height: 32px; margin-left: 12px; border-radius: 999px; border: 1px solid #C9D1D8; background: #FFFFFF; color: #5B6670; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></button>
+      </div>
+    </section>
+
+    <!-- Tags + progress -->
+    <section style="padding: 24px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E3E7EB; display: flex; flex-direction: column; gap: 12px">
+      <h2 style="margin: 0 0 4px; font-size: 14px; font-weight: 600">Tag · Progress</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <sc-for list="{{tagsList}}" as="t" hint-placeholder-count="8"><span style="height: 24px; padding: 0 8px; border-radius: 6px; background: {{t.bg}}; color: {{t.fg}}; border: {{t.border}}; font-size: 12px; font-weight: 600; display: flex; align-items: center">{{t.label}}</span></sc-for>
+      </div>
+      <div style="font-size: 12px; color: #5B6670">Nguồn đề: CAM đặc · VOL soft · Pre-IELTS neutral. Trạng thái: success / warning / danger.</div>
+      <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 8px">
+        <sc-for list="{{bars}}" as="b" hint-placeholder-count="4">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <div style="display: flex; justify-content: space-between; font-size: 12px"><span>{{b.name}}</span><span style="color: #5B6670">{{b.val}}</span></div>
+            <div style="height: {{b.h}}; border-radius: 999px; background: #EEF1F3; position: relative"><div style="width: {{b.val}}; height: 100%; border-radius: 999px; background: {{b.color}}"></div></div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px">
+    <!-- Question nav -->
+    <section style="padding: 24px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E3E7EB; display: flex; flex-direction: column; gap: 14px">
+      <h2 style="margin: 0; font-size: 14px; font-weight: 600">Question-nav button</h2>
+      <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px">
+        <sc-for list="{{qnav}}" as="q" hint-placeholder-count="6">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center">
+            <span style="position: relative; width: 40px; height: 40px; box-sizing: border-box; border-radius: 8px; border: {{q.border}}; background: {{q.bg}}; color: {{q.fg}}; font-size: 14px; font-weight: {{q.weight}}; box-shadow: {{q.shadow}}; display: flex; align-items: center; justify-content: center">{{q.n}}<sc-if value="{{q.flag}}" hint-placeholder-val="{{false}}"><span style="position: absolute; top: -1px; right: -1px; width: 0; height: 0; border-top: 12px solid #A8551F; border-left: 12px solid transparent; border-top-right-radius: 8px"></span></sc-if></span>
+            <span style="font-size: 11px; line-height: 1.35; color: #3B464F">{{q.label}}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-size: 12px; line-height: 1.5; color: #5B6670">Phân biệt bằng nền + gạch chân + góc cờ (không chỉ bằng màu). aria-label đọc đủ trạng thái: “Câu 4, chưa trả lời, đã đánh dấu”. Phần không mở thu gọn thành nút “Part 2 · 0/13”.</div>
+    </section>
+
+    <!-- Cards -->
+    <section style="padding: 24px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E3E7EB; display: flex; flex-direction: column; gap: 14px">
+      <h2 style="margin: 0; font-size: 14px; font-weight: 600">Card</h2>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding: 16px; border-radius: 12px; background: #F4F6F8">
+        <sc-for list="{{cards}}" as="c" hint-placeholder-count="4">
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <div style="height: 96px; box-sizing: border-box; padding: 14px; border-radius: 16px; background: {{c.bg}}; border: {{c.border}}; box-shadow: {{c.shadow}}; color: {{c.fg}}; display: flex; flex-direction: column; justify-content: space-between"><span style="font-size: 12px; opacity: 0.8">CAM 18</span><span style="font-size: 14px; font-weight: 500">Test 2 · Reading</span></div>
+            <span style="font-size: 11px; color: #5B6670; text-align: center">{{c.label}}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-size: 12px; line-height: 1.5; color: #5B6670">Radius 16 · padding 32 (desktop) / 24 (tablet) · viền 1px border, không bóng ở trạng thái nghỉ. Hover chỉ áp dụng cho card có thể bấm.</div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1760}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const tok = s => s.split(' ').map(p => { const [name, hex] = p.split('='); return { name, hex }; });
+    const light = tok('background=#F4F6F8 surface=#FFFFFF surface-muted=#EEF1F3 ink=#13201C ink-muted=#5B6670 ink-subtle=#6B757D accent=#1F5E4B accent-hover=#184C3C accent-soft=#E3EFEA success=#1F7A4D success-soft=#E4F3EA danger=#B42318 danger-soft=#FDECEA warning=#A8551F warning-soft=#FBEBDD border=#E3E7EB border-strong=#8B959D highlight=#FFE58A');
+    const dark = tok('background=#0E1412 surface=#151C19 surface-muted=#1B2420 ink=#E6ECE9 ink-muted=#9AA8A1 ink-subtle=#7D8A84 accent=#5FBF9A accent-hover=#7ACFAE accent-soft=#183329 success=#4CC38A success-soft=#15301F danger=#F2877E danger-soft=#3A1A17 warning=#E7A46B warning-soft=#3A2716 border=#26312C border-strong=#6E7C75 highlight=#5C4A12');
+    const ring = '0 0 0 2px #FFFFFF, 0 0 0 4px #1F5E4B';
+    const mk = (name, d, h, dis) => ({ name, states: [
+      { label: 'Bắt đầu', ...d, ring: 'none' }, { label: 'Bắt đầu', ...h, ring: 'none' },
+      { label: 'Bắt đầu', ...d, ring }, { label: 'Bắt đầu', ...dis, ring: 'none' },
+      { label: 'Đang lưu…', ...d, ring: 'none' } ] });
+    const buttons = [
+      mk('Primary', { bg: '#1F5E4B', fg: '#FFFFFF', border: '0' }, { bg: '#184C3C', fg: '#FFFFFF', border: '0' }, { bg: '#EEF1F3', fg: '#6B757D', border: '0' }),
+      mk('Secondary', { bg: '#FFFFFF', fg: '#13201C', border: '1px solid #C9D1D8' }, { bg: '#F4F6F8', fg: '#13201C', border: '1px solid #8B959D' }, { bg: '#FFFFFF', fg: '#6B757D', border: '1px solid #E3E7EB' }),
+      mk('Ghost', { bg: 'transparent', fg: '#1F5E4B', border: '0' }, { bg: '#E3EFEA', fg: '#1F5E4B', border: '0' }, { bg: 'transparent', fg: '#6B757D', border: '0' }),
+      mk('Danger', { bg: '#B42318', fg: '#FFFFFF', border: '0' }, { bg: '#912018', fg: '#FFFFFF', border: '0' }, { bg: '#EEF1F3', fg: '#6B757D', border: '0' })
+    ];
+    const inputs = [
+      { state: 'default', value: 'minhanh@example.com', border: '1px solid #8B959D', ring: 'none', bg: '#FFFFFF', fg: '#13201C', err: false },
+      { state: 'hover', value: 'minhanh@example.com', border: '1px solid #5B6670', ring: 'none', bg: '#FFFFFF', fg: '#13201C', err: false },
+      { state: 'focus', value: 'minhanh@example.com', border: '1px solid #1F5E4B', ring: '0 0 0 3px #E3EFEA', bg: '#FFFFFF', fg: '#13201C', err: false },
+      { state: 'error', value: 'minhanh@', border: '1px solid #B42318', ring: '0 0 0 3px #FDECEA', bg: '#FFFFFF', fg: '#13201C', err: true },
+      { state: 'disabled', value: 'Không chỉnh sửa', border: '1px solid #E3E7EB', ring: 'none', bg: '#EEF1F3', fg: '#6B757D', err: false }
+    ];
+    const tagsList = [
+      { label: 'CAM 18', bg: '#1F5E4B', fg: '#FFFFFF', border: '0' },
+      { label: 'VOL 3', bg: '#E3EFEA', fg: '#1F5E4B', border: '0' },
+      { label: 'Pre-IELTS', bg: '#FFFFFF', fg: '#3B464F', border: '1px solid #C9D1D8' },
+      { label: 'Reading', bg: '#EEF1F3', fg: '#13201C', border: '0' },
+      { label: 'Đã đạt', bg: '#E4F3EA', fg: '#1F7A4D', border: '0' },
+      { label: 'Cần luyện', bg: '#FBEBDD', fg: '#8A4418', border: '0' },
+      { label: 'Sai', bg: '#FDECEA', fg: '#B42318', border: '0' }
+    ];
+    const bars = [
+      { name: 'Default · 4px', val: '62%', h: '4px', color: '#1F5E4B' },
+      { name: 'Đạt mục tiêu', val: '100%', h: '4px', color: '#1F7A4D' },
+      { name: 'Cảnh báo (số từ)', val: '81%', h: '4px', color: '#A8551F' },
+      { name: 'Large · 8px', val: '45%', h: '8px', color: '#1F5E4B' }
+    ];
+    const q = (n, label, bg, fg, border, weight, shadow, flag) => ({ n, label, bg, fg, border, weight, shadow, flag });
+    const qnav = [
+      q(1, 'Chưa trả lời', '#FFFFFF', '#13201C', '1px solid #8B959D', 400, 'none', false),
+      q(2, 'Đã trả lời', '#E3EFEA', '#1F5E4B', '1px solid #E3EFEA', 600, 'inset 0 -3px 0 #1F5E4B', false),
+      q(3, 'Chưa trả lời + cờ', '#FFFFFF', '#13201C', '1px solid #8B959D', 400, 'none', true),
+      q(4, 'Đã trả lời + cờ', '#E3EFEA', '#1F5E4B', '1px solid #E3EFEA', 600, 'inset 0 -3px 0 #1F5E4B', true),
+      q(5, 'Đang xem', '#13201C', '#FFFFFF', '2px solid #13201C', 600, 'none', false),
+      q(6, 'Focus bàn phím', '#FFFFFF', '#13201C', '1px solid #8B959D', 400, '0 0 0 2px #FFFFFF, 0 0 0 4px #1F5E4B', false)
+    ];
+    const cards = [
+      { label: 'Nghỉ', bg: '#FFFFFF', fg: '#13201C', border: '1px solid #E3E7EB', shadow: 'none' },
+      { label: 'Hover (bấm được)', bg: '#FFFFFF', fg: '#13201C', border: '1px solid #C9D1D8', shadow: '0 1px 2px rgba(19,32,28,0.06), 0 8px 24px -12px rgba(19,32,28,0.14)' },
+      { label: 'Đã chọn', bg: '#FFFFFF', fg: '#13201C', border: '2px solid #1F5E4B', shadow: 'none' },
+      { label: 'Nhấn mạnh (accent)', bg: '#1F5E4B', fg: '#FFFFFF', border: '1px solid #1F5E4B', shadow: 'none' }
+    ];
+    return { light, dark, buttons, inputs, tagsList, bars, qnav, cards };
+  }
+}
+</script>
+</body>
+</html>

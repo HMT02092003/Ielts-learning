@@ -1,0 +1,406 @@
+{
+  "schemaVersion": 1,
+  "seriesKey": "dummy-reading-ac",
+  "source": "CUSTOM",
+  "type": "ACADEMIC",
+  "title": "Đề mẫu Reading (dummy)",
+  "description": "Self-written placeholder test for development. All passages, names and facts are fictional (CC0).",
+  "reading": {
+    "passages": [
+      {
+        "title": "Rooftop Beekeeping in Northbridge",
+        "instructions": "You should spend about 20 minutes on Questions 1–13, which are based on Reading Passage 1 below.",
+        "suggestedMinutes": 20,
+        "paragraphs": [
+          {
+            "label": "A",
+            "text": "When the city of Northbridge relaxed its building rules in 2009, a handful of office owners began placing beehives on their flat roofs. The first hives were installed by a retired chemistry teacher, Mara Ellison, who persuaded the manager of a printing company to let her use the empty space above his workshop. Within three years, more than forty roofs in the old harbour district carried hives."
+          },
+          {
+            "label": "B",
+            "text": "Supporters argue that city bees are healthier than their rural relatives. Parks, private gardens and the lime trees that line the main avenues flower at different times, so urban colonies can find nectar from early spring until late autumn. Farmland, by contrast, often offers a single crop that blooms for only a few weeks."
+          },
+          {
+            "label": "C",
+            "text": "The honey itself has become a small local industry. Each rooftop produces a slightly different flavour depending on the nearest trees, and several cafés now sell jars labelled with the street where the honey was collected. A typical rooftop hive yields around twelve kilograms a year, although output falls sharply after a wet summer."
+          },
+          {
+            "label": "D",
+            "text": "Not everyone welcomes the trend. Some residents worry about stings, and a few gardeners claim that so many hives compete with wild pollinators such as bumblebees. The city council has not yet published any study on this question, but it now requires new beekeepers to register their hives and to complete a short training course."
+          },
+          {
+            "label": "E",
+            "text": "Ellison herself believes the future lies in education rather than honey. Her group runs school visits every Thursday, during which pupils wear protective veils and inspect a hive frame. 'Children who have held a frame of bees,' she says, 'never look at a flower in quite the same way again.'"
+          }
+        ],
+        "groups": [
+          {
+            "type": "TRUE_FALSE_NOT_GIVEN",
+            "instructions": "Do the following statements agree with the information given in Reading Passage 1? Write TRUE if the statement agrees with the information, FALSE if the statement contradicts the information, NOT GIVEN if there is no information on this.",
+            "questionFrom": 1,
+            "questionTo": 5,
+            "questions": [
+              {
+                "number": 1,
+                "prompt": "The first rooftop hives in Northbridge were set up before the building rules changed.",
+                "answer": "FALSE",
+                "evidence": {
+                  "paragraphLabel": "A",
+                  "quote": "When the city of Northbridge relaxed its building rules in 2009, a handful of office owners began placing beehives on their flat roofs."
+                },
+                "explanation": "Hives appeared after the rules were relaxed in 2009."
+              },
+              {
+                "number": 2,
+                "prompt": "Mara Ellison had previously worked as a teacher.",
+                "answer": "TRUE",
+                "evidence": { "paragraphLabel": "A", "quote": "a retired chemistry teacher, Mara Ellison" }
+              },
+              {
+                "number": 3,
+                "prompt": "The manager of the printing company later became a beekeeper himself.",
+                "answer": "NOT GIVEN"
+              },
+              {
+                "number": 4,
+                "prompt": "Bees in the city can collect nectar over a longer period than bees on farmland.",
+                "answer": "TRUE",
+                "evidence": {
+                  "paragraphLabel": "B",
+                  "quote": "urban colonies can find nectar from early spring until late autumn"
+                }
+              },
+              {
+                "number": 5,
+                "prompt": "The city council has proved that hives harm wild pollinators.",
+                "answer": "FALSE",
+                "evidence": {
+                  "paragraphLabel": "D",
+                  "quote": "The city council has not yet published any study on this question"
+                }
+              }
+            ]
+          },
+          {
+            "type": "SENTENCE_COMPLETION",
+            "instructions": "Complete the sentences below. Choose NO MORE THAN TWO WORDS from the passage for each answer.",
+            "questionFrom": 6,
+            "questionTo": 9,
+            "wordLimit": { "maxWords": 2, "allowNumber": false },
+            "questions": [
+              {
+                "number": 6,
+                "prompt": "Within three years, hives could be found on over forty roofs in the old {{6}}.",
+                "answer": "harbour district",
+                "accepted": ["harbor district"]
+              },
+              {
+                "number": 7,
+                "prompt": "City colonies feed on flowers in parks, gardens and the {{7}} along the main avenues.",
+                "answer": "lime trees"
+              },
+              {
+                "number": 8,
+                "prompt": "Some cafés sell honey in jars that show the {{8}} where it was collected.",
+                "answer": "street"
+              },
+              {
+                "number": 9,
+                "prompt": "Honey production drops considerably after a {{9}}.",
+                "answer": "wet summer"
+              }
+            ]
+          },
+          {
+            "type": "NOTE_TABLE_FLOWCHART_COMPLETION",
+            "instructions": "Complete the table below. Choose ONE WORD AND/OR A NUMBER from the passage for each answer.",
+            "questionFrom": 10,
+            "questionTo": 13,
+            "title": "Rooftop beekeeping in Northbridge",
+            "answerMode": "WORDS",
+            "wordLimit": { "maxWords": 1, "allowNumber": true },
+            "template": {
+              "layout": "TABLE",
+              "columns": ["Topic", "Detail"],
+              "rows": [
+                { "cells": ["First hives", "placed above a printing company's {{10}}"] },
+                { "cells": ["Typical yield", "about {{11}} kg per hive each year"] },
+                { "cells": ["New beekeepers", "must register hives and complete a {{12}} course"] },
+                { "cells": ["School visits", "held every {{13}}"] }
+              ]
+            },
+            "questions": [
+              { "number": 10, "answer": "workshop" },
+              { "number": 11, "answer": "12", "accepted": ["twelve"] },
+              { "number": 12, "answer": "training" },
+              { "number": 13, "answer": "Thursday" }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "The Lantern Clock Project",
+        "instructions": "You should spend about 20 minutes on Questions 14–26, which are based on Reading Passage 2 below.",
+        "suggestedMinutes": 20,
+        "paragraphs": [
+          {
+            "label": "A",
+            "text": "In 2017 a group of volunteers in the market town of Felbury set out to rebuild a lantern clock that had stood in the town hall until a fire destroyed it in 1890. Only a single photograph and a few written descriptions survived."
+          },
+          {
+            "label": "B",
+            "text": "The first task was to work out how large the clock had been. By comparing the photograph with the window frames, which are still in place, the team calculated that the dial measured just under forty centimetres across."
+          },
+          {
+            "label": "C",
+            "text": "Money proved harder to find than information. A local bakery agreed to donate a share of its weekend sales, and a crowdfunding page eventually raised the remaining funds in less than two months."
+          },
+          {
+            "label": "D",
+            "text": "Engineer Dalia Okafor designed the gear train using modern software, but insisted that every wheel be cut by hand. 'A machine-cut wheel would keep better time,' she admitted, 'but it would not be the clock that Felbury lost.'"
+          },
+          {
+            "label": "E",
+            "text": "Historian Peter Lund spent a winter in county archives searching for the name of the original maker. He found a receipt suggesting that the clock had been bought second-hand from a neighbouring village."
+          },
+          {
+            "label": "F",
+            "text": "The finished clock was unveiled in 2021. It loses about a minute each week, and a rota of volunteers now winds it every Saturday morning, an arrangement that has become a small weekly event in the town."
+          }
+        ],
+        "groups": [
+          {
+            "type": "MATCHING_HEADINGS",
+            "instructions": "Reading Passage 2 has six paragraphs, A–F. Choose the correct heading for paragraphs B–F from the list of headings below.",
+            "questionFrom": 14,
+            "questionTo": 18,
+            "headings": [
+              { "key": "i", "text": "Searching the records for a forgotten craftsman" },
+              { "key": "ii", "text": "Measuring a lost object from an old image" },
+              { "key": "iii", "text": "Choosing tradition over accuracy" },
+              { "key": "iv", "text": "A disaster and a plan to undo it" },
+              { "key": "v", "text": "How the community paid for the work" },
+              { "key": "vi", "text": "A routine that brings people together" },
+              { "key": "vii", "text": "Problems with modern materials" },
+              { "key": "viii", "text": "Selling the clock to another town" }
+            ],
+            "example": { "paragraphLabel": "A", "headingKey": "iv" },
+            "questions": [
+              { "number": 14, "paragraphLabel": "B", "answer": "ii" },
+              { "number": 15, "paragraphLabel": "C", "answer": "v" },
+              { "number": 16, "paragraphLabel": "D", "answer": "iii" },
+              { "number": 17, "paragraphLabel": "E", "answer": "i" },
+              { "number": 18, "paragraphLabel": "F", "answer": "vi" }
+            ]
+          },
+          {
+            "type": "MATCHING_INFORMATION",
+            "instructions": "Reading Passage 2 has six paragraphs, A–F. Which paragraph contains the following information? NB You may use any letter more than once.",
+            "questionFrom": 19,
+            "questionTo": 21,
+            "paragraphLabels": ["A", "B", "C", "D", "E", "F"],
+            "allowReuse": true,
+            "questions": [
+              { "number": 19, "prompt": "a reference to how often the clock is looked after", "answer": "F" },
+              { "number": 20, "prompt": "a description of a document found during research", "answer": "E" },
+              { "number": 21, "prompt": "the size of one part of the clock", "answer": "B" }
+            ]
+          },
+          {
+            "type": "MATCHING_FEATURES",
+            "instructions": "Look at the following statements and the list below. Match each statement with the correct person or organisation, A, B or C.",
+            "questionFrom": 22,
+            "questionTo": 24,
+            "variant": "FEATURES",
+            "listTitle": "List of people and organisations",
+            "features": [
+              { "key": "A", "text": "Dalia Okafor" },
+              { "key": "B", "text": "Peter Lund" },
+              { "key": "C", "text": "the bakery" }
+            ],
+            "questions": [
+              { "number": 22, "prompt": "worked on the project during the cold months", "answer": "B" },
+              { "number": 23, "prompt": "gave part of its income to the project", "answer": "C" },
+              { "number": 24, "prompt": "accepted that the clock would be less accurate", "answer": "A" }
+            ]
+          },
+          {
+            "type": "MULTIPLE_CHOICE_MULTI",
+            "instructions": "Choose TWO letters, A–E.",
+            "questionFrom": 25,
+            "questionTo": 26,
+            "stem": "Which TWO statements about the finished clock are true?",
+            "options": [
+              { "key": "A", "text": "It was completed in 2021." },
+              { "key": "B", "text": "It keeps perfect time." },
+              { "key": "C", "text": "It is wound once a week." },
+              { "key": "D", "text": "All of its wheels were cut by machine." },
+              { "key": "E", "text": "It is kept in a museum." }
+            ],
+            "chooseCount": 2,
+            "answer": ["A", "C"],
+            "questions": [{ "number": 25 }, { "number": 26 }]
+          }
+        ]
+      },
+      {
+        "title": "Why Do We Hum?",
+        "instructions": "You should spend about 20 minutes on Questions 27–40, which are based on Reading Passage 3 below.",
+        "suggestedMinutes": 20,
+        "paragraphs": [
+          {
+            "label": "A",
+            "text": "Most of us hum without noticing. We hum while cooking, while waiting for a bus, or while trying to remember the name of a song. Yet humming has received far less attention from researchers than singing or speech, and I believe that this neglect is a mistake."
+          },
+          {
+            "label": "B",
+            "text": "One reason humming deserves attention is that it seems to calm the person who does it. Several small studies have reported slower breathing in volunteers who hummed for five minutes. These studies were short and involved few people, so their results should be treated with caution, but they are consistent with what many people say about their own experience."
+          },
+          {
+            "label": "C",
+            "text": "A second reason is social. Parents in almost every culture hum to babies, often before the child can understand a single word. In my view, this suggests that humming may be one of the oldest ways in which humans share feelings with one another."
+          },
+          {
+            "label": "D",
+            "text": "Critics reply that humming is simply singing with the mouth closed and needs no separate explanation. I find this argument unconvincing. People who would never sing in public will happily hum in a shop, which implies that the two activities feel very different to the person doing them."
+          },
+          {
+            "label": "E",
+            "text": "None of this means that humming is a cure for stress or a secret language. It does mean that a habit we share with nearly everyone we meet deserves at least one serious, large-scale study."
+          }
+        ],
+        "groups": [
+          {
+            "type": "YES_NO_NOT_GIVEN",
+            "instructions": "Do the following statements agree with the views of the writer in Reading Passage 3? Write YES if the statement agrees with the views of the writer, NO if the statement contradicts the views of the writer, NOT GIVEN if it is impossible to say what the writer thinks about this.",
+            "questionFrom": 27,
+            "questionTo": 30,
+            "questions": [
+              {
+                "number": 27,
+                "prompt": "Researchers have paid less attention to humming than to singing.",
+                "answer": "YES"
+              },
+              {
+                "number": 28,
+                "prompt": "The results of the breathing studies are completely reliable.",
+                "answer": "NO"
+              },
+              {
+                "number": 29,
+                "prompt": "Humming to babies is more common in some cultures than in others.",
+                "answer": "NOT GIVEN"
+              },
+              {
+                "number": 30,
+                "prompt": "Humming and singing are essentially the same activity.",
+                "answer": "NO"
+              }
+            ]
+          },
+          {
+            "type": "MULTIPLE_CHOICE_SINGLE",
+            "instructions": "Choose the correct letter, A, B, C or D.",
+            "questionFrom": 31,
+            "questionTo": 34,
+            "questions": [
+              {
+                "number": 31,
+                "prompt": "In paragraph A, the writer says that people often hum",
+                "options": [
+                  { "key": "A", "text": "when they are with friends." },
+                  { "key": "B", "text": "without being aware of it." },
+                  { "key": "C", "text": "only when they are happy." },
+                  { "key": "D", "text": "to remember telephone numbers." }
+                ],
+                "answer": "B"
+              },
+              {
+                "number": 32,
+                "prompt": "What does the writer say about the breathing studies?",
+                "options": [
+                  { "key": "A", "text": "They involved a large number of volunteers." },
+                  { "key": "B", "text": "They lasted several months." },
+                  { "key": "C", "text": "Their findings match what people report about themselves." },
+                  { "key": "D", "text": "They were carried out on babies." }
+                ],
+                "answer": "C"
+              },
+              {
+                "number": 33,
+                "prompt": "According to the writer, humming to babies suggests that humming",
+                "options": [
+                  { "key": "A", "text": "is a very old way of sharing emotions." },
+                  { "key": "B", "text": "helps children learn words." },
+                  { "key": "C", "text": "was invented by parents." },
+                  { "key": "D", "text": "is more important than speech." }
+                ],
+                "answer": "A"
+              },
+              {
+                "number": 34,
+                "prompt": "What is the writer's main recommendation?",
+                "options": [
+                  { "key": "A", "text": "Humming should be used to treat stress." },
+                  { "key": "B", "text": "People should hum more in public." },
+                  { "key": "C", "text": "Humming should be studied properly." },
+                  { "key": "D", "text": "Singing should be studied less." }
+                ],
+                "answer": "C"
+              }
+            ]
+          },
+          {
+            "type": "SUMMARY_COMPLETION",
+            "instructions": "Complete the summary using the list of words, A–H, below.",
+            "questionFrom": 35,
+            "questionTo": 38,
+            "title": "The case for studying humming",
+            "text": "The writer believes humming has been largely {{35}} by researchers. Small studies suggest it may make people feel {{36}}, and the fact that parents hum to babies points to a {{37}} function. The writer rejects the view that humming is no different from {{38}}.",
+            "answerMode": "WORD_BANK",
+            "wordBank": {
+              "options": [
+                { "key": "A", "text": "ignored" },
+                { "key": "B", "text": "calmer" },
+                { "key": "C", "text": "social" },
+                { "key": "D", "text": "singing" },
+                { "key": "E", "text": "faster" },
+                { "key": "F", "text": "studied" },
+                { "key": "G", "text": "medical" },
+                { "key": "H", "text": "speaking" }
+              ],
+              "allowReuse": false
+            },
+            "questions": [
+              { "number": 35, "answer": "A" },
+              { "number": 36, "answer": "B" },
+              { "number": 37, "answer": "C" },
+              { "number": 38, "answer": "D" }
+            ]
+          },
+          {
+            "type": "SHORT_ANSWER",
+            "instructions": "Answer the questions below. Choose NO MORE THAN TWO WORDS AND/OR A NUMBER from the passage for each answer.",
+            "questionFrom": 39,
+            "questionTo": 40,
+            "wordLimit": { "maxWords": 2, "allowNumber": true },
+            "questions": [
+              {
+                "number": 39,
+                "prompt": "For how long did volunteers hum in the breathing studies?",
+                "answer": "five minutes",
+                "accepted": ["5 minutes"]
+              },
+              {
+                "number": 40,
+                "prompt": "Where will people who never sing in public happily hum?",
+                "answer": "(a) shop",
+                "accepted": ["in shops"]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

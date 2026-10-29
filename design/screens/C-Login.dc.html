@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>C · Đăng nhập</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&amp;family=Lexend:wght@200;300;400&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;display=swap">
+<style>
+body{margin:0;background:#F4F6F8}
+a{color:#1F5E4B}a:hover{color:#123B2F}
+input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid #1F5E4B;outline-offset:3px}
+</style>
+</helmet>
+<div style="min-height: 900px; background: #F4F6F8; color: #13201C; font-family: 'Be Vietnam Pro', system-ui, sans-serif; display: flex; flex-direction: column">
+  <header style="max-width: 1312px; width: 100%; margin: 0 auto; box-sizing: border-box; padding: 36px 32px; display: flex; justify-content: space-between; align-items: center">
+    <div style="display: flex; align-items: center; gap: 10px; font-family: 'Lexend', sans-serif; font-size: 18px; font-weight: 400"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 999px; background: #1F5E4B"></span>lặng</div>
+    <div style="font-size: 13px; color: #5B6670">Thứ Năm, 29 tháng 10</div>
+  </header>
+
+  <main style="flex-grow: 1; display: flex; align-items: center; justify-content: center; padding: 24px 32px 64px">
+    <div style="width: 100%; max-width: 980px; display: flex; flex-wrap: wrap; gap: 96px; align-items: center">
+      <div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 28px">
+        <div style="font-size: 14px; color: #1F5E4B; font-weight: 500">Còn 47 ngày · Mục tiêu 7.0</div>
+        <h1 style="margin: 0; font-family: 'Lexend', sans-serif; font-weight: 200; font-size: 60px; line-height: 1.08; letter-spacing: -0.03em">Chào Minh Anh.<br>Một phiên 25 phút thôi nhé.</h1>
+        <div style="width: 48px; height: 1px; background: #C9D1D8"></div>
+        <blockquote style="margin: 0; font-family: 'Newsreader', serif; font-style: italic; font-size: 20px; line-height: 1.5; color: #3B464F; max-width: 420px">“Slow is smooth, and smooth is fast.”</blockquote>
+      </div>
+
+      <form aria-labelledby="c-title" style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+        <h2 id="c-title" style="margin: 0; font-size: 15px; font-weight: 600">Đăng nhập</h2>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <label for="c-email" style="font-size: 13px; color: #5B6670">Email</label>
+          <input id="c-email" type="email" value="minhanh@example.com" style="height: 52px; box-sizing: border-box; padding: 0 16px; border-radius: 10px; border: 1px solid #D5DBE0; background: #FFFFFF; font: inherit; font-size: 16px; color: #13201C">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <label for="c-pass" style="font-size: 13px; color: #5B6670">Mật khẩu</label>
+          <input id="c-pass" type="password" value="••••••••••" style="height: 52px; box-sizing: border-box; padding: 0 16px; border-radius: 10px; border: 1px solid #1F5E4B; box-shadow: 0 0 0 3px #E3EFEA; background: #FFFFFF; font: inherit; font-size: 16px; color: #13201C">
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px">
+          <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; min-height: 44px; cursor: pointer"><input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #1F5E4B; margin: 0"> Ghi nhớ</label>
+          <a href="#" style="font-size: 14px; min-height: 44px; display: flex; align-items: center">Quên mật khẩu?</a>
+        </div>
+        <button type="submit" style="height: 52px; border: 0; border-radius: 10px; background: #1F5E4B; color: #FFFFFF; font: inherit; font-size: 16px; font-weight: 500; cursor: pointer">Bắt đầu</button>
+        <div style="display: flex; gap: 24px; padding-top: 20px; border-top: 1px solid #E3E7EB; font-size: 13px; color: #5B6670">
+          <span><b style="color: #13201C; font-weight: 600">12</b> ngày liên tiếp</span>
+          <span><b style="color: #13201C; font-weight: 600">20</b> thẻ đến hạn</span>
+          <span><b style="color: #13201C; font-weight: 600">1</b> bài dở dang</span>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

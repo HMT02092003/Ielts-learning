@@ -1,0 +1,34 @@
+# Infrastructure only. backend/ and frontend/ run on the host with `pnpm dev` (see README).
+name: ielts
+
+services:
+  postgres:
+    image: postgres:17.10-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-ielts}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ielts_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-ielts}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5434}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  languagetool:
+    # LGPL-2.1, self-hosted grammar checker used by the Writing evaluator (Phase 5); /v2/check on port 8010.
+    image: erikvl87/languagetool:6.8
+    restart: unless-stopped
+    environment:
+      Java_Xms: 256m
+      Java_Xmx: 1g
+    ports:
+      - "127.0.0.1:${LT_PORT:-8010}:8010"
+
+volumes:
+  pgdata: {}

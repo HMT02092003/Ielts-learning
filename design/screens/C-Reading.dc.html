@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>C · Reading exam</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&amp;family=Lexend:wght@300;400&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+a{color:#1F5E4B}a:hover{color:#123B2F}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #1F5E4B;outline-offset:2px}
+</style>
+</helmet>
+<div style="height: 100vh; min-height: 760px; display: flex; flex-direction: column; background: #FFFFFF; color: #13201C; font-family: 'Be Vietnam Pro', system-ui, sans-serif">
+
+  <!-- Top bar -->
+  <header style="flex-shrink: 0; min-height: 60px; padding: 8px 24px; box-sizing: border-box; border-bottom: 1px solid #E3E7EB; display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; justify-content: space-between">
+    <div style="display: flex; align-items: center; gap: 16px; min-width: 0">
+      <span style="padding: 3px 8px; border-radius: 6px; background: #E3EFEA; color: #1F5E4B; font-size: 12px; font-weight: 600">VOL 3</span>
+      <span style="font-size: 15px; font-weight: 600">Test 5 · Academic Reading</span>
+      <span style="font-size: 13px; color: #5B6670">Minh Anh</span>
+    </div>
+    <div role="timer" aria-live="off" aria-label="Còn 38 phút" style="display: flex; align-items: center; gap: 8px; font-size: 15px">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B6670" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2 2"></path><path d="M9 2h6"></path></svg>
+      <span style="font-family: 'Lexend', sans-serif; font-weight: 400; font-size: 18px; font-variant-numeric: tabular-nums">38</span><span style="color: #5B6670">phút còn lại</span>
+      <button type="button" style="height: 32px; padding: 0 10px; border-radius: 8px; border: 0; background: transparent; color: #1F5E4B; font: inherit; font-size: 13px; cursor: pointer">Ẩn</button>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px">
+      <div role="group" aria-label="Cỡ chữ" style="display: flex; align-items: center; padding: 3px; border-radius: 10px; background: #F4F6F8">
+        <button type="button" aria-pressed="false" aria-label="Cỡ chữ nhỏ" style="width: 40px; height: 34px; border: 0; border-radius: 8px; background: transparent; font: inherit; font-size: 13px; color: #13201C; cursor: pointer">A</button>
+        <button type="button" aria-pressed="true" aria-label="Cỡ chữ vừa" style="width: 40px; height: 34px; border: 0; border-radius: 8px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(19,32,28,0.1); font: inherit; font-size: 16px; font-weight: 600; color: #13201C; cursor: pointer">A</button>
+        <button type="button" aria-pressed="false" aria-label="Cỡ chữ lớn" style="width: 40px; height: 34px; border: 0; border-radius: 8px; background: transparent; font: inherit; font-size: 19px; color: #13201C; cursor: pointer">A</button>
+      </div>
+      <button type="button" aria-label="Trợ giúp" style="width: 40px; height: 40px; border-radius: 10px; border: 1px solid #E3E7EB; background: #FFFFFF; color: #13201C; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"></path><path d="M12 17h.01"></path></svg></button>
+      <button type="button" style="height: 40px; padding: 0 16px; border-radius: 10px; border: 0; background: #1F5E4B; color: #FFFFFF; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer">Nộp bài</button>
+    </div>
+  </header>
+
+  <div style="flex-shrink: 0; padding: 12px 24px; background: #F4F6F8; border-bottom: 1px solid #E3E7EB; font-size: 14px"><b style="font-weight: 600">Part 1</b> <span style="color: #3B464F">— Read the text and answer questions 1–13.</span></div>
+
+  <!-- Split -->
+  <div style="flex: 1 1 auto; min-height: 0; display: flex; flex-wrap: wrap">
+    <!-- Passage -->
+    <article aria-label="Reading Passage 1" style="flex: 1 1 520px; min-width: 0; height: 100%; overflow-y: auto; box-sizing: border-box; padding: 32px 48px 48px; font-family: 'Newsreader', serif; font-size: 18px; line-height: 1.7; color: #13201C; position: relative">
+      <div style="max-width: 640px; display: flex; flex-direction: column; gap: 18px">
+        <h1 style="margin: 0 0 4px; font-family: 'Newsreader', serif; font-size: 28px; font-weight: 600; line-height: 1.25">The Return of the Urban Orchard</h1>
+        <p style="margin: 0; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px"><b style="font-family: 'Be Vietnam Pro', sans-serif; font-size: 15px; font-weight: 600; padding-top: 3px">A</b><span>In the decades after the Second World War, fruit trees quietly disappeared from many European and North American cities. Orchards that had once supplied neighbourhood markets were cleared for housing, and the few remaining trees in parks were often removed because <span style="position: relative; background: #FFE58A; box-shadow: 0 0 0 2px #FFE58A; border-radius: 2px">fallen fruit was regarded as a nuisance<span role="toolbar" aria-label="Công cụ đánh dấu" style="position: absolute; left: 0; bottom: calc(100% + 10px); display: flex; gap: 2px; padding: 4px; border-radius: 10px; background: #13201C; box-shadow: 0 8px 24px -8px rgba(19,32,28,0.4); font-family: 'Be Vietnam Pro', sans-serif; white-space: nowrap; z-index: 2"><button type="button" style="height: 36px; padding: 0 12px; border: 0; border-radius: 7px; background: rgba(255,255,255,0.12); color: #FFFFFF; font: inherit; font-size: 13px; display: flex; align-items: center; gap: 6px; cursor: pointer"><span style="width: 10px; height: 10px; border-radius: 2px; background: #FFE58A"></span>Tô sáng</button><button type="button" style="height: 36px; padding: 0 12px; border: 0; border-radius: 7px; background: transparent; color: #FFFFFF; font: inherit; font-size: 13px; cursor: pointer">Xóa</button><button type="button" style="height: 36px; padding: 0 12px; border: 0; border-radius: 7px; background: transparent; color: #FFFFFF; font: inherit; font-size: 13px; cursor: pointer">Thêm ghi chú</button></span></span> rather than a resource.</span></p>
+        <p style="margin: 0; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px"><b style="font-family: 'Be Vietnam Pro', sans-serif; font-size: 15px; font-weight: 600; padding-top: 3px">B</b><span>Since the early 2000s, however, a number of community groups have begun to replant. In some cities, volunteers map every publicly accessible fruit tree and publish the locations online, inviting residents to harvest what would otherwise rot. Organisers argue that these maps do more than reduce waste: they encourage people to walk through parts of the city they would not normally visit.</span></p>
+        <p style="margin: 0; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px"><b style="font-family: 'Be Vietnam Pro', sans-serif; font-size: 15px; font-weight: 600; padding-top: 3px">C</b><span>Municipal authorities have responded with caution. Maintenance is the most frequently cited concern. Unlike ornamental trees, fruit trees require regular pruning, and a poorly maintained tree can drop heavy branches onto paths. Several councils now require community groups to sign agreements committing volunteers to <span style="background: #FFE58A; box-shadow: 0 0 0 2px #FFE58A; border-radius: 2px; border-bottom: 2px dotted #A8551F">annual care</span><sup style="font-family: 'Be Vietnam Pro', sans-serif; font-size: 11px; color: #A8551F; margin-left: 2px">ghi chú</sup> before any planting is approved.</span></p>
+        <p style="margin: 0; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px"><b style="font-family: 'Be Vietnam Pro', sans-serif; font-size: 15px; font-weight: 600; padding-top: 3px">D</b><span>There are also questions about safety. Early critics suggested that fruit grown beside busy roads might absorb dangerous levels of pollution. A three-year study in one northern city found that, once washed, most fruit contained lead concentrations well below legal limits, although the researchers recommended that trees not be planted within ten metres of major roads.</span></p>
+        <p style="margin: 0; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px"><b style="font-family: 'Be Vietnam Pro', sans-serif; font-size: 15px; font-weight: 600; padding-top: 3px">E</b><span>Supporters point to benefits that are harder to measure. Teachers report that pupils who help to harvest school orchards become more willing to try unfamiliar fruit, and some hospitals have planted small orchards in the belief that green spaces aid recovery.</span></p>
+        <p style="margin: 0; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px"><b style="font-family: 'Be Vietnam Pro', sans-serif; font-size: 15px; font-weight: 600; padding-top: 3px">F</b><span>Whether urban orchards can make a meaningful contribution to food supply remains doubtful. Even the most ambitious projects produce only a fraction of what a city consumes. Their real value, many organisers concede, may lie in reconnecting residents with the seasons.</span></p>
+      </div>
+    </article>
+
+    <!-- Divider -->
+    <div style="width: 1px; background: #E3E7EB; position: relative; flex-shrink: 0">
+      <button type="button" aria-label="Kéo để đổi độ rộng hai cột" style="position: absolute; top: 50%; left: -8px; width: 17px; height: 44px; margin-top: -22px; border-radius: 6px; border: 1px solid #C9D1D8; background: #FFFFFF; cursor: col-resize; display: flex; align-items: center; justify-content: center; padding: 0"><svg aria-hidden="true" width="8" height="16" viewBox="0 0 8 16" fill="#5B6670"><circle cx="2" cy="4" r="1"></circle><circle cx="6" cy="4" r="1"></circle><circle cx="2" cy="8" r="1"></circle><circle cx="6" cy="8" r="1"></circle><circle cx="2" cy="12" r="1"></circle><circle cx="6" cy="12" r="1"></circle></svg></button>
+    </div>
+
+    <!-- Questions -->
+    <section aria-label="Câu hỏi 1–13" style="flex: 1 1 520px; min-width: 0; height: 100%; overflow-y: auto; box-sizing: border-box; padding: 32px 40px 48px; background: #FFFFFF">
+      <div style="max-width: 620px; display: flex; flex-direction: column; gap: 36px">
+
+        <!-- TFNG -->
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <h2 style="margin: 0; font-size: 16px; font-weight: 600">Questions 1–5</h2>
+            <p style="margin: 0; font-family: 'Newsreader', serif; font-size: 17px; line-height: 1.55">Do the following statements agree with the information given in Reading Passage 1? Choose <b>TRUE</b>, <b>FALSE</b> or <b>NOT GIVEN</b>.</p>
+          </div>
+          <sc-for list="{{tfng}}" as="q" hint-placeholder-count="5">
+            <fieldset style="margin: 0; padding: 14px 16px; border: 1px solid {{q.border}}; border-radius: 10px; display: flex; flex-direction: column; gap: 10px; background: {{q.bg}}">
+              <legend style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Question {{q.n}}</legend>
+              <div style="display: flex; gap: 12px; align-items: flex-start">
+                <span style="flex-shrink: 0; min-width: 28px; height: 28px; border-radius: 6px; background: #F4F6F8; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center">{{q.n}}</span>
+                <span style="flex: 1; font-family: 'Newsreader', serif; font-size: 17px; line-height: 1.5">{{q.text}}</span>
+                <sc-if value="{{q.flagged}}" hint-placeholder-val="{{false}}"><span style="flex-shrink: 0; font-size: 12px; font-weight: 600; color: #A8551F; display: flex; align-items: center; gap: 4px"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"><path d="M4 22V4h13l-2 4 2 4H4"></path></svg>Đã đánh dấu</span></sc-if>
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px; padding-left: 40px">
+                <sc-for list="{{q.opts}}" as="o" hint-placeholder-count="3">
+                  <label style="display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid {{o.border}}; background: {{o.bg}}; color: {{o.fg}}; font-size: 13px; font-weight: {{o.weight}}; cursor: pointer"><input type="radio" name="{{q.name}}" checked="{{o.checked}}" style="margin: 0; accent-color: #1F5E4B; width: 16px; height: 16px"> {{o.label}}</label>
+                </sc-for>
+              </div>
+            </fieldset>
+          </sc-for>
+        </div>
+
+        <!-- Matching headings -->
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <h2 style="margin: 0; font-size: 16px; font-weight: 600">Questions 6–10</h2>
+            <p style="margin: 0; font-family: 'Newsreader', serif; font-size: 17px; line-height: 1.55">Reading Passage 1 has six paragraphs, <b>A–F</b>. Choose the correct heading for paragraphs <b>B–F</b> from the list of headings below.</p>
+          </div>
+          <div style="padding: 16px 20px; border-radius: 10px; background: #F4F6F8; font-family: 'Newsreader', serif; font-size: 16px; line-height: 1.6">
+            <div style="font-family: 'Be Vietnam Pro', sans-serif; font-size: 13px; font-weight: 600; margin-bottom: 6px">List of Headings</div>
+            <sc-for list="{{headings}}" as="h" hint-placeholder-count="8"><div style="display: grid; grid-template-columns: 36px minmax(0, 1fr); color: {{h.fg}}"><span style="font-style: italic">{{h.num}}</span><span style="text-decoration: {{h.deco}}">{{h.text}}</span></div></sc-for>
+          </div>
+          <sc-for list="{{mh}}" as="m" hint-placeholder-count="5">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px 8px 16px; border-radius: 10px; border: {{m.border}}; background: {{m.bg}}">
+              <span style="flex-shrink: 0; min-width: 28px; height: 28px; border-radius: 6px; background: {{m.numBg}}; color: {{m.numFg}}; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center">{{m.n}}</span>
+              <label for="{{m.id}}" style="flex: 1; font-family: 'Newsreader', serif; font-size: 17px">Paragraph {{m.p}}</label>
+              <sc-if value="{{m.flagged}}" hint-placeholder-val="{{false}}"><svg role="img" aria-label="Đã đánh dấu" width="14" height="14" viewBox="0 0 24 24" fill="#A8551F" stroke="#A8551F" stroke-width="1.75" stroke-linejoin="round"><path d="M4 22V4h13l-2 4 2 4H4"></path></svg></sc-if>
+              <select id="{{m.id}}" style="width: 200px; height: 40px; padding: 0 12px; border-radius: 8px; border: 1px solid {{m.selBorder}}; background: #FFFFFF; font: inherit; font-size: 14px; color: #13201C"><option>{{m.value}}</option></select>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- Sentence completion -->
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <h2 style="margin: 0; font-size: 16px; font-weight: 600">Questions 11–13</h2>
+            <p style="margin: 0; font-family: 'Newsreader', serif; font-size: 17px; line-height: 1.55">Complete the sentences below. Choose <b>NO MORE THAN TWO WORDS</b> from the passage for each answer.</p>
+          </div>
+          <p style="margin: 0; font-family: 'Newsreader', serif; font-size: 17px; line-height: 2.1"><b style="font-family: 'Be Vietnam Pro', sans-serif; font-size: 13px">11</b>&#160; Before approving new trees, some councils ask volunteers to commit to <input aria-label="Question 11" value="annual care" style="width: 160px; height: 34px; box-sizing: border-box; padding: 0 10px; border-radius: 6px; border: 1px solid #8B959D; font-family: 'Be Vietnam Pro', sans-serif; font-size: 15px; color: #13201C; background: #FFFFFF; vertical-align: middle">.</p>
+          <p style="margin: 0; font-family: 'Newsreader', serif; font-size: 17px; line-height: 2.1"><b style="font-family: 'Be Vietnam Pro', sans-serif; font-size: 13px">12</b>&#160; Researchers advised against planting within ten metres of <input aria-label="Question 12" placeholder="12" style="width: 160px; height: 34px; box-sizing: border-box; padding: 0 10px; border-radius: 6px; border: 1px solid #8B959D; font-family: 'Be Vietnam Pro', sans-serif; font-size: 15px; color: #13201C; background: #FFFFFF; vertical-align: middle">.</p>
+          <p style="margin: 0; font-family: 'Newsreader', serif; font-size: 17px; line-height: 2.1"><b style="font-family: 'Be Vietnam Pro', sans-serif; font-size: 13px">13</b>&#160; Some organisers believe orchards reconnect people with the <input aria-label="Question 13" placeholder="13" style="width: 160px; height: 34px; box-sizing: border-box; padding: 0 10px; border-radius: 6px; border: 1px solid #8B959D; font-family: 'Be Vietnam Pro', sans-serif; font-size: 15px; color: #13201C; background: #FFFFFF; vertical-align: middle">.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Bottom nav -->
+  <nav aria-label="Điều hướng câu hỏi" style="flex-shrink: 0; border-top: 1px solid #E3E7EB; background: #FFFFFF; padding: 10px 24px; display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center">
+    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+      <span style="font-size: 13px; font-weight: 600; margin-right: 4px">Part 1</span>
+      <sc-for list="{{nav}}" as="b" hint-placeholder-count="13">
+        <button type="button" aria-label="{{b.aria}}" aria-current="{{b.current}}" style="position: relative; width: 40px; height: 40px; border-radius: 8px; border: {{b.border}}; background: {{b.bg}}; color: {{b.fg}}; font: inherit; font-size: 14px; font-weight: {{b.weight}}; cursor: pointer; padding: 0; box-shadow: {{b.underline}}">{{b.n}}<sc-if value="{{b.flagged}}" hint-placeholder-val="{{false}}"><span aria-hidden="true" style="position: absolute; top: -1px; right: -1px; width: 0; height: 0; border-top: 12px solid #A8551F; border-left: 12px solid transparent; border-top-right-radius: 8px"></span></sc-if></button>
+      </sc-for>
+    </div>
+    <button type="button" style="height: 40px; padding: 0 14px; border-radius: 8px; border: 1px solid #E3E7EB; background: #F4F6F8; color: #13201C; font: inherit; font-size: 13px; cursor: pointer">Part 2 · 0/13</button>
+    <button type="button" style="height: 40px; padding: 0 14px; border-radius: 8px; border: 1px solid #E3E7EB; background: #F4F6F8; color: #13201C; font: inherit; font-size: 13px; cursor: pointer">Part 3 · 0/14</button>
+    <div style="margin-left: auto; display: flex; align-items: center; gap: 8px">
+      <button type="button" aria-pressed="false" style="height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #C9D1D8; background: #FFFFFF; color: #13201C; font: inherit; font-size: 14px; display: flex; align-items: center; gap: 8px; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"><path d="M4 22V4h13l-2 4 2 4H4"></path></svg>Đánh dấu câu 6</button>
+      <button type="button" aria-label="Câu trước" style="width: 44px; height: 44px; border-radius: 10px; border: 1px solid #C9D1D8; background: #FFFFFF; color: #13201C; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button>
+      <button type="button" aria-label="Câu tiếp theo" style="width: 44px; height: 44px; border-radius: 10px; border: 0; background: #1F5E4B; color: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+    </div>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const labels = ['TRUE', 'FALSE', 'NOT GIVEN'];
+    const tfngData = [
+      [1, 'Fruit trees in parks were removed partly because fallen fruit was considered a problem.', 'TRUE', false],
+      [2, 'Most cities now publish online maps of their fruit trees.', 'NOT GIVEN', false],
+      [3, 'Fruit trees need more maintenance than ornamental trees.', 'TRUE', false],
+      [4, 'The study found that unwashed fruit was unsafe to eat.', null, true],
+      [5, 'Teachers say that harvesting fruit changes how children feel about food.', 'TRUE', false]
+    ];
+    const tfng = tfngData.map(([n, text, ans, flagged]) => ({
+      n, text, flagged, name: 'q' + n,
+      border: flagged ? '#E7C9AF' : '#E3E7EB', bg: '#FFFFFF',
+      opts: labels.map(l => { const on = ans === l; return { label: l, checked: on,
+        border: on ? '#1F5E4B' : '#C9D1D8', bg: on ? '#E3EFEA' : '#FFFFFF', fg: on ? '#1F5E4B' : '#13201C', weight: on ? 600 : 400 }; })
+    }));
+    const headings = [
+      ['i', 'A resource rediscovered by volunteers'], ['ii', 'The limits of urban food production'],
+      ['iii', 'Official concerns about upkeep'], ['iv', 'A history of commercial orchards'],
+      ['v', 'Unexpected benefits for health and learning'], ['vi', 'Testing a suspected risk'],
+      ['vii', 'Why cities lost their fruit trees'], ['viii', 'Funding for new planting schemes']
+    ].map(([num, text]) => ({ num, text, used: num === 'iii' }))
+     .map(h => ({ ...h, fg: h.used ? '#5B6670' : '#13201C', deco: h.used ? 'line-through' : 'none' }));
+    const mhData = [[6, 'B', '', true, false], [7, 'C', 'iii', false, false], [8, 'D', '', false, false], [9, 'E', '', false, true], [10, 'F', '', false, false]];
+    const mh = mhData.map(([n, p, v, current, flagged]) => ({
+      n, p, flagged, id: 'mh' + n, value: v || 'Chọn heading…',
+      border: current ? '2px solid #13201C' : '1px solid #E3E7EB', bg: '#FFFFFF',
+      numBg: current ? '#13201C' : '#F4F6F8', numFg: current ? '#FFFFFF' : '#13201C',
+      selBorder: v ? '#1F5E4B' : '#8B959D'
+    }));
+    const answered = [1, 2, 3, 5, 7, 11];
+    const flaggedSet = [4, 9];
+    const nav = [];
+    for (let n = 1; n <= 13; n++) {
+      const cur = n === 6, ans = answered.includes(n), fl = flaggedSet.includes(n);
+      nav.push({ n, flagged: fl, current: cur ? 'true' : 'false',
+        aria: 'Câu ' + n + (ans ? ', đã trả lời' : ', chưa trả lời') + (fl ? ', đã đánh dấu' : '') + (cur ? ', đang xem' : ''),
+        bg: cur ? '#13201C' : ans ? '#E3EFEA' : '#FFFFFF',
+        fg: cur ? '#FFFFFF' : ans ? '#1F5E4B' : '#13201C',
+        border: cur ? '2px solid #13201C' : ans ? '1px solid #E3EFEA' : '1px solid #8B959D',
+        weight: cur || ans ? 600 : 400,
+        underline: ans && !cur ? 'inset 0 -3px 0 #1F5E4B' : 'none' });
+    }
+    return { tfng, headings, mh, nav };
+  }
+}
+</script>
+</body>
+</html>
