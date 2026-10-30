@@ -1,4 +1,4 @@
-// pnpm restore [<backup-folder-name>] [--yes]
+// yarn run restore [<backup-folder-name>] [--yes]
 // Restores the database (pg_restore --clean --if-exists) and data/storage from data/backups/<name>.
 // Without a name, the most recent backup is used. Asks for confirmation unless --yes is given.
 import { spawn } from 'node:child_process';

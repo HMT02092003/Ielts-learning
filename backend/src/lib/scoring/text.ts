@@ -1,9 +1,19 @@
 // Single source of truth for answer text rules, used by import validation now and by scoring in Phase 4.
 // Phase 4 refines hyphen/punctuation handling; keep every rule here.
 
-/** Applied to BOTH the student answer and every accepted answer at scoring time (spec §6 P4). */
+/**
+ * Applied to BOTH the student answer and every accepted answer at scoring time (spec §6 P4): trim, case-insensitive,
+ * collapse spaces, curly quotes → straight, and ignore surrounding punctuation ("museum." == "museum").
+ */
 export function normalizeForCompare(s: string): string {
-  return s.normalize('NFC').toLowerCase().replace(/\s+/g, ' ').trim();
+  return s
+    .normalize('NFC')
+    .toLowerCase()
+    .replace(/[‘’]/g, "'")
+    .replace(/[“”]/g, '"')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/^[\s"'.,;:!?()]+|[\s"'.,;:!?()]+$/g, '');
 }
 
 const NUMBER_RE = /^\d+(?:[.,:/]\d+)*%?$/;

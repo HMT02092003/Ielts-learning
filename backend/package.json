@@ -4,7 +4,7 @@
   "private": true,
   "description": "IELTS internal practice system — API (Express 5 + Prisma 7)",
   "type": "module",
-  "packageManager": "pnpm@10.34.9",
+  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": ">=20.19.0"
   },
@@ -28,27 +28,28 @@
     "backup": "node scripts/backup.mjs",
     "restore": "node scripts/restore.mjs"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@prisma/engines",
-      "argon2",
-      "esbuild",
-      "prisma"
-    ]
-  },
   "dependencies": {
+    "@napi-rs/canvas": "1.0.13",
     "@prisma/adapter-pg": "7.10.1",
     "@prisma/client": "7.10.1",
+    "@tesseract.js-data/eng": "1.0.0",
     "argon2": "0.44.0",
+    "compromise": "14.19.0",
     "cookie-parser": "1.4.7",
     "cors": "2.8.6",
     "dotenv": "17.4.2",
     "express": "5.3.0",
     "express-rate-limit": "8.7.1",
+    "file-type": "21.3.4",
     "helmet": "8.3.0",
     "jsonwebtoken": "9.0.3",
+    "multer": "2.5.0",
+    "music-metadata": "11.16.1",
+    "pdfjs-dist": "4.10.38",
     "pino": "10.4.0",
     "pino-http": "11.0.0",
+    "sharp": "0.35.5",
+    "tesseract.js": "7.0.0",
     "zod": "4.6.7"
   },
   "devDependencies": {
@@ -57,6 +58,7 @@
     "@types/cors": "2.8.19",
     "@types/express": "5.0.6",
     "@types/jsonwebtoken": "9.0.10",
+    "@types/multer": "2.3.0",
     "@types/node": "20.19.43",
     "@types/supertest": "7.2.1",
     "eslint": "9.39.5",

@@ -48,6 +48,7 @@
   --border-control: #c9d1d8;
   --border-strong: #8b959d;
   --divider: #eef1f3;
+  --overlay: rgb(19 32 28 / 0.4); /* dialog backdrop */
   --track-on-background: #dde3e7;
   --focus-ring: #1f5e4b;
   /* exam */
@@ -100,6 +101,7 @@
   --border-control: #3a4741;
   --border-strong: #6e7c75;
   --divider: #1b2420;
+  --overlay: rgb(0 0 0 / 0.6);
   --track-on-background: #26312c;
   --focus-ring: #7acfae;
   --highlight: #5c4a12;

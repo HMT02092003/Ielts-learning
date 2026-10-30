@@ -1,4 +1,4 @@
-// pnpm backup → data/backups/<timestamp>/{db.dump, storage/, manifest.json}
+// yarn run backup → data/backups/<timestamp>/{db.dump, storage/, manifest.json}
 // Uses `docker compose exec postgres pg_dump` and streams the dump in Node (no shell redirect, so the
 // binary dump is never re-encoded by PowerShell).
 import { spawn } from 'node:child_process';

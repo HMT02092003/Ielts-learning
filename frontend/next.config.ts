@@ -1,13 +1,17 @@
 import type { NextConfig } from 'next';
 
 // Rewrites are evaluated at build time: API_ORIGIN is frozen into the build output (rebuild after changing it).
-const apiOrigin = process.env.API_ORIGIN ?? 'http://127.0.0.1:4000';
+const apiOrigin = process.env.API_ORIGIN ?? 'http://127.0.0.1:40000';
 if (!/^https?:\/\/[^/]+$/.test(apiOrigin)) {
-  throw new Error(`API_ORIGIN không hợp lệ: "${apiOrigin}" (ví dụ: http://127.0.0.1:4000)`);
+  throw new Error(`API_ORIGIN không hợp lệ: "${apiOrigin}" (ví dụ: http://127.0.0.1:40000)`);
 }
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // E2E builds into its own folder so a running `next dev` (.next/dev) is never touched.
+  distDir: process.env.NEXT_DIST_DIR ?? '.next',
+  // Self-contained server bundle for the Docker image (frontend/Dockerfile). No effect on `next dev`.
+  output: 'standalone',
   // The dev-mode "N" badge sits on top of the exam question navigator (bottom-left).
   devIndicators: false,
   // Same-origin API: the browser calls /api/v1/* on the web origin, so httpOnly cookies just work (no CORS).

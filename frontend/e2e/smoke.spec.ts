@@ -64,12 +64,19 @@ test('timer turns critical under one minute', async ({ page }) => {
 
 test('student cannot open /admin; admin can', async ({ page, context }) => {
   await login(page, STUDENT);
-  await page.goto('/admin');
-  await expect(page.getByRole('heading', { name: 'Không tìm thấy trang' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Quản trị' })).toHaveCount(0);
+  // Blocked on the server (HTTP 404), not only hidden in the browser.
+  for (const path of ['/admin', '/admin/tests/import', '/admin/grading', '/dev/styleguide']) {
+    const res = await page.goto(path);
+    expect(res?.status(), path).toBe(404);
+    await expect(page.getByRole('heading', { name: 'Không tìm thấy trang' })).toBeVisible();
+  }
+  const api = await page.request.get('/api/v1/admin/tests');
+  expect(api.status()).toBe(404);
 
   await context.clearCookies();
   await login(page, ADMIN);
-  await page.goto('/admin');
+  await page.getByRole('link', { name: 'Quản trị' }).click();
   await expect(page.getByRole('heading', { name: 'Quản trị' })).toBeVisible();
   await expect(page.getByText('Đã xuất bản')).toBeVisible();
 });

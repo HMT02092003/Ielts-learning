@@ -41,6 +41,7 @@ export function refreshSession(): Promise<boolean> {
 
 interface RequestOptions<S extends z.ZodType> {
   method?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+  /** JSON body, or FormData for multipart uploads (the browser sets the boundary header). */
   body?: unknown;
   /** Response schema — the response is parsed (fail-closed) when given. */
   schema?: S;
@@ -64,8 +65,16 @@ export async function api<S extends z.ZodType = z.ZodUnknown>(
   const doFetch = () =>
     fetch(`/api/v1${path}`, {
       method: opts.method ?? 'GET',
-      headers: opts.body === undefined ? {} : { 'Content-Type': 'application/json' },
-      body: opts.body === undefined ? undefined : JSON.stringify(opts.body),
+      headers:
+        opts.body === undefined || opts.body instanceof FormData
+          ? {}
+          : { 'Content-Type': 'application/json' },
+      body:
+        opts.body === undefined
+          ? undefined
+          : opts.body instanceof FormData
+            ? opts.body
+            : JSON.stringify(opts.body),
       credentials: 'same-origin',
       signal: opts.signal,
     });

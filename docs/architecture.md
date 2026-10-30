@@ -3,7 +3,7 @@
 ## Tổng thể
 
 ```
-Trình duyệt ──► frontend (Next.js :3000) ──rewrite /api/v1/*──► backend (Express :4000) ──► Postgres (:5434)
+Trình duyệt ──► frontend (Next.js :30000 dev / :31000 build) ──rewrite /api/v1/*──► backend (Express :40000) ──► Postgres (:5434)
                     │ proxy.ts: chỉ kiểm có cookie phiên                    ├─► LanguageTool (:8010, từ P5)
                     │ trang Study/Exam shell                                └─► Storage (data/storage)
 ```
@@ -53,7 +53,7 @@ src/app/(study)/(app)/…               Study shell: dashboard, admin (guard UX)
 src/app/(exam)/…                      Exam shell (.exam-mode: luôn sáng, không animation): preview
 src/components/{ui,layout,common,exam}
 src/lib/api-client.ts                 fetch có kiểu, refresh single-flight, ApiError
-src/shared/                           BẢN SINH từ backend/src/shared (pnpm sync-shared) — không sửa tay
+src/shared/                           BẢN SINH từ backend/src/shared (yarn run sync-shared) — không sửa tay
 src/styles/tokens.css                 nguồn token duy nhất (xem design-tokens.md)
 ```
 

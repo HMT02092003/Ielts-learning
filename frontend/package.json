@@ -4,14 +4,14 @@
   "private": true,
   "description": "IELTS internal practice system — web app (Next.js 16)",
   "type": "module",
-  "packageManager": "pnpm@10.34.9",
+  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": ">=20.19.0"
   },
   "scripts": {
-    "dev": "next dev --port 3000",
+    "dev": "next dev --port 30000",
     "build": "next build",
-    "start": "next start --port 3000",
+    "start": "next start --port 31000",
     "sync-shared": "node scripts/sync-shared.mjs",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -21,25 +21,26 @@
     "test:e2e": "playwright test",
     "check": "node scripts/sync-shared.mjs --check && node scripts/check-tokens.mjs && prettier --check . && eslint . && next typegen && tsc --noEmit && vitest run"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@tailwindcss/oxide",
-      "sharp",
-      "unrs-resolver"
-    ]
-  },
   "dependencies": {
+    "@dnd-kit/helpers": "0.5.1",
+    "@dnd-kit/react": "0.5.1",
     "@tanstack/react-query": "5.105.0",
+    "@tanstack/react-table": "9.3.1",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "lucide-react": "1.64.0",
+    "motion": "14.8.0",
     "next": "16.4.3",
     "radix-ui": "1.8.1",
     "react": "19.3.1",
     "react-dom": "19.3.1",
+    "react-is": "19.3.1",
+    "react-resizable-panels": "4.15.2",
+    "recharts": "3.10.1",
     "sonner": "2.0.8",
     "tailwind-merge": "3.7.0",
-    "zod": "4.6.7"
+    "zod": "4.6.7",
+    "zustand": "5.0.16"
   },
   "devDependencies": {
     "@playwright/test": "1.64.1",

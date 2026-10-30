@@ -21,9 +21,9 @@ import { ThemeMenu } from './theme-menu';
 
 const NAV = [
   { href: '/dashboard', label: vi.nav.dashboard },
-  { href: '/practice', label: vi.nav.practice, disabled: true },
-  { href: '/vocabulary', label: vi.nav.vocabulary, disabled: true },
-  { href: '/history', label: vi.nav.history, disabled: true },
+  { href: '/practice', label: vi.nav.practice },
+  { href: '/vocabulary', label: vi.nav.vocabulary },
+  { href: '/history', label: vi.nav.history },
 ] as const;
 
 function initials(name: string) {
@@ -51,33 +51,35 @@ export function StudyShell({ children }: { children: ReactNode }) {
           aria-label="Điều hướng chính"
           className="order-3 flex w-full gap-1 overflow-x-auto md:order-none md:w-auto"
         >
-          {NAV.map((item) => {
-            const active = pathname.startsWith(item.href);
-            if ('disabled' in item && item.disabled) {
+          {[...NAV, ...(user?.role === 'ADMIN' ? [{ href: '/admin', label: vi.nav.admin }] : [])].map(
+            (item) => {
+              const active = pathname.startsWith(item.href);
+              if ('disabled' in item && item.disabled) {
+                return (
+                  <span
+                    key={item.href}
+                    aria-disabled
+                    className="flex h-9 items-center rounded-md px-3 text-body text-ink-subtle"
+                  >
+                    {item.label}
+                  </span>
+                );
+              }
               return (
-                <span
+                <Link
                   key={item.href}
-                  aria-disabled
-                  className="flex h-9 items-center rounded-md px-3 text-body text-ink-subtle"
+                  href={item.href}
+                  aria-current={active ? 'page' : undefined}
+                  className={cn(
+                    'flex h-9 items-center rounded-md px-3 text-body outline-none transition-colors duration-[120ms] focus-visible:shadow-focus',
+                    active ? 'bg-surface font-medium text-ink shadow-xs' : 'text-ink-muted hover:text-ink',
+                  )}
                 >
                   {item.label}
-                </span>
+                </Link>
               );
-            }
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-current={active ? 'page' : undefined}
-                className={cn(
-                  'flex h-9 items-center rounded-md px-3 text-body outline-none transition-colors duration-[120ms] focus-visible:shadow-focus',
-                  active ? 'bg-surface font-medium text-ink shadow-xs' : 'text-ink-muted hover:text-ink',
-                )}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
+            },
+          )}
         </nav>
         <div className="ml-auto flex items-center gap-2">
           <ThemeMenu />
@@ -103,8 +105,10 @@ export function StudyShell({ children }: { children: ReactNode }) {
                     </Link>
                   </DropdownMenuItem>
                 )}
-                <DropdownMenuItem disabled>
-                  <Settings aria-hidden /> {vi.user.settings}
+                <DropdownMenuItem asChild>
+                  <Link href="/settings">
+                    <Settings aria-hidden /> {vi.user.settings}
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onSelect={() => void logout()}>

@@ -1,5 +1,5 @@
 import type { RequestHandler } from 'express';
-import { env } from '../config/env';
+import { allowedWebOrigins } from '../config/env';
 import { AppError } from '../lib/errors';
 
 const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
@@ -17,7 +17,7 @@ export const originGuard: RequestHandler = (req, _res, next) => {
   const site = req.get('sec-fetch-site');
   const origin = req.get('origin');
   const crossSite = site !== undefined && site !== 'same-origin' && site !== 'same-site' && site !== 'none';
-  const foreignOrigin = origin !== undefined && origin !== env.WEB_ORIGIN;
+  const foreignOrigin = origin !== undefined && !allowedWebOrigins.includes(origin);
   if (crossSite || foreignOrigin) {
     next(new AppError('FORBIDDEN', 'Yêu cầu bị chặn (nguồn không hợp lệ)'));
     return;

@@ -3,9 +3,9 @@
 Chạy trong `backend/` (Docker Compose phải đang chạy):
 
 ```powershell
-corepack pnpm backup                    # → data/backups/<thời-điểm>/
-corepack pnpm restore                   # khôi phục bản mới nhất (hỏi xác nhận)
-corepack pnpm restore 2026-10-29T09-58-40-064Z --yes   # bản cụ thể, không hỏi
+yarn run backup                    # → data/backups/<thời-điểm>/
+yarn run restore                   # khôi phục bản mới nhất (hỏi xác nhận)
+yarn run restore 2026-10-29T09-58-40-064Z --yes   # bản cụ thể, không hỏi
 ```
 
 Mỗi bản sao lưu gồm:

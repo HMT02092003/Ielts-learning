@@ -1,12 +1,15 @@
-// `pnpm db:seed` (prisma db seed). Idempotent: safe to run again at any time.
+// `yarn run db:seed` (prisma db seed). Idempotent: safe to run again at any time.
 import { AppError } from '../../src/lib/errors';
 import { prisma } from '../../src/config/prisma';
+import { bandTablesService } from '../../src/modules/band-tables/band-tables.service';
 import { seedDummyTests } from './content';
 import { seedUsers } from './users';
 
 async function main() {
   console.log('Seed: tài khoản');
   const { adminId } = await seedUsers(prisma);
+  console.log('Seed: bảng quy đổi band (tham khảo)');
+  await bandTablesService.ensureDefaults(adminId);
   console.log('Seed: đề mẫu (dummy)');
   await seedDummyTests(prisma, adminId);
   console.log('Seed xong.');

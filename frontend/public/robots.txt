@@ -1,0 +1,3 @@
+# Internal app — not for search engines.
+User-agent: *
+Disallow: /

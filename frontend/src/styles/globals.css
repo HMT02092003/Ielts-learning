@@ -94,6 +94,8 @@
   --color-border-control: var(--border-control);
   --color-border-strong: var(--border-strong);
   --color-divider: var(--divider);
+  --color-overlay: var(--overlay);
+  --color-danger-border: var(--danger-border);
   --color-track: var(--track-on-background);
   --color-focus: var(--focus-ring);
   --color-highlight: var(--highlight);
@@ -120,6 +122,7 @@
   --font-sans: var(--ff-ui);
   --font-display: var(--ff-display);
   --font-reading: var(--ff-reading);
+  --font-mono: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace;
 
   --shadow-xs: var(--elev-xs);
   --shadow-sm: var(--elev-sm);
@@ -179,4 +182,16 @@
 .exam-mode *::after {
   transition: none !important;
   animation: none !important;
+}
+
+/* Passage highlights (CSS Custom Highlight API, components/exam/passage.tsx). */
+::highlight(exam-hl) {
+  background-color: var(--highlight);
+  color: var(--highlight-ink);
+}
+::highlight(exam-note) {
+  background-color: var(--highlight);
+  color: var(--highlight-ink);
+  text-decoration: underline dotted var(--warning);
+  text-underline-offset: 3px;
 }

@@ -7,6 +7,7 @@ export default defineConfig([
   ...nextTs,
   globalIgnores([
     '.next/**',
+    '.next-e2e/**',
     'out/**',
     'next-env.d.ts',
     'src/shared/**',
@@ -17,7 +18,7 @@ export default defineConfig([
     rules: {
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/consistent-type-imports': 'error',
-      // Hard-coded colours are blocked by scripts/check-tokens.mjs (part of `pnpm check`).
+      // Hard-coded colours are blocked by scripts/check-tokens.mjs (part of `yarn run check`).
     },
   },
 ]);

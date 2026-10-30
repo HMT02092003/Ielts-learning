@@ -1,6 +1,6 @@
 // Copies the shared Zod contracts from backend/src/shared (single source of truth) into frontend/src/shared.
 //   node scripts/sync-shared.mjs          → copy
-//   node scripts/sync-shared.mjs --check  → exit 1 if the copy is out of date (used by `pnpm check` / CI)
+//   node scripts/sync-shared.mjs --check  → exit 1 if the copy is out of date (used by `yarn run check` / CI)
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -26,7 +26,9 @@ if (check) {
     ...actual.filter((f) => !expected.has(f)),
   ];
   if (stale.length > 0) {
-    console.error(`src/shared lệch so với backend/src/shared: ${stale.join(', ')}\nChạy: pnpm sync-shared`);
+    console.error(
+      `src/shared lệch so với backend/src/shared: ${stale.join(', ')}\nChạy: yarn run sync-shared`,
+    );
     process.exit(1);
   }
   console.log('src/shared khớp backend/src/shared.');

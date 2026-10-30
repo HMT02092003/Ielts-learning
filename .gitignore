@@ -10,6 +10,7 @@ node_modules/
 # build / generated
 dist/
 .next/
+.next-e2e/
 out/
 coverage/
 *.tsbuildinfo

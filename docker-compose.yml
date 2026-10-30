@@ -1,4 +1,9 @@
-# Infrastructure only. backend/ and frontend/ run on the host with `pnpm dev` (see README).
+# Two ways to run (see README):
+#   • Dev on the host:   docker compose up -d                       → Postgres + LanguageTool only;
+#                        then `npm run dev` (or `yarn dev` in backend/ and frontend/).
+#   • Everything in Docker (any machine with Docker):
+#                        docker compose --profile app up -d --build → + API (backend) + web (frontend).
+#                        The API container migrates and seeds the database on start.
 name: ielts
 
 services:
@@ -13,9 +18,12 @@ services:
       - "127.0.0.1:${POSTGRES_PORT:-5434}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+      # ",z": SELinux relabel (Fedora/RHEL); ignored elsewhere.
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro,z
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      # TCP on purpose: during first-time init Postgres runs a socket-only temporary server that would pass a
+      # socket check before the real server accepts connections.
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432 -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -29,6 +37,63 @@ services:
       Java_Xmx: 1g
     ports:
       - "127.0.0.1:${LT_PORT:-8010}:8010"
+
+  backend:
+    profiles: [app]
+    build: ./backend
+    image: ielts-backend:local
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-ielts}:${POSTGRES_PASSWORD:-ielts_dev_password}@postgres:5432/${POSTGRES_DB:-ielts}
+      LANGUAGETOOL_URL: http://languagetool:8010
+      # Plus the public https address when the Cloudflare Tunnel is used (PUBLIC_ORIGIN in .env).
+      WEB_ORIGIN: ${WEB_ORIGIN:-http://localhost:${WEB_PORT:-31000}}${PUBLIC_ORIGIN:+,${PUBLIC_ORIGIN}}
+      APP_TIMEZONE: ${APP_TIMEZONE:-Asia/Ho_Chi_Minh}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      COOKIE_SECURE: "false"
+      # Empty or the placeholder → the entrypoint generates one and keeps it in data/.jwt_secret.
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-}
+      SEED_ADMIN_EMAIL: ${SEED_ADMIN_EMAIL:-admin@ielts.local}
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:?Đặt SEED_ADMIN_PASSWORD trong file .env ở thư mục gốc}
+      SEED_ADMIN_NAME: ${SEED_ADMIN_NAME:-Quản trị viên}
+      SEED_STUDENT_EMAIL: ${SEED_STUDENT_EMAIL:-}
+      SEED_STUDENT_PASSWORD: ${SEED_STUDENT_PASSWORD:-}
+      SEED_STUDENT_NAME: ${SEED_STUDENT_NAME:-}
+    volumes:
+      # Same folder as host-mode dev (data/storage, data/backups) so both modes see the same files.
+      - ./data:/app/data:z
+    ports:
+      - "127.0.0.1:${API_PORT:-40000}:4000"
+
+  frontend:
+    profiles: [app]
+    build:
+      context: ./frontend
+      args:
+        API_ORIGIN: http://backend:4000
+    image: ielts-frontend:local
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${WEB_PORT:-31000}:3000"
+
+  # Cloudflare Tunnel → the built web app (docker compose --profile app --profile tunnel up -d).
+  # In the Cloudflare dashboard, the public hostname's Service must be  http://frontend:3000  (container
+  # network), not localhost. The token is a secret: it lives only in the root .env (git-ignored).
+  cloudflared:
+    profiles: [tunnel]
+    image: cloudflare/cloudflared:2026.10.0
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN:?Đặt CLOUDFLARE_TUNNEL_TOKEN trong file .env ở thư mục gốc}
+    depends_on:
+      - frontend
 
 volumes:
   pgdata: {}

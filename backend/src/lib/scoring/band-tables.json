@@ -1,0 +1,56 @@
+{
+  "note": "BẢNG THAM KHẢO, không phải bảng chính thức. Ngưỡng thật thay đổi nhẹ theo từng đề. Các mốc khớp với trang IDP (ielts.idp.com/.../results/scores: Listening 16→5, 23→6, 30→7, 35→8, 40→9; Academic Reading 15→5, 23→6, 30→7, 35→8, 40→9; General Reading 15→4, 23→5, 30→6, 35→7); các nửa band lấy theo bảng phổ biến tại magoosh.com/ielts/ielts-score-calculator (tra ngày 2026-10-30). Dưới band 2.5 nguồn không ghi, tạm đặt 0. Admin chỉnh được trong Quản trị → Bảng band.",
+  "tables": {
+    "LISTENING": [
+      { "minRaw": 39, "maxRaw": 40, "band": 9 },
+      { "minRaw": 37, "maxRaw": 38, "band": 8.5 },
+      { "minRaw": 35, "maxRaw": 36, "band": 8 },
+      { "minRaw": 33, "maxRaw": 34, "band": 7.5 },
+      { "minRaw": 30, "maxRaw": 32, "band": 7 },
+      { "minRaw": 27, "maxRaw": 29, "band": 6.5 },
+      { "minRaw": 23, "maxRaw": 26, "band": 6 },
+      { "minRaw": 20, "maxRaw": 22, "band": 5.5 },
+      { "minRaw": 16, "maxRaw": 19, "band": 5 },
+      { "minRaw": 13, "maxRaw": 15, "band": 4.5 },
+      { "minRaw": 10, "maxRaw": 12, "band": 4 },
+      { "minRaw": 8, "maxRaw": 9, "band": 3.5 },
+      { "minRaw": 6, "maxRaw": 7, "band": 3 },
+      { "minRaw": 4, "maxRaw": 5, "band": 2.5 },
+      { "minRaw": 0, "maxRaw": 3, "band": 0 }
+    ],
+    "READING_ACADEMIC": [
+      { "minRaw": 39, "maxRaw": 40, "band": 9 },
+      { "minRaw": 37, "maxRaw": 38, "band": 8.5 },
+      { "minRaw": 35, "maxRaw": 36, "band": 8 },
+      { "minRaw": 33, "maxRaw": 34, "band": 7.5 },
+      { "minRaw": 30, "maxRaw": 32, "band": 7 },
+      { "minRaw": 27, "maxRaw": 29, "band": 6.5 },
+      { "minRaw": 23, "maxRaw": 26, "band": 6 },
+      { "minRaw": 19, "maxRaw": 22, "band": 5.5 },
+      { "minRaw": 15, "maxRaw": 18, "band": 5 },
+      { "minRaw": 13, "maxRaw": 14, "band": 4.5 },
+      { "minRaw": 10, "maxRaw": 12, "band": 4 },
+      { "minRaw": 8, "maxRaw": 9, "band": 3.5 },
+      { "minRaw": 6, "maxRaw": 7, "band": 3 },
+      { "minRaw": 4, "maxRaw": 5, "band": 2.5 },
+      { "minRaw": 0, "maxRaw": 3, "band": 0 }
+    ],
+    "READING_GENERAL": [
+      { "minRaw": 40, "maxRaw": 40, "band": 9 },
+      { "minRaw": 39, "maxRaw": 39, "band": 8.5 },
+      { "minRaw": 38, "maxRaw": 38, "band": 8 },
+      { "minRaw": 36, "maxRaw": 37, "band": 7.5 },
+      { "minRaw": 34, "maxRaw": 35, "band": 7 },
+      { "minRaw": 32, "maxRaw": 33, "band": 6.5 },
+      { "minRaw": 30, "maxRaw": 31, "band": 6 },
+      { "minRaw": 27, "maxRaw": 29, "band": 5.5 },
+      { "minRaw": 23, "maxRaw": 26, "band": 5 },
+      { "minRaw": 19, "maxRaw": 22, "band": 4.5 },
+      { "minRaw": 15, "maxRaw": 18, "band": 4 },
+      { "minRaw": 12, "maxRaw": 14, "band": 3.5 },
+      { "minRaw": 9, "maxRaw": 11, "band": 3 },
+      { "minRaw": 6, "maxRaw": 8, "band": 2.5 },
+      { "minRaw": 0, "maxRaw": 5, "band": 0 }
+    ]
+  }
+}

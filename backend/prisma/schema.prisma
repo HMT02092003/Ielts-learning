@@ -194,12 +194,20 @@ model User {
   createdAt    DateTime  @default(now()) @db.Timestamptz(3)
   updatedAt    DateTime  @updatedAt @db.Timestamptz(3)
 
-  refreshTokens  RefreshToken[]
-  createdTests   Test[]         @relation("TestCreatedBy")
-  publishedTests Test[]         @relation("TestPublishedBy")
-  attempts       Attempt[]
-  uploadedFiles  StoredFile[]
-  bandTables     BandTable[]
+  refreshTokens       RefreshToken[]
+  createdTests        Test[]               @relation("TestCreatedBy")
+  publishedTests      Test[]               @relation("TestPublishedBy")
+  attempts            Attempt[]
+  uploadedFiles       StoredFile[]
+  bandTables          BandTable[]
+  ocrJobs             OcrJob[]
+  writingSubmissions  WritingSubmission[]
+  writingReviews      WritingEvaluation[]  @relation("WritingEvaluationReviewer")
+  speakingRecordings  SpeakingRecording[]
+  speakingEvaluations SpeakingEvaluation[] @relation("SpeakingEvaluationReviewer")
+  vocabularies        Vocabulary[]
+  studyStats          StudyStat[]
+  testMarks           UserTestMark[]
 
   @@index([role, isActive])
 }
@@ -244,11 +252,14 @@ model StoredFile {
   createdAt    DateTime      @default(now()) @db.Timestamptz(3)
   updatedAt    DateTime      @updatedAt @db.Timestamptz(3)
 
-  uploadedBy          User?           @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+  uploadedBy          User?               @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
   audios              Audio[]
   paragraphImages     Paragraph[]
   writingTaskImages   WritingTask[]
   questionGroupImages QuestionGroup[]
+  ocrSources          OcrJobSource[]
+  ocrPages            OcrPage[]
+  speakingRecordings  SpeakingRecording[]
 
   @@index([sha256, purpose])
   @@index([purpose, createdAt])
@@ -279,11 +290,13 @@ model Test {
   createdAt          DateTime   @default(now()) @db.Timestamptz(3)
   updatedAt          DateTime   @updatedAt @db.Timestamptz(3)
 
-  createdBy   User?      @relation("TestCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
-  publishedBy User?      @relation("TestPublishedBy", fields: [publishedById], references: [id], onDelete: SetNull)
-  bandTable   BandTable? @relation(fields: [bandTableId], references: [id], onDelete: Restrict)
-  sections    Section[]
-  attempts    Attempt[]
+  createdBy    User?        @relation("TestCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  publishedBy  User?        @relation("TestPublishedBy", fields: [publishedById], references: [id], onDelete: SetNull)
+  bandTable    BandTable?   @relation(fields: [bandTableId], references: [id], onDelete: Restrict)
+  sections     Section[]
+  attempts     Attempt[]
+  ocrJobs      OcrJob[]
+  vocabularies Vocabulary[]
 
   @@unique([seriesKey, version])
   @@index([status, source, bookNumber, testNumber])
@@ -325,14 +338,16 @@ model Part {
   createdAt        DateTime @default(now()) @db.Timestamptz(3)
   updatedAt        DateTime @updatedAt @db.Timestamptz(3)
 
-  section        Section         @relation(fields: [sectionId], references: [id], onDelete: Cascade)
-  passage        Passage?
-  audio          Audio?
-  writingTask    WritingTask?
-  speakingPart   SpeakingPart?
-  groups         QuestionGroup[]
-  scopedAttempts Attempt[]
-  attemptParts   AttemptPart[]
+  section            Section             @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  passage            Passage?
+  audio              Audio?
+  writingTask        WritingTask?
+  speakingPart       SpeakingPart?
+  groups             QuestionGroup[]
+  scopedAttempts     Attempt[]
+  attemptParts       AttemptPart[]
+  writingSubmissions WritingSubmission[]
+  speakingRecordings SpeakingRecording[]
 
   @@unique([sectionId, number])
 }
@@ -360,9 +375,10 @@ model Paragraph {
   createdAt DateTime      @default(now()) @db.Timestamptz(3)
   updatedAt DateTime      @updatedAt @db.Timestamptz(3)
 
-  passage     Passage      @relation(fields: [passageId], references: [id], onDelete: Cascade)
-  image       StoredFile?  @relation(fields: [imageId], references: [id], onDelete: Restrict)
-  annotations Annotation[]
+  passage      Passage      @relation(fields: [passageId], references: [id], onDelete: Cascade)
+  image        StoredFile?  @relation(fields: [imageId], references: [id], onDelete: Restrict)
+  annotations  Annotation[]
+  vocabularies Vocabulary[]
 
   @@unique([passageId, order])
   @@unique([passageId, label])
@@ -524,16 +540,20 @@ model Attempt {
   createdAt             DateTime       @default(now()) @db.Timestamptz(3)
   updatedAt             DateTime       @updatedAt @db.Timestamptz(3)
 
-  user          User          @relation(fields: [userId], references: [id], onDelete: Restrict)
-  test          Test          @relation(fields: [testId], references: [id], onDelete: Restrict)
-  section       Section       @relation(fields: [sectionId], references: [id], onDelete: Restrict)
-  part          Part?         @relation(fields: [partId], references: [id], onDelete: Restrict)
-  bandTable     BandTable?    @relation(fields: [bandTableId], references: [id], onDelete: Restrict)
-  sourceAttempt Attempt?      @relation("AttemptRetry", fields: [sourceAttemptId], references: [id], onDelete: SetNull)
-  retries       Attempt[]     @relation("AttemptRetry")
-  answers       Answer[]
-  attemptParts  AttemptPart[]
-  annotations   Annotation[]
+  user                User                 @relation(fields: [userId], references: [id], onDelete: Restrict)
+  test                Test                 @relation(fields: [testId], references: [id], onDelete: Restrict)
+  section             Section              @relation(fields: [sectionId], references: [id], onDelete: Restrict)
+  part                Part?                @relation(fields: [partId], references: [id], onDelete: Restrict)
+  bandTable           BandTable?           @relation(fields: [bandTableId], references: [id], onDelete: Restrict)
+  sourceAttempt       Attempt?             @relation("AttemptRetry", fields: [sourceAttemptId], references: [id], onDelete: SetNull)
+  retries             Attempt[]            @relation("AttemptRetry")
+  answers             Answer[]
+  attemptParts        AttemptPart[]
+  annotations         Annotation[]
+  writingSubmissions  WritingSubmission[]
+  speakingRecordings  SpeakingRecording[]
+  speakingEvaluations SpeakingEvaluation[]
+  vocabularies        Vocabulary[]
 
   @@unique([userId, sectionId, activeScopeKey])
   @@index([userId, status])
@@ -610,4 +630,305 @@ model Annotation {
   @@index([paragraphId])
   @@index([questionId])
   @@index([questionGroupId])
+}
+
+// ───────── OCR [P2] ─────────
+
+/// One OCR import: 1 PDF or 1–30 images. Results NEVER go into test tables automatically (spec §6 P2).
+model OcrJob {
+  id             String       @id @default(uuid(7)) @db.Uuid
+  createdById    String?      @db.Uuid
+  title          String?
+  status         OcrJobStatus @default(QUEUED)
+  method         OcrMethod?
+  language       String       @default("eng")
+  progress       Float        @default(0) /// 0..1
+  attempts       Int          @default(0)
+  runAfter       DateTime     @default(now()) @db.Timestamptz(3) /// retry backoff
+  pageCount      Int?
+  rawText        String?
+  meanConfidence Float?
+  reviewDraft    Json? /// OcrReviewDraft (Zod) — edited in the review screen, saved as a whole
+  draftVersion   Int          @default(0) /// optimistic concurrency for review saves
+  lastError      String?
+  startedAt      DateTime?    @db.Timestamptz(3)
+  finishedAt     DateTime?    @db.Timestamptz(3)
+  importedTestId String?      @db.Uuid /// DRAFT test created on publish
+  createdAt      DateTime     @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime     @updatedAt @db.Timestamptz(3)
+
+  createdBy    User?          @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  importedTest Test?          @relation(fields: [importedTestId], references: [id], onDelete: SetNull)
+  sources      OcrJobSource[]
+  pages        OcrPage[]
+
+  @@index([status, runAfter])
+  @@index([createdById, createdAt])
+  @@index([importedTestId])
+}
+
+model OcrJobSource {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  jobId     String   @db.Uuid
+  fileId    String   @db.Uuid
+  pageOrder Int
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  job  OcrJob     @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  file StoredFile @relation(fields: [fileId], references: [id], onDelete: Restrict)
+
+  @@unique([jobId, pageOrder])
+  @@index([fileId])
+}
+
+/// One rasterized page shown on the left of the OCR review screen.
+model OcrPage {
+  id             String        @id @default(uuid(7)) @db.Uuid
+  jobId          String        @db.Uuid
+  pageNumber     Int
+  imageFileId    String        @db.Uuid /// purpose OCR_PAGE
+  widthPx        Int
+  heightPx       Int
+  rotation       Int           @default(0) /// 0|90|180|270
+  method         OcrMethod
+  meanConfidence Float?
+  blocks         Json /// OcrBlock[] — raw engine output
+  reviewStatus   OcrPageReview @default(PENDING)
+  reviewedAt     DateTime?     @db.Timestamptz(3)
+  createdAt      DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime      @updatedAt @db.Timestamptz(3)
+
+  job       OcrJob     @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  imageFile StoredFile @relation(fields: [imageFileId], references: [id], onDelete: Restrict)
+
+  @@unique([jobId, pageNumber])
+  @@index([imageFileId])
+}
+
+// ───────── WRITING [P5] ─────────
+
+model WritingSubmission {
+  id            String                  @id @default(uuid(7)) @db.Uuid
+  attemptId     String                  @db.Uuid
+  partId        String                  @db.Uuid /// → WritingTask
+  userId        String                  @db.Uuid
+  text          String                  @default("")
+  wordCount     Int                     @default(0) /// recomputed server-side (shared countWords)
+  status        WritingSubmissionStatus @default(DRAFT)
+  lastClientSeq Int                     @default(0) /// per-task autosave CAS
+  lastSavedAt   DateTime?               @db.Timestamptz(3)
+  submittedAt   DateTime?               @db.Timestamptz(3)
+  selfChecklist Json                    @default("{}") /// TR/CC self-tick checklist
+  createdAt     DateTime                @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime                @updatedAt @db.Timestamptz(3)
+
+  attempt     Attempt             @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  part        Part                @relation(fields: [partId], references: [id], onDelete: Restrict)
+  user        User                @relation(fields: [userId], references: [id], onDelete: Restrict)
+  evaluations WritingEvaluation[]
+
+  @@unique([attemptId, partId])
+  @@index([userId, createdAt])
+  @@index([partId, userId])
+}
+
+/// Append-only: each run (LIBRARY, future LLM, HUMAN) is one row → history & compare.
+model WritingEvaluation {
+  id               String           @id @default(uuid(7)) @db.Uuid
+  submissionId     String           @db.Uuid
+  evaluator        EvaluatorKind
+  evaluatorVersion String
+  status           EvaluationStatus @default(PENDING)
+  textHash         String
+  language         String?
+  isEstimate       Boolean          @default(true) /// false only for HUMAN
+  bandTaskResponse Float?
+  bandCoherence    Float?
+  bandLexical      Float?
+  bandGrammar      Float?
+  bandOverall      Float?
+  result           Json? /// WritingEvaluationResult (Zod)
+  comment          String?
+  reviewerId       String?          @db.Uuid
+  error            String?
+  createdAt        DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt        DateTime         @updatedAt @db.Timestamptz(3)
+
+  submission WritingSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  reviewer   User?             @relation("WritingEvaluationReviewer", fields: [reviewerId], references: [id], onDelete: SetNull)
+
+  @@index([submissionId, createdAt])
+  @@index([evaluator, status])
+  @@index([reviewerId])
+}
+
+// ───────── SPEAKING [P5] ─────────
+
+model SpeakingRecording {
+  id            String   @id @default(uuid(7)) @db.Uuid
+  attemptId     String   @db.Uuid
+  partId        String   @db.Uuid
+  userId        String   @db.Uuid
+  questionIndex Int      @default(0)
+  take          Int      @default(1)
+  fileId        String   @db.Uuid
+  durationMs    Int? /// client-declared, display only
+  createdAt     DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime @updatedAt @db.Timestamptz(3)
+
+  attempt     Attempt              @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  part        Part                 @relation(fields: [partId], references: [id], onDelete: Restrict)
+  user        User                 @relation(fields: [userId], references: [id], onDelete: Restrict)
+  file        StoredFile           @relation(fields: [fileId], references: [id], onDelete: Restrict)
+  evaluations SpeakingEvaluation[]
+
+  @@unique([attemptId, partId, questionIndex, take])
+  @@index([userId, createdAt])
+  @@index([partId])
+  @@index([fileId])
+}
+
+/// Symmetric with WritingEvaluation so a future SpeakingEvaluator needs no schema change.
+model SpeakingEvaluation {
+  id                String           @id @default(uuid(7)) @db.Uuid
+  attemptId         String           @db.Uuid
+  recordingId       String?          @db.Uuid
+  evaluator         EvaluatorKind    @default(HUMAN)
+  evaluatorVersion  String?
+  status            EvaluationStatus @default(DONE)
+  isEstimate        Boolean          @default(false)
+  bandFluency       Float?
+  bandLexical       Float?
+  bandGrammar       Float?
+  bandPronunciation Float?
+  bandOverall       Float?
+  result            Json?
+  comment           String?
+  reviewerId        String?          @db.Uuid
+  error             String?
+  createdAt         DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime         @updatedAt @db.Timestamptz(3)
+
+  attempt   Attempt            @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  recording SpeakingRecording? @relation(fields: [recordingId], references: [id], onDelete: Cascade)
+  reviewer  User?              @relation("SpeakingEvaluationReviewer", fields: [reviewerId], references: [id], onDelete: SetNull)
+
+  @@index([attemptId, createdAt])
+  @@index([recordingId])
+  @@index([reviewerId])
+}
+
+// ───────── VOCABULARY / STATS [P6] ─────────
+
+model Vocabulary {
+  id                String     @id @default(uuid(7)) @db.Uuid
+  userId            String     @db.Uuid
+  term              String
+  normalizedTerm    String /// NFC, lower-cased, trimmed
+  partOfSpeech      String?
+  phonetic          String?
+  meaning           String? /// Vietnamese meaning, typed by the student
+  definition        String? /// English definition (dictionary lookup)
+  notes             String?
+  exampleSentence   String? /// from the source passage
+  sourceTestId      String?    @db.Uuid
+  sourceParagraphId String?    @db.Uuid
+  sourceAttemptId   String?    @db.Uuid
+  sourceStart       Int?
+  sourceEnd         Int?
+  tags              String[]   @default([])
+  state             VocabState @default(NEW)
+  learningStep      Int        @default(0)
+  easeFactor        Float      @default(2.5) /// SM-2
+  intervalDays      Int        @default(0)
+  repetitions       Int        @default(0)
+  lapses            Int        @default(0)
+  dueAt             DateTime   @default(now()) @db.Timestamptz(3)
+  lastReviewedAt    DateTime?  @db.Timestamptz(3)
+  isSuspended       Boolean    @default(false)
+  createdAt         DateTime   @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime   @updatedAt @db.Timestamptz(3)
+
+  user            User               @relation(fields: [userId], references: [id], onDelete: Restrict)
+  sourceTest      Test?              @relation(fields: [sourceTestId], references: [id], onDelete: SetNull)
+  sourceParagraph Paragraph?         @relation(fields: [sourceParagraphId], references: [id], onDelete: SetNull)
+  sourceAttempt   Attempt?           @relation(fields: [sourceAttemptId], references: [id], onDelete: SetNull)
+  reviews         VocabularyReview[]
+
+  @@unique([userId, normalizedTerm])
+  @@index([userId, dueAt])
+  @@index([userId, createdAt])
+  @@index([sourceTestId])
+  @@index([sourceParagraphId])
+  @@index([sourceAttemptId])
+}
+
+model VocabularyReview {
+  id              String   @id @default(uuid(7)) @db.Uuid
+  vocabularyId    String   @db.Uuid
+  clientReviewId  String   @unique @db.Uuid /// idempotent POST
+  grade           Int /// SM-2 quality: Lại=1, Khó=3, Được=4, Dễ=5
+  reviewedAt      DateTime @default(now()) @db.Timestamptz(3)
+  prevIntervalDay Int
+  newIntervalDay  Int
+  prevEaseFactor  Float
+  newEaseFactor   Float
+  createdAt       DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime @updatedAt @db.Timestamptz(3)
+
+  vocabulary Vocabulary @relation(fields: [vocabularyId], references: [id], onDelete: Cascade)
+
+  @@index([vocabularyId, reviewedAt])
+}
+
+/// Daily aggregates in APP_TIMEZONE, written only by the idempotent recomputeDay(userId, date).
+model StudyStat {
+  id                String   @id @default(uuid(7)) @db.Uuid
+  userId            String   @db.Uuid
+  date              DateTime @db.Date
+  activeSeconds     Int      @default(0)
+  attemptsStarted   Int      @default(0)
+  attemptsSubmitted Int      @default(0)
+  questionsAnswered Int      @default(0)
+  questionsCorrect  Int      @default(0)
+  wordsWritten      Int      @default(0)
+  speakingSeconds   Int      @default(0)
+  vocabAdded        Int      @default(0)
+  vocabReviewed     Int      @default(0)
+  createdAt         DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime @updatedAt @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@unique([userId, date])
+  @@index([date])
+}
+
+/// "Đánh dấu đã làm" / hide a test from suggestions (per logical test = seriesKey).
+model UserTestMark {
+  id        String    @id @default(uuid(7)) @db.Uuid
+  userId    String    @db.Uuid
+  seriesKey String
+  doneAt    DateTime? @db.Timestamptz(3)
+  hidden    Boolean   @default(false)
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@unique([userId, seriesKey])
+}
+
+model DictionaryCache {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  term      String /// normalized
+  provider  String
+  payload   Json
+  expiresAt DateTime @db.Timestamptz(3)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  @@unique([provider, term])
+  @@index([expiresAt])
 }

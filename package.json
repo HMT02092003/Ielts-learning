@@ -1,0 +1,18 @@
+{
+  "name": "ielts-learning",
+  "private": true,
+  "description": "BandUp — IELTS internal practice system. Convenience scripts for the two projects (backend/, frontend/).",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "dev": "node scripts/dev.mjs",
+    "check": "node scripts/run-both.mjs check",
+    "docker:up": "docker compose --profile app up -d --build",
+    "docker:down": "docker compose --profile app down",
+    "docker:logs": "docker compose --profile app logs -f backend frontend",
+    "backup": "node scripts/run-both.mjs backup",
+    "restore": "node scripts/run-both.mjs restore"
+  }
+}

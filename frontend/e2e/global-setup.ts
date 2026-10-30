@@ -7,7 +7,12 @@ import { BACKEND_DIR, e2eDatabaseUrl } from './backend-env';
  * the normal idempotent seed. Never touches the dev database.
  */
 export default function globalSetup() {
-  const env = { ...process.env, DATABASE_URL: e2eDatabaseUrl() };
+  const env = {
+    ...process.env,
+    DATABASE_URL: e2eDatabaseUrl(),
+    STORAGE_LOCAL_ROOT: '../data/e2e-storage',
+    UPLOAD_TMP_DIR: '../data/e2e-tmp',
+  };
   const prismaCli = path.join(BACKEND_DIR, 'node_modules', 'prisma', 'build', 'index.js');
   const run = (args: string[]) =>
     execFileSync(process.execPath, args, { cwd: BACKEND_DIR, env, stdio: 'pipe' });

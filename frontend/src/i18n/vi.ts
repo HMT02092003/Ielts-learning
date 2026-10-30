@@ -1,8 +1,8 @@
 // All UI strings (spec §2: UI in Vietnamese, minimal i18n). Exam content itself stays in English.
 export const vi = {
   app: {
-    name: 'lặng',
-    tagline: 'IELTS Practice',
+    name: 'BandUp',
+    tagline: 'Luyện thi IELTS',
   },
   nav: {
     dashboard: 'Tổng quan',
@@ -49,7 +49,7 @@ export const vi = {
     activeUsers: 'Đang hoạt động',
     tests: 'Đề',
     publishedTests: 'Đã xuất bản',
-    comingSoon: 'Nhập đề, OCR và quản lý người dùng sẽ có ở Giai đoạn 2.',
+    comingSoon: 'Chọn mục ở thanh trên: quản lý người dùng, đề thi (nhập JSON) hoặc nhập đề bằng OCR.',
   },
   exam: {
     timeLeft: (min: number) => `${min} phút còn lại`,

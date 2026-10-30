@@ -53,6 +53,6 @@ export type UpdateMeBody = z.infer<typeof UpdateMeBody>;
 
 export const ChangePasswordBody = z.strictObject({
   currentPassword: z.string().min(1).max(256),
-  newPassword: z.string().min(10).max(PASSWORD_MAX_LENGTH),
+  newPassword: z.string().min(8).max(PASSWORD_MAX_LENGTH),
 });
 export type ChangePasswordBody = z.infer<typeof ChangePasswordBody>;

@@ -226,6 +226,8 @@ export interface ImportOptions {
   resolveFile: FileResolver;
   createdById?: string | null;
   version?: number;
+  /** Replace the content of this existing DRAFT test (keeps its id) instead of creating a new row. */
+  replaceTestId?: string;
 }
 
 /** Creates one Test version from a validated doc inside a single transaction. */
@@ -235,25 +237,35 @@ export async function importTest(doc: TestImportDoc, opts: ImportOptions): Promi
 
   return prisma.$transaction(
     async (tx) => {
-      const test = await tx.test.create({
-        data: {
-          seriesKey: doc.seriesKey,
-          version: opts.version ?? 1,
-          status: opts.status,
-          publishedSeriesKey: opts.status === 'PUBLISHED' ? doc.seriesKey : null,
-          publishedAt: opts.status === 'PUBLISHED' ? now : null,
-          source: doc.source,
-          type: doc.type,
-          title: doc.title,
-          sourceRef: doc.sourceRef ?? null,
-          bookNumber: doc.bookNumber ?? null,
-          testNumber: doc.testNumber ?? null,
-          description: doc.description ?? null,
-          contentHash,
-          createdById: opts.createdById ?? null,
-          publishedById: opts.status === 'PUBLISHED' ? (opts.createdById ?? null) : null,
-        },
-      });
+      const meta = {
+        status: opts.status,
+        publishedSeriesKey: opts.status === 'PUBLISHED' ? doc.seriesKey : null,
+        publishedAt: opts.status === 'PUBLISHED' ? now : null,
+        source: doc.source,
+        type: doc.type,
+        title: doc.title,
+        sourceRef: doc.sourceRef ?? null,
+        bookNumber: doc.bookNumber ?? null,
+        testNumber: doc.testNumber ?? null,
+        description: doc.description ?? null,
+        contentHash,
+        publishedById: opts.status === 'PUBLISHED' ? (opts.createdById ?? null) : null,
+      };
+      let test: { id: string };
+      if (opts.replaceTestId) {
+        // Sections cascade to parts, passages, paragraphs, groups and questions.
+        await tx.section.deleteMany({ where: { testId: opts.replaceTestId } });
+        test = await tx.test.update({ where: { id: opts.replaceTestId }, data: meta });
+      } else {
+        test = await tx.test.create({
+          data: {
+            ...meta,
+            seriesKey: doc.seriesKey,
+            version: opts.version ?? 1,
+            createdById: opts.createdById ?? null,
+          },
+        });
+      }
       const issues: ValidationIssue[] = [];
 
       if (doc.reading) {

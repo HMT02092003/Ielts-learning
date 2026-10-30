@@ -22,7 +22,7 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-dvh flex-col bg-background">
       <header className="mx-auto flex w-full max-w-dashboard items-center justify-between px-8 py-9">
-        <BrandMark />
+        <BrandMark size="lg" />
         <div className="flex items-center gap-3">
           <span className="text-label-sm text-ink-muted">{today()}</span>
           <ThemeMenu />

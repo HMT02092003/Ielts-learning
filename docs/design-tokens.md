@@ -12,12 +12,12 @@ bóng và thời gian chuyển động chỉ nằm ở một chỗ:
 ## Đổi màu / font
 
 1. Sửa giá trị trong `tokens.css` (khối sáng **và** khối `.dark`). Không đổi tên token.
-2. `corepack pnpm check` trong `frontend/` — test `tokens-contrast.test.ts` kiểm lại tương phản WCAG AA.
+2. `yarn run check` trong `frontend/` — test `tokens-contrast.test.ts` kiểm lại tương phản WCAG AA.
 3. Mở `/dev/styleguide` để duyệt bằng mắt (cả sáng/tối).
 
 ## Quy tắc
 
-- Component **không** viết mã màu/rgb (script `scripts/check-tokens.mjs` chặn trong `pnpm check`).
+- Component **không** viết mã màu/rgb (script `scripts/check-tokens.mjs` chặn trong `yarn run check`).
 - Tailwind palette mặc định bị tắt (`--color-*: initial`) nên `bg-red-500` không tồn tại.
 - Exam shell (`.exam-mode`) và Admin (`.force-light`) luôn dùng bộ token sáng, kể cả khi `<html class="dark">`.
   Vì thế token dẫn xuất (alias shadcn, `--ring-focus`, `color-mix`) được khai báo lại ở mọi scope.

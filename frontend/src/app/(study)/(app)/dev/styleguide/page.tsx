@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { useSession } from '@/hooks/use-session';
+import { vi } from '@/i18n/vi';
 
 const SWATCHES = [
   'background',
@@ -31,11 +32,11 @@ const SWATCHES = [
 export default function StyleguidePage() {
   const { data: user, isPending } = useSession();
   if (isPending) return null;
-  if (process.env.NODE_ENV === 'production' && user?.role !== 'ADMIN') return <NotFoundView />;
+  if (user?.role !== 'ADMIN') return <NotFoundView />;
 
   return (
     <div className="flex flex-col gap-8 pt-8">
-      <h1 className="font-display text-h2 font-light">Styleguide · lặng</h1>
+      <h1 className="font-display text-h2 font-light">Styleguide · {vi.app.name}</h1>
 
       <Card>
         <CardLabel>Màu (token theo vai trò)</CardLabel>

@@ -49,6 +49,7 @@ export default tseslint.config(
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off', // supertest bodies are untyped JSON
       '@typescript-eslint/no-unsafe-call': 'off',
     },
   },

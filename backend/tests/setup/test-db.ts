@@ -14,6 +14,10 @@ export function useTestDatabase(): string {
   }
   process.env.DATABASE_URL = url;
   process.env.NODE_ENV = 'test';
+  // Uploaded/generated files of the test run must not land in the dev storage.
+  process.env.STORAGE_LOCAL_ROOT = '../data/test-storage';
+  process.env.UPLOAD_TMP_DIR = '../data/test-tmp';
+  process.env.OCR_WORKER_ENABLED = 'false';
   return url;
 }
 

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- BandUp favicon: same geometry as LogoIcon in src/components/common/brand-mark.tsx (light-theme colours). -->
+  <rect width="32" height="32" rx="8" fill="#1F5E4B"/>
+  <g fill="#FFFFFF">
+    <rect x="6" y="20" width="3.5" height="5" rx="1"/>
+    <rect x="11.5" y="17" width="3.5" height="8" rx="1"/>
+    <rect x="17" y="14" width="3.5" height="11" rx="1"/>
+    <rect x="22.5" y="11" width="3.5" height="14" rx="1"/>
+  </g>
+  <g fill="none" stroke="#FFFFFF" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 14.5 L25.5 5"/>
+    <path d="M21 4.5 L25.5 5 L24 9.2"/>
+  </g>
+</svg>
