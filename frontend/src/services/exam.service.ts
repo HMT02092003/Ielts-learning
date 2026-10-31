@@ -25,6 +25,7 @@ import {
   type HumanSpeakingReviewBody,
   type HumanWritingReviewBody,
 } from '@/shared/writing';
+import { StudentTestSetDto, type ListSetsQuery } from '@/shared/test-sets';
 import { qs } from './admin.service';
 
 const StartResult = z.object({ attempt: AttemptSummaryDto, resumed: z.boolean() });
@@ -33,6 +34,7 @@ const SubmitResult = z.object({ attempt: AttemptSummaryDto, lateAnswersIgnored: 
 export const catalogApi = {
   list: (q: Partial<ListTestsQuery>) => api(`/tests${qs(q)}`, { schema: paginated(TestCardDto) }),
   get: (id: string) => api(`/tests/${id}`, { schema: TestCardDto }),
+  sets: (q: ListSetsQuery) => api(`/tests/sets${qs(q)}`, { schema: z.array(StudentTestSetDto) }),
 };
 
 export const attemptsApi = {

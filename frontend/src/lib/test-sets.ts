@@ -1,6 +1,6 @@
 // Pure helpers for the "by book set" views (admin test list, student practice library).
 import type { Skill, TestStatus } from '@/shared/enums';
-import type { AdminTestSetDto } from '@/shared/test-sets';
+import type { AdminTestSetDto, StudentTestSetDto } from '@/shared/test-sets';
 
 export const SKILLS: Skill[] = ['LISTENING', 'READING', 'WRITING', 'SPEAKING'];
 
@@ -28,6 +28,11 @@ export function skillMatrix(set: AdminTestSetDto): SkillRow[] {
 /** Test number for "Thêm Test": one after the highest in the set. */
 export function nextTestNumber(set: AdminTestSetDto): number {
   return Math.max(0, ...set.tests.map((t) => t.testNumber ?? 0)) + 1;
+}
+
+/** "{done}/{total} đề đã làm" on a student set card. */
+export function setProgress(set: StudentTestSetDto): { total: number; done: number } {
+  return { total: set.tests.length, done: set.tests.filter((t) => t.done).length };
 }
 
 /** Remembered view per page; storage may be missing or blocked, so every access is guarded. */

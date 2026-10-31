@@ -2,14 +2,16 @@
 
 // Practice library (spec §6 P3): published tests sorted CAM → VOL → Pre-IELTS, filters, and a start dialog
 // (EXAM/PRACTICE, whole skill / one part / question types). Starting the same scope again resumes the open attempt.
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { BookOpen, Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { EmptyState } from '@/components/common/empty-state';
 import { ErrorState } from '@/components/common/error-state';
-import { Badge, SourceBadge } from '@/components/ui/badge';
+import { useViewPref, ViewToggle } from '@/components/common/view-toggle';
+import { TestCard, type Section } from '@/components/study/test-card';
+import { TestSetCard } from '@/components/study/test-set-card';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -21,11 +23,18 @@ import { MODE_LABEL, QUESTION_TYPE_LABEL, SKILL_LABEL } from '@/i18n/vi-exam';
 import { ApiError } from '@/lib/api-client';
 import { cn } from '@/lib/cn';
 import { attemptsApi, catalogApi } from '@/services/exam.service';
-import { statsApi } from '@/services/study.service';
 import type { TestCardDto } from '@/shared/attempt';
 import type { QuestionType, Skill, TestSource } from '@/shared/enums';
 
-type Section = TestCardDto['sections'][number];
+const EMPTY = (
+  <Card>
+    <EmptyState
+      icon={<BookOpen strokeWidth={1.75} aria-hidden />}
+      title="Chưa có đề phù hợp"
+      body="Thử bỏ bớt bộ lọc, hoặc nhờ quản trị viên nhập và xuất bản đề."
+    />
+  </Card>
+);
 
 export default function PracticePage() {
   const [q, setQ] = useState('');
@@ -33,6 +42,7 @@ export default function PracticePage() {
   const [skill, setSkill] = useState<Skill | ''>('');
   const [done, setDone] = useState<'' | 'true' | 'false'>('');
   const [picked, setPicked] = useState<{ test: TestCardDto; section: Section } | null>(null);
+  const [view, setView] = useViewPref('bandup.practice.view', 'sets');
 
   const list = useQuery({
     queryKey: ['catalog', { q, source, skill, done }],
@@ -44,6 +54,12 @@ export default function PracticePage() {
         skill: skill || undefined,
         done: done || undefined,
       }),
+    enabled: view === 'list',
+  });
+  const sets = useQuery({
+    queryKey: ['catalog', 'sets', { q, source }],
+    queryFn: () => catalogApi.sets({ q: q.trim() || undefined, source: source || undefined }),
+    enabled: view === 'sets',
   });
 
   return (
@@ -56,6 +72,7 @@ export default function PracticePage() {
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
+        <ViewToggle value={view} onChange={setView} labels={{ sets: 'Theo bộ', list: 'Danh sách' }} />
         <label className="relative min-w-60 flex-1">
           <span className="sr-only">Tìm đề</span>
           <Search
@@ -80,41 +97,59 @@ export default function PracticePage() {
           <option value="PRE_IELTS">Pre-IELTS</option>
           <option value="CUSTOM">Tự soạn</option>
         </NativeSelect>
-        <NativeSelect
-          aria-label="Kỹ năng"
-          value={skill}
-          onChange={(e) => setSkill(e.target.value as Skill | '')}
-        >
-          <option value="">Mọi kỹ năng</option>
-          {(Object.keys(SKILL_LABEL) as Skill[]).map((k) => (
-            <option key={k} value={k}>
-              {SKILL_LABEL[k]}
-            </option>
-          ))}
-        </NativeSelect>
-        <NativeSelect
-          aria-label="Trạng thái"
-          value={done}
-          onChange={(e) => setDone(e.target.value as '' | 'true' | 'false')}
-        >
-          <option value="">Tất cả</option>
-          <option value="false">Chưa làm</option>
-          <option value="true">Đã làm</option>
-        </NativeSelect>
+        {view === 'list' && (
+          <>
+            <NativeSelect
+              aria-label="Kỹ năng"
+              value={skill}
+              onChange={(e) => setSkill(e.target.value as Skill | '')}
+            >
+              <option value="">Mọi kỹ năng</option>
+              {(Object.keys(SKILL_LABEL) as Skill[]).map((k) => (
+                <option key={k} value={k}>
+                  {SKILL_LABEL[k]}
+                </option>
+              ))}
+            </NativeSelect>
+            <NativeSelect
+              aria-label="Trạng thái"
+              value={done}
+              onChange={(e) => setDone(e.target.value as '' | 'true' | 'false')}
+            >
+              <option value="">Tất cả</option>
+              <option value="false">Chưa làm</option>
+              <option value="true">Đã làm</option>
+            </NativeSelect>
+          </>
+        )}
       </div>
 
-      {list.isError ? (
+      {view === 'sets' ? (
+        sets.isError ? (
+          <ErrorState onRetry={() => void sets.refetch()} />
+        ) : sets.isPending ? (
+          <p className="text-body text-ink-muted">{vi.common.loading}</p>
+        ) : sets.data.length === 0 ? (
+          EMPTY
+        ) : (
+          <ul className="flex flex-col gap-4">
+            {sets.data.map((s, i) => (
+              <li key={s.setKey}>
+                <TestSetCard
+                  set={s}
+                  defaultOpen={i === 0}
+                  onPick={(test, section) => setPicked({ test, section })}
+                />
+              </li>
+            ))}
+          </ul>
+        )
+      ) : list.isError ? (
         <ErrorState onRetry={() => void list.refetch()} />
       ) : list.isPending ? (
         <p className="text-body text-ink-muted">{vi.common.loading}</p>
       ) : list.data.items.length === 0 ? (
-        <Card>
-          <EmptyState
-            icon={<BookOpen strokeWidth={1.75} aria-hidden />}
-            title="Chưa có đề phù hợp"
-            body="Thử bỏ bớt bộ lọc, hoặc nhờ quản trị viên nhập và xuất bản đề."
-          />
-        </Card>
+        EMPTY
       ) : (
         <ul className="grid gap-4 md:grid-cols-2">
           {list.data.items.map((t) => (
@@ -129,62 +164,6 @@ export default function PracticePage() {
         {picked && <StartDialog key={picked.section.id} test={picked.test} section={picked.section} />}
       </Dialog>
     </div>
-  );
-}
-
-function TestCard({ test, onPick }: { test: TestCardDto; onPick: (s: Section) => void }) {
-  const qc = useQueryClient();
-  const mark = useMutation({
-    mutationFn: (body: { done?: boolean; hidden?: boolean }) => statsApi.mark(test.seriesKey, body),
-    onSuccess: (_r, body) => {
-      void qc.invalidateQueries({ queryKey: ['catalog'] });
-      toast.success(body.hidden ? 'Đã ẩn khỏi đề gợi ý ở Tổng quan' : 'Đã đánh dấu đã làm');
-    },
-  });
-  return (
-    <Card className="flex h-full flex-col gap-4">
-      <div className="flex items-start gap-3">
-        <SourceBadge source={test.source} />
-        <div className="flex min-w-0 flex-1 flex-col">
-          <h2 className="text-title-sm font-semibold">{test.title}</h2>
-          <p className="text-label-sm text-ink-muted">
-            {test.type === 'ACADEMIC' ? 'Academic' : 'General Training'}
-          </p>
-        </div>
-        {test.done ? (
-          <Badge variant="success">Đã làm</Badge>
-        ) : (
-          <Button size="sm" variant="ghost" onClick={() => mark.mutate({ done: true })}>
-            Đánh dấu đã làm
-          </Button>
-        )}
-        <Button size="sm" variant="ghost" onClick={() => mark.mutate({ hidden: true })}>
-          Ẩn gợi ý
-        </Button>
-      </div>
-      <ul className="flex flex-col divide-y divide-divider">
-        {test.sections.map((s) => {
-          const p = test.progress.find((x) => x.skill === s.skill);
-          return (
-            <li key={s.id} className="flex items-center gap-3 py-2.5">
-              <span className="w-20 text-label font-semibold">{SKILL_LABEL[s.skill]}</span>
-              <span className="flex-1 text-label-sm text-ink-muted">
-                {s.questionCount > 0 ? `${s.questionCount} câu · ` : `${s.parts.length} phần · `}
-                {Math.round(s.durationSec / 60)} phút
-                {p?.bestBand != null
-                  ? ` · tốt nhất ${p.bestBand.toFixed(1)}`
-                  : p?.attempts
-                    ? ` · ${p.attempts} lần`
-                    : ''}
-              </span>
-              <Button size="sm" variant="secondary" onClick={() => onPick(s)}>
-                Làm bài
-              </Button>
-            </li>
-          );
-        })}
-      </ul>
-    </Card>
   );
 }
 

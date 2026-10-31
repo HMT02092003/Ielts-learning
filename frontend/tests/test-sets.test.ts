@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { nextTestNumber, readViewPref, skillMatrix, writeViewPref } from '@/lib/test-sets';
-import type { AdminSetTestDto, AdminTestSetDto } from '@/shared/test-sets';
+import { nextTestNumber, readViewPref, setProgress, skillMatrix, writeViewPref } from '@/lib/test-sets';
+import type { AdminSetTestDto, AdminTestSetDto, StudentTestSetDto } from '@/shared/test-sets';
 
 const test = (n: number | null, skills: AdminSetTestDto['latest']['skills']): AdminSetTestDto => ({
   seriesKey: `cam18-t${n ?? 'x'}`,
@@ -67,5 +67,23 @@ describe('view preference', () => {
     expect(readViewPref('k', 'sets')).toBe('list');
     store.set('k', 'grid');
     expect(readViewPref('k', 'sets')).toBe('sets');
+  });
+});
+
+describe('setProgress', () => {
+  const student = (done: boolean[]): StudentTestSetDto => ({
+    setKey: 'CAM-18',
+    source: 'CAM',
+    bookNumber: 18,
+    title: 'Cambridge 18',
+    tests: done.map((d) => ({ done: d }) as StudentTestSetDto['tests'][number]),
+  });
+
+  it('counts done tests', () => {
+    expect(setProgress(student([true, false, false]))).toEqual({ total: 3, done: 1 });
+  });
+
+  it('is zero for an empty set', () => {
+    expect(setProgress(student([]))).toEqual({ total: 0, done: 0 });
   });
 });
