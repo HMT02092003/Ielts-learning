@@ -91,7 +91,9 @@ services:
     restart: unless-stopped
     command: tunnel --no-autoupdate run
     environment:
-      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN:?Đặt CLOUDFLARE_TUNNEL_TOKEN trong file .env ở thư mục gốc}
+      # Not "${VAR:?}": Compose interpolates every service, so a required var here would block `docker compose up`
+      # even without the tunnel profile. cloudflared itself refuses to start with an empty token.
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN:-}
     depends_on:
       - frontend
 
