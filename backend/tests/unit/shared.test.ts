@@ -7,6 +7,7 @@ import { zodIssues } from '../../src/shared/errors';
 import { countWords } from '../../src/shared/primitives';
 import { QuestionGroupConfig } from '../../src/shared/question-types';
 import { checkPublishable, TestImportDoc } from '../../src/shared/test-import';
+import { parseSetKey, setKeyOf, setTitleOf } from '../../src/shared/test-sets';
 
 const FIXTURES = path.resolve(import.meta.dirname, '..', '..', 'prisma', 'seed', 'fixtures');
 const readFixture = (name: string): unknown => JSON.parse(fs.readFileSync(path.join(FIXTURES, name), 'utf8'));
@@ -100,5 +101,27 @@ describe('countWords', () => {
   it('counts words and ignores punctuation-only tokens', () => {
     expect(countWords('  The chart shows — three routes.  ')).toBe(5);
     expect(countWords('')).toBe(0);
+  });
+});
+
+describe('test sets', () => {
+  it('builds set keys from source and book number', () => {
+    expect(setKeyOf('CAM', 18)).toBe('CAM-18');
+    expect(setKeyOf('VOL', null)).toBe('VOL-none');
+  });
+
+  it('parses valid set keys and rejects anything else', () => {
+    expect(parseSetKey('PRE_IELTS-3')).toEqual({ source: 'PRE_IELTS', bookNumber: 3 });
+    expect(parseSetKey('CUSTOM-none')).toEqual({ source: 'CUSTOM', bookNumber: null });
+    expect(parseSetKey('CAM-0')).toBeNull();
+    expect(parseSetKey('XYZ-1')).toBeNull();
+    expect(parseSetKey('CAM-../x')).toBeNull();
+  });
+
+  it('names sets after the book', () => {
+    expect(setTitleOf('CAM', 18)).toBe('Cambridge 18');
+    expect(setTitleOf('VOL', 2)).toBe('Volume 2');
+    expect(setTitleOf('PRE_IELTS', 1)).toBe('Pre-IELTS 1');
+    expect(setTitleOf('CUSTOM', null)).toBe('Tự soạn — đề lẻ');
   });
 });

@@ -11,3 +11,4 @@ export * from './scoring';
 export * from './attempt';
 export * from './writing';
 export * from './study';
+export * from './test-sets';
