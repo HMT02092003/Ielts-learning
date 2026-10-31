@@ -2,8 +2,9 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
-import { useState, type FormEvent } from 'react';
+import { useMemo, useState, type FormEvent } from 'react';
 import { toast } from 'sonner';
+import { AnswerEditor } from '@/components/admin/answer-editor';
 import { issuesOf, JsonEditor, type Issue } from '@/components/admin/json-editor';
 import { StatusBadge } from '@/components/admin/status-badge';
 import { Button } from '@/components/ui/button';
@@ -11,7 +12,6 @@ import { Card, CardLabel } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { NativeSelect } from '@/components/ui/native-select';
-import { Textarea } from '@/components/ui/textarea';
 import { viAdmin } from '@/i18n/vi-admin';
 import { vi } from '@/i18n/vi';
 import { ApiError } from '@/lib/api-client';
@@ -20,63 +20,6 @@ import { TestSource, type TestType } from '@/shared/enums';
 
 const t = viAdmin.tests;
 const errMsg = (e: unknown) => (e instanceof ApiError ? e.message : 'Có lỗi xảy ra');
-
-function QuestionRow({ testId, q }: { testId: string; q: AdminQuestion }) {
-  const [accepted, setAccepted] = useState(q.acceptedAnswers.join('\n'));
-  const [explanation, setExplanation] = useState(q.explanation ?? '');
-  const save = useMutation({
-    mutationFn: () =>
-      testsAdminApi.hotfix(testId, q.id, {
-        ...(q.correctAnswer.kind === 'TEXT'
-          ? {
-              acceptedAnswers: accepted
-                .split('\n')
-                .map((s) => s.trim())
-                .filter(Boolean),
-            }
-          : {}),
-        explanation: explanation.trim() || null,
-      }),
-    onSuccess: () => toast.success(t.saved),
-    onError: (e) => toast.error(errMsg(e)),
-  });
-  const correct =
-    q.correctAnswer.kind === 'TEXT'
-      ? q.correctAnswer.display
-      : q.correctAnswer.kind === 'KEY'
-        ? q.correctAnswer.key
-        : q.correctAnswer.keys.join(', ');
-  return (
-    <div className="grid gap-3 border-b border-divider py-3 md:grid-cols-[120px_1fr_1fr_auto]">
-      <div className="text-body">
-        <span className="font-semibold">
-          {viAdmin.skill[q.skill]} {q.number}
-        </span>
-        <span className="block text-caption text-ink-muted">→ {correct}</span>
-      </div>
-      {q.correctAnswer.kind === 'TEXT' ? (
-        <Textarea
-          aria-label={`${t.accepted} ${q.number}`}
-          value={accepted}
-          onChange={(e) => setAccepted(e.target.value)}
-          className="min-h-16"
-        />
-      ) : (
-        <span className="text-caption text-ink-muted">—</span>
-      )}
-      <Textarea
-        aria-label={`${t.explanation} ${q.number}`}
-        value={explanation}
-        onChange={(e) => setExplanation(e.target.value)}
-        className="min-h-16"
-        placeholder={t.explanation}
-      />
-      <Button variant="secondary" size="sm" loading={save.isPending} onClick={() => save.mutate()}>
-        Lưu
-      </Button>
-    </div>
-  );
-}
 
 export default function AdminTestDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -95,6 +38,22 @@ function TestEditor({ id, data }: { id: string; data: TestDetail }) {
   const questions = useQuery({
     queryKey: ['admin', 'test', id, 'questions'],
     queryFn: () => testsAdminApi.questions(id),
+  });
+  const parsed = useMemo(() => {
+    try {
+      return JSON.parse(json) as unknown;
+    } catch {
+      return undefined;
+    }
+  }, [json]);
+  const hotfix = useMutation({
+    mutationFn: ({ q, body }: { q: AdminQuestion; body: Parameters<typeof testsAdminApi.hotfix>[2] }) =>
+      testsAdminApi.hotfix(id, q.id, body),
+    onSuccess: () => {
+      toast.success(t.saved);
+      void qc.invalidateQueries({ queryKey: ['admin', 'test', id, 'questions'] });
+    },
+    onError: (e) => toast.error(errMsg(e)),
   });
 
   const refresh = () => {
@@ -142,6 +101,7 @@ function TestEditor({ id, data }: { id: string; data: TestDetail }) {
   });
 
   const test = data.test;
+  const editable = test.status === 'DRAFT' && test.attemptCount === 0;
 
   function onMetaSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -270,20 +230,27 @@ function TestEditor({ id, data }: { id: string; data: TestDetail }) {
 
       <Card>
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <CardLabel>{t.content}</CardLabel>
+          <CardLabel>{t.answers}</CardLabel>
           <span className={issues.length ? 'text-body text-danger' : 'text-body text-success'}>
             {issues.length ? t.issues(issues.length) : t.noIssues}
           </span>
         </div>
-        <p className="mt-1 mb-4 text-body text-ink-muted">{t.contentHelp}</p>
-        <JsonEditor
-          label={t.content}
-          value={json}
-          onChange={setJson}
-          issues={issues}
-          readOnly={test.status !== 'DRAFT' || test.attemptCount > 0}
+        <p className="mt-1 mb-4 text-body text-ink-muted">{t.answersHelp}</p>
+        <AnswerEditor
+          doc={parsed}
+          editable={editable}
+          onChange={(doc) => setJson(JSON.stringify(doc, null, 2))}
+          hotfix={
+            editable
+              ? undefined
+              : {
+                  questions: questions.data ?? [],
+                  save: (q, body, done) => hotfix.mutate({ q, body }, { onSuccess: done }),
+                  savingId: hotfix.isPending ? hotfix.variables.q.id : null,
+                }
+          }
         />
-        {test.status === 'DRAFT' && test.attemptCount === 0 && (
+        {editable && (
           <div className="mt-4">
             <Button
               loading={saveContent.isPending}
@@ -292,20 +259,37 @@ function TestEditor({ id, data }: { id: string; data: TestDetail }) {
                 if (doc !== undefined) saveContent.mutate(doc);
               }}
             >
-              {t.saveJson}
+              {t.saveAnswers}
             </Button>
           </div>
         )}
       </Card>
 
       <Card>
-        <CardLabel>{t.questions}</CardLabel>
-        <p className="mt-1 text-body text-ink-muted">{t.questionsHelp}</p>
-        <div className="mt-2">
-          {questions.data?.map((q) => (
-            <QuestionRow key={q.id} testId={id} q={q} />
-          ))}
-        </div>
+        <details open={issues.length > 0 || undefined}>
+          <summary className="cursor-pointer text-label font-medium text-ink-muted">{t.advancedJson}</summary>
+          <p className="mt-3 mb-4 text-body text-ink-muted">{t.contentHelp}</p>
+          <JsonEditor
+            label={t.content}
+            value={json}
+            onChange={setJson}
+            issues={issues}
+            readOnly={!editable}
+          />
+          {editable && (
+            <div className="mt-4">
+              <Button
+                loading={saveContent.isPending}
+                onClick={() => {
+                  const doc = parseJson();
+                  if (doc !== undefined) saveContent.mutate(doc);
+                }}
+              >
+                {t.saveJson}
+              </Button>
+            </div>
+          )}
+        </details>
       </Card>
     </div>
   );

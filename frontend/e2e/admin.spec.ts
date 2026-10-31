@@ -36,9 +36,31 @@ test('admin: import JSON (dry run, then import) → open test → publish', asyn
   await page.getByRole('link', { name: 'Mở đề' }).click();
 
   await expect(page.getByText('Đủ điều kiện xuất bản')).toBeVisible();
+  await page.getByText('Sửa JSON nâng cao').click();
   await expect(page.getByLabel('Nội dung (JSON)')).toHaveValue(/"seriesKey": "dummy-reading-ac"/);
   await page.getByRole('button', { name: 'Xuất bản', exact: true }).click();
   await expect(page.getByText('Đã xuất bản').first()).toBeVisible();
+});
+
+test('admin: answer editor edits the draft doc', async ({ page }) => {
+  await login(page);
+  await page.goto('/admin/tests/import');
+  await page.locator('input[type=file]').setInputFiles(READING_FIXTURE);
+  await page.getByRole('button', { name: 'Nhập đề' }).click();
+  await page.getByRole('link', { name: 'Mở đề' }).click();
+
+  await expect(page.getByRole('heading', { name: 'Rooftop Beekeeping in Northbridge' })).toBeVisible();
+  await page.getByRole('button', { name: 'Câu 1: TRUE', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Câu 1: TRUE', exact: true })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await page.getByRole('button', { name: 'Lưu đáp án' }).click();
+  await expect(page.getByText('Đã lưu').first()).toBeVisible();
+
+  await page.reload();
+  await page.getByText('Sửa JSON nâng cao').click();
+  await expect(page.getByLabel('Nội dung (JSON)')).toHaveValue(/"number": 1,[\s\S]*?"answer": "TRUE"/);
 });
 
 test('admin: JSON editor shows path-precise errors', async ({ page }) => {
@@ -56,4 +78,61 @@ test('admin: JSON editor shows path-precise errors', async ({ page }) => {
     .setInputFiles({ name: 'bad.json', mimeType: 'application/json', buffer: bad });
   await page.getByRole('button', { name: 'Kiểm tra trước' }).click();
   await expect(page.getByRole('alert').filter({ hasText: 'seriesKey' })).toBeVisible();
+});
+
+test('admin: answer editor shows option text and survives untrimmed variants in JSON', async ({ page }) => {
+  await login(page);
+  await page.goto('/admin/tests/import');
+  await page.locator('input[type=file]').setInputFiles(READING_FIXTURE);
+  await page.getByRole('button', { name: 'Nhập đề' }).click();
+  await page.getByRole('link', { name: 'Mở đề' }).click();
+
+  await page.getByRole('button', { name: 'Reading 2' }).click();
+  await expect(page.getByText('ii — Measuring a lost object from an old image').first()).toBeVisible();
+
+  await page.getByText('Sửa JSON nâng cao').click();
+  const json = page.getByLabel('Nội dung (JSON)');
+  const doc = (await json.inputValue()).replace('"harbor district"', '" harbor district", ""');
+  await json.fill(doc);
+  await page.getByRole('button', { name: 'Reading 1' }).click();
+  await expect(page.getByLabel('Đáp án chấp nhận (mỗi dòng một biến thể) 6')).toHaveValue(
+    /\n harbor district\n$/,
+  );
+});
+
+test('admin: answer editor guards MC multi, flags empty answers, names groups', async ({ page }) => {
+  await login(page);
+  await page.goto('/admin/tests/import');
+  await page.locator('input[type=file]').setInputFiles(READING_FIXTURE);
+  await page.getByRole('button', { name: 'Nhập đề' }).click();
+  await page.getByRole('link', { name: 'Mở đề' }).click();
+
+  await expect(page.getByRole('group', { name: 'Câu 1', exact: true })).toBeVisible();
+  await page.getByLabel('Đáp án đúng 6').fill('');
+  await expect(page.getByText('Chưa có đáp án')).toBeVisible();
+
+  await page.getByRole('button', { name: 'Reading 2' }).click();
+  await expect(page.getByText('Đã chọn 2/2')).toBeVisible();
+  const b = page.getByRole('button', { name: 'Câu 25–26: B', exact: true });
+  await expect(b).toHaveAttribute('aria-disabled', 'true');
+  await page.getByRole('button', { name: 'Câu 25–26: A', exact: true }).click();
+  await expect(page.getByText('Đã chọn 1/2')).toBeVisible();
+  await expect(b).not.toHaveAttribute('aria-disabled', 'true');
+});
+
+test('admin: hotfix on a published test updates the JSON view', async ({ page }) => {
+  await login(page);
+  await page.goto('/admin/tests/import');
+  await page.locator('input[type=file]').setInputFiles(READING_FIXTURE);
+  await page.getByRole('button', { name: 'Nhập đề' }).click();
+  await page.getByRole('link', { name: 'Mở đề' }).click();
+  await page.getByRole('button', { name: 'Xuất bản', exact: true }).click();
+  await expect(page.getByText('Đã xuất bản').first()).toBeVisible();
+  await page.reload();
+
+  await page.getByLabel('Giải thích 2', { exact: true }).fill('Hotfix explanation 2');
+  await page.getByRole('button', { name: 'Lưu câu 2', exact: true }).click();
+  await expect(page.getByText('Đã lưu').first()).toBeVisible();
+  await page.getByText('Sửa JSON nâng cao').click();
+  await expect(page.getByLabel('Nội dung (JSON)')).toHaveValue(/Hotfix explanation 2/);
 });
