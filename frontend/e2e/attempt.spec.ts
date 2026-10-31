@@ -19,7 +19,8 @@ test('student: practice library → Reading → answer + highlight → reload ke
   await page.getByRole('link', { name: 'Luyện đề' }).first().click();
   await expect(page).toHaveURL(/\/practice$/);
 
-  const card = page.getByRole('listitem').filter({ hasText: 'Đề mẫu Reading (dummy)' });
+  // .last(): in the set view each set is itself a list item around its tests' items.
+  const card = page.getByRole('listitem').filter({ hasText: 'Đề mẫu Reading (dummy)' }).last();
   await card.getByRole('button', { name: 'Làm bài' }).first().click();
   const dialog = page.getByRole('dialog');
   await dialog.getByRole('radio', { name: 'Luyện tập' }).click();
@@ -78,7 +79,8 @@ test('student: practice library → Reading → answer + highlight → reload ke
 test('student: Writing → type essay → submit → estimate with disclaimer', async ({ page }) => {
   await login(page);
   await page.goto('/practice');
-  const card = page.getByRole('listitem').filter({ hasText: 'Đề mẫu Writing (dummy)' });
+  // .last(): in the set view each set is itself a list item around its tests' items.
+  const card = page.getByRole('listitem').filter({ hasText: 'Đề mẫu Writing (dummy)' }).last();
   await card.getByRole('button', { name: 'Làm bài' }).first().click();
   const dialog = page.getByRole('dialog');
   await dialog.getByRole('radio', { name: 'Luyện tập' }).click();

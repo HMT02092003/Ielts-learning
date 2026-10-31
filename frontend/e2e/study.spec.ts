@@ -35,6 +35,8 @@ test('student: settings → dashboard countdown; vocabulary → flashcard sessio
   await expect(page.getByRole('button', { name: 'meticulous', exact: true })).toBeVisible();
 
   await page.getByRole('link', { name: /Ôn thẻ \(1\)/ }).click();
+  // Wait for the review page itself: "meticulous" is also on the vocabulary page we are leaving.
+  await expect(page.getByRole('button', { name: /Lật thẻ/ })).toBeVisible();
   await expect(page.getByText('meticulous').first()).toBeVisible();
   await page.keyboard.press('Space');
   await expect(page.getByText('tỉ mỉ')).toBeVisible();

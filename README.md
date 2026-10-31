@@ -127,7 +127,8 @@ Mỗi lần đổi `PUBLIC_ORIGIN`, chạy lại lệnh ở bước 2 để back
 
 ## Trạng thái
 
-Đã làm xong Giai đoạn 1–6. Lần kiểm tra cuối: backend 133 test, frontend 39 unit test, e2e 12 kịch bản, tất cả đều xanh.
+Đã làm xong Giai đoạn 1–6, cùng với bộ đề, nhập/xuất .zip và mở như app. Lần kiểm tra cuối: backend 155 test,
+frontend 46 unit test, e2e 14 kịch bản, tất cả đều xanh.
 
 | Giai đoạn | Nội dung chính | Đường dẫn |
 |---|---|---|
@@ -137,6 +138,7 @@ Mỗi lần đổi `PUBLIC_ORIGIN`, chạy lại lệnh ở bước 2 để back
 | 4. Chấm + kết quả | Chấm 12 dạng, bảng band tham khảo (admin sửa, có phiên bản), trang kết quả, xem lại bài, làm lại câu sai, lịch sử | `/results/[id]`, `/history`, `/admin/band-tables` |
 | 5. Writing + Speaking | Viết bài (đếm từ, tự lưu, chặn dán khi thi), **ước lượng** Lexical/Grammar bằng LanguageTool + compromise, checklist TR/CC, so sánh bài; ghi âm Speaking; admin chấm tay | `/admin/grading` |
 | 6. Tiến độ + từ vựng | Tổng quan (band 4 kỹ năng, xu hướng, dạng yếu, chuỗi ngày học, đề gợi ý), radar, sổ từ + flashcard SM-2, tra từ điển, lưu từ ngay trong bài đọc, cài đặt | `/dashboard`, `/vocabulary`, `/settings` |
+| Bộ đề + .zip | Gom đề theo bộ sách (Cambridge 18…), bảng Test × kỹ năng, xuất bản cả bộ, xuất/nhập .zip (một đề hoặc cả bộ, kèm ảnh/audio); học viên luyện theo bộ → [docs/import-guide.md](docs/import-guide.md) | `/admin/tests`, `/practice` |
 
 **Lưu ý:**
 

@@ -45,8 +45,8 @@ test('admin: JSON editor shows path-precise errors', async ({ page }) => {
   await login(page);
   await page.goto('/admin/tests');
   await page
-    .getByRole('button', { name: 'Nhập từ JSON' })
-    .or(page.getByRole('link', { name: 'Nhập từ JSON' }))
+    .getByRole('button', { name: 'Nhập JSON / .zip' })
+    .or(page.getByRole('link', { name: 'Nhập JSON / .zip' }))
     .click();
   const bad = Buffer.from(
     JSON.stringify({ schemaVersion: 1, seriesKey: 'x', source: 'CAM', type: 'ACADEMIC', title: '' }),
