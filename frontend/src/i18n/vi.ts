@@ -26,7 +26,6 @@ export const vi = {
   login: {
     title: 'Đăng nhập',
     greeting: 'Chào bạn.',
-    subtitle: 'Một phiên 25 phút thôi nhé.',
     quote: 'Slow is smooth, and smooth is fast.',
     email: 'Email',
     password: 'Mật khẩu',

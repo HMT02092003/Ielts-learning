@@ -31,11 +31,7 @@ export default function LoginPage() {
       <main className="flex flex-1 items-center justify-center px-8 pt-6 pb-16">
         <div className="flex w-full max-w-login flex-wrap items-center gap-24">
           <section className="flex flex-[1_1_380px] flex-col gap-7">
-            <h1 className="font-display text-display-hero font-extralight text-ink">
-              {vi.login.greeting}
-              <br />
-              <span className="text-ink-muted">{vi.login.subtitle}</span>
-            </h1>
+            <h1 className="font-display text-display-hero font-extralight text-ink">{vi.login.greeting}</h1>
             <hr className="w-12 border-border-control" />
             <blockquote
               lang="en"
