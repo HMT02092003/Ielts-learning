@@ -6,7 +6,8 @@ Web app luyện thi IELTS dùng nội bộ (1–5 người). Gồm hai dự án 
 |---|---|---|
 | `backend/` | Node.js 20 + Express 5 + Prisma 7 + Zod | http://127.0.0.1:40000/api/v1 |
 | `frontend/` | Next.js 16 + Tailwind CSS v4 + shadcn/ui | dev **http://localhost:30000** · bản build http://localhost:31000 |
-| `docker-compose.yml` | PostgreSQL 17 (cổng **5434**) + LanguageTool | — |
+| PostgreSQL 17 cài trên máy | dịch vụ Windows `postgresql-x64-17`, cổng **5432** | — |
+| `.tools/` (không commit) | Java 21 + LanguageTool 6.6, `npm run dev` tự bật | http://127.0.0.1:8010 |
 
 ## Cổng
 
@@ -16,8 +17,9 @@ Web app luyện thi IELTS dùng nội bộ (1–5 người). Gồm hai dự án 
 | Frontend — bản build (`yarn build` + `yarn start`, hoặc Docker) | **31000** |
 | Backend API — dev (`yarn dev`) | **40000** |
 | Backend API — bản Docker (để không tranh cổng với dev) | 41000 |
-| Postgres (Docker) | 5434 |
-| LanguageTool (Docker) | 8010 |
+| PostgreSQL trên máy | 5432 |
+| Postgres (chỉ khi chạy toàn bộ bằng Docker) | 5434 |
+| LanguageTool | 8010 |
 
 Frontend gọi backend qua `API_ORIGIN` trong `frontend/.env.local`; backend chỉ nhận request từ các địa chỉ trong
 `WEB_ORIGIN` (`backend/.env`, nhiều địa chỉ ngăn bằng dấu phẩy).
@@ -33,55 +35,31 @@ Frontend gọi backend qua `API_ORIGIN` trong `frontend/.env.local`; backend ch�
 
 ## Chạy trên máy (cách dùng hằng ngày)
 
-**Cần có:** Node 20.19+, Yarn 1.22 (`npm i -g yarn`), Docker Desktop.
+**Cần có:** Node 20.19+, Yarn 1.22 (`npm i -g yarn`), PostgreSQL 17 (không cần Docker).
 
 ### Lần đầu
 
-```powershell
-docker compose up -d                 # bật database (Postgres) + LanguageTool trong Docker
-
-cd backend
-copy .env.example .env               # Linux/macOS: cp
-yarn install
-yarn run db:setup                    # tạo bảng + dữ liệu mẫu (2 tài khoản, 4 đề mẫu)
-
-cd ..\frontend
-copy .env.example .env.local
-yarn install
-```
+1. Cài PostgreSQL 17 (bộ cài EnterpriseDB, cổng 5432). Tạo user + 3 database (tên test **phải kết thúc bằng `_test`**):
+   ```sql
+   CREATE ROLE ielts LOGIN PASSWORD 'ielts_dev_password' CREATEDB;
+   CREATE DATABASE ielts OWNER ielts;
+   CREATE DATABASE ielts_test OWNER ielts;
+   CREATE DATABASE ielts_e2e_test OWNER ielts;
+   ```
+   Khớp sẵn với `backend/.env.example`; đổi mật khẩu thì sửa cả ba `*_DATABASE_URL`.
+2. LanguageTool (ước lượng Writing, tuỳ chọn): giải nén một JRE 17+ (vd. Temurin 21) vào `.tools/jre` và
+   [LanguageTool-6.6.zip](https://languagetool.org/download/LanguageTool-6.6.zip) vào `.tools/languagetool`
+   (phải có `.tools/languagetool/languagetool-server.jar`). Thiếu thư mục này thì app vẫn chạy, chỉ phần ước lượng
+   Writing tắt.
+3. Ở thư mục gốc: `npm run setup` (tạo các file `.env` + `yarn install` cho cả hai dự án).
 
 ### Mỗi lần làm việc
 
-Mở Docker Desktop (database tự chạy lại), rồi mở **2 terminal**:
+Bấm đúp **`BandUp.bat`** (hoặc `npm run dev` ở thư mục gốc): migrate + seed, bật LanguageTool, backend và frontend
+trong một cửa sổ, rồi tự mở **http://localhost:30000**. Đóng cửa sổ (hoặc `Ctrl+C`) để dừng. PostgreSQL là dịch vụ
+Windows nên tự chạy cùng máy.
 
-```powershell
-# Terminal 1
-cd backend
-yarn dev
-
-# Terminal 2
-cd frontend
-yarn dev
-```
-
-Mở **http://localhost:30000** và đăng nhập. Dừng bằng `Ctrl+C` trong từng terminal.
-
-> Muốn gọn hơn: `npm run dev` ở thư mục gốc chạy cả database, backend và frontend trong một cửa sổ.
-> Lần đầu trên máy mới có thể dùng `npm run setup` (tạo các file `.env` + `yarn install` cho cả hai).
-
-### Dùng Postgres có sẵn trên máy (cổng 5432) thay cho Docker
-
-1. Tạo 3 database: `ielts_learning`, `ielts_learning_test`, `ielts_learning_e2e_test`
-   (tên dùng cho test **phải kết thúc bằng `_test`**).
-2. Sửa `backend/.env`:
-   ```
-   DATABASE_URL=postgresql://USER:PASS@127.0.0.1:5432/ielts_learning
-   TEST_DATABASE_URL=postgresql://USER:PASS@127.0.0.1:5432/ielts_learning_test
-   E2E_DATABASE_URL=postgresql://USER:PASS@127.0.0.1:5432/ielts_learning_e2e_test
-   ```
-3. `yarn run db:setup` trong `backend/`, rồi chạy như trên.
-
-LanguageTool (chấm Writing, Giai đoạn 5) vẫn cần Docker: `docker compose up -d languagetool`.
+Muốn chạy riêng từng phần: `yarn dev` trong `backend/` và trong `frontend/` (2 terminal).
 
 ## Chạy toàn bộ bằng Docker (máy khác, không cần cài Node)
 
@@ -135,7 +113,7 @@ Mỗi lần đổi `PUBLIC_ORIGIN`, chạy lại lệnh ở bước 2 để back
 |---|---|
 | `yarn install` báo `packageManager … pnpm` | Bạn đang ở code cũ — pull bản mới (đã chuyển sang Yarn) |
 | Trang báo "Không kết nối được máy chủ" | Terminal backend chưa chạy hoặc đã dừng |
-| Backend lỗi kết nối database | Docker Desktop chưa mở, hoặc chưa `docker compose up -d` |
+| Backend lỗi kết nối database | Dịch vụ `postgresql-x64-17` chưa chạy — mở `services.msc` và bật nó |
 | `Port 30000 is in use` / `EADDRINUSE :40000` | Một bản cũ vẫn đang chạy (hoặc bản Docker) — tắt nó trước |
 
 ## Trạng thái

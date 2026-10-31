@@ -1,6 +1,6 @@
 // npm run dev — one command for local development:
-//   Docker (Postgres + LanguageTool) → migrate + seed (idempotent) → backend :40000 and frontend :30000 together.
-//   Ctrl+C stops both apps (the Docker containers keep running; `docker compose down` stops them).
+//   PostgreSQL on this machine (port 5432) → migrate + seed (idempotent) → LanguageTool :8010 (from .tools/),
+//   backend :40000 and frontend :30000 together. Ctrl+C stops all three.
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { BACKEND, FRONTEND, YARN, ROOT, killTree, portBusy, run, startPrefixed } from './lib.mjs';
@@ -26,23 +26,39 @@ for (const port of [30000, 40000]) {
   }
 }
 
-console.log('▶ Docker: Postgres + LanguageTool');
-try {
-  await run('docker compose up -d --wait postgres');
-  await run('docker compose up -d languagetool');
-} catch {
-  console.error('\nKhông gọi được Docker. Mở Docker Desktop (hoặc khởi động Docker Engine) rồi chạy lại npm run dev.');
+console.log('▶ PostgreSQL trên máy (127.0.0.1:5432)');
+if (!(await portBusy(5432))) {
+  console.error('\nPostgreSQL chưa chạy. Mở services.msc → bật dịch vụ "postgresql-x64-17", rồi chạy lại npm run dev.');
   process.exit(1);
 }
 
 console.log('\n▶ Database: migrate + seed');
 await run(`${YARN} run db:setup`, BACKEND);
 
+const children = [];
+// LanguageTool (Writing estimate) runs from .tools/ — a portable JRE + the LanguageTool server zip.
+const java = path.join(ROOT, '.tools', 'jre', 'bin', process.platform === 'win32' ? 'java.exe' : 'java');
+const ltDir = path.join(ROOT, '.tools', 'languagetool');
+if (await portBusy(8010)) {
+  console.log('\n• LanguageTool đã chạy sẵn ở cổng 8010');
+} else if (existsSync(java) && existsSync(path.join(ltDir, 'languagetool-server.jar'))) {
+  children.push(
+    startPrefixed(
+      'lt',
+      '33',
+      `"${java}" -Xms256m -Xmx1g -cp languagetool-server.jar org.languagetool.server.HTTPServer --port 8010`,
+      ltDir,
+    ),
+  );
+} else {
+  console.log('\n• Không thấy .tools/languagetool — phần ước lượng Writing sẽ không chạy (xem README).');
+}
+
 console.log('\n▶ Chạy backend (:40000) và frontend (:30000) — Ctrl+C để dừng\n');
-const children = [
+children.push(
   startPrefixed('api', '36', `${YARN} run dev`, BACKEND),
   startPrefixed('web', '35', `${YARN} run dev`, FRONTEND),
-];
+);
 
 let stopping = false;
 const stop = (code = 0) => {

@@ -24,6 +24,9 @@ frontend/blob-report/
 data/*
 !data/README.md
 
+# portable JRE + LanguageTool server used by npm run dev (see README)
+.tools/
+
 # OS / editors
 .DS_Store
 Thumbs.db

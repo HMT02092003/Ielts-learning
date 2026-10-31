@@ -1,6 +1,7 @@
 # Sao lưu & khôi phục
 
-Chạy trong `backend/` (Docker Compose phải đang chạy):
+Chạy trong `backend/` (dịch vụ PostgreSQL trên máy phải đang chạy). Dùng `pg_dump`/`pg_restore` trong
+`C:\Program Files\PostgreSQL\17\bin`, hoặc thư mục đặt ở `PG_BIN` trong `backend/.env`:
 
 ```powershell
 yarn run backup                    # → data/backups/<thời-điểm>/
@@ -9,7 +10,7 @@ yarn run restore 2026-10-29T09-58-40-064Z --yes   # bản cụ thể, không h�
 ```
 
 Mỗi bản sao lưu gồm:
-- `db.dump` — `pg_dump -Fc` của database `POSTGRES_DB` (lấy qua `docker compose exec`, ghi bằng Node nên
+- `db.dump` — `pg_dump -Fc` của database trong `DATABASE_URL` (ghi bằng Node nên
   PowerShell không làm hỏng file nhị phân);
 - `storage/` — bản sao `data/storage` (audio, ảnh, bản ghi Speaking…);
 - `manifest.json` — thời điểm, kích thước, sha256 của dump, số file.

@@ -8,7 +8,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createInterface } from 'node:readline/promises';
 import { pipeline } from 'node:stream/promises';
-import { readComposeEnv, REPO_ROOT, STORAGE_DIR } from './common.mjs';
+import { pgTool, readDatabase, REPO_ROOT, STORAGE_DIR } from './common.mjs';
 
 const args = process.argv.slice(2);
 const yes = args.includes('--yes');
@@ -29,11 +29,11 @@ if (hash.digest('hex') !== manifest.dump.sha256) {
   process.exit(1);
 }
 
-const { POSTGRES_USER, POSTGRES_DB } = readComposeEnv();
+const db = readDatabase();
 if (!yes) {
   const rl = createInterface({ input: process.stdin, output: process.stdout });
   const answer = await rl.question(
-    `Khôi phục "${name}" sẽ GHI ĐÈ database "${POSTGRES_DB}" và thư mục data/storage. Gõ "yes" để tiếp tục: `,
+    `Khôi phục "${name}" sẽ GHI ĐÈ database "${db.name}" và thư mục data/storage. Gõ "yes" để tiếp tục: `,
   );
   rl.close();
   if (answer.trim().toLowerCase() !== 'yes') {
@@ -43,24 +43,10 @@ if (!yes) {
 }
 
 console.log('Khôi phục database…');
-const child = spawn(
-  'docker',
-  [
-    'compose',
-    'exec',
-    '-T',
-    'postgres',
-    'pg_restore',
-    '--clean',
-    '--if-exists',
-    '--no-owner',
-    '-U',
-    POSTGRES_USER,
-    '-d',
-    POSTGRES_DB,
-  ],
-  { cwd: REPO_ROOT, stdio: ['pipe', 'inherit', 'inherit'] },
-);
+const child = spawn(pgTool('pg_restore'), ['--clean', '--if-exists', '--no-owner', '--dbname', db.url], {
+  cwd: REPO_ROOT,
+  stdio: ['pipe', 'inherit', 'inherit'],
+});
 const exit = new Promise((resolve, reject) => {
   child.on('error', reject);
   child.on('close', (code) =>
