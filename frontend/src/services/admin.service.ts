@@ -15,6 +15,12 @@ import {
 } from '@/shared/admin';
 import { OcrJobDetailDto, OcrJobDto, type AssembleMeta, type OcrReviewDraft } from '@/shared/ocr';
 import { CorrectAnswer } from '@/shared/question-types';
+import {
+  AdminTestSetDto,
+  PublishSetResultDto,
+  ZipImportResultDto,
+  type ListSetsQuery,
+} from '@/shared/test-sets';
 import { Skill, QuestionType } from '@/shared/enums';
 
 /** ?a=1&b=x from a plain object (undefined / '' values dropped). */
@@ -86,6 +92,28 @@ export const testsAdminApi = {
   remove: (id: string) => api(`/admin/tests/${id}`, { method: 'DELETE' }),
   hotfix: (id: string, questionId: string, body: HotfixQuestionBody) =>
     api(`/admin/tests/${id}/questions/${questionId}`, { method: 'PATCH', body }),
+};
+
+export const testSetsAdminApi = {
+  list: (q: ListSetsQuery) => api(`/admin/test-sets${qs(q)}`, { schema: z.array(AdminTestSetDto) }),
+  publish: (setKey: string) =>
+    api(`/admin/test-sets/${setKey}/publish`, { method: 'POST', body: {}, schema: PublishSetResultDto }),
+  importZip: (file: File, dryRun: boolean) => {
+    const fd = new FormData();
+    fd.append('file', file, file.name);
+    return api(dryRun ? '/admin/tests/import-zip/validate' : '/admin/tests/import-zip', {
+      method: 'POST',
+      body: fd,
+      schema: ZipImportResultDto,
+    });
+  },
+};
+
+/** Download links (plain <a href download>; the API streams the zip with auth cookies). */
+export const exportUrl = {
+  test: (id: string) => `/api/v1/admin/tests/${id}/export.zip`,
+  set: (setKey: string, include: 'latest' | 'published' = 'latest') =>
+    `/api/v1/admin/test-sets/${setKey}/export.zip${qs({ include })}`,
 };
 
 export const filesApi = {

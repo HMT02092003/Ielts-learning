@@ -15,7 +15,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { viAdmin } from '@/i18n/vi-admin';
 import { vi } from '@/i18n/vi';
 import { ApiError } from '@/lib/api-client';
-import { testsAdminApi, type AdminQuestion, type TestDetail } from '@/services/admin.service';
+import { exportUrl, testsAdminApi, type AdminQuestion, type TestDetail } from '@/services/admin.service';
 import { TestSource, type TestType } from '@/shared/enums';
 
 const t = viAdmin.tests;
@@ -189,6 +189,11 @@ function TestEditor({ id, data }: { id: string; data: TestDetail }) {
               {t.unpublish}
             </Button>
           )}
+          <Button variant="secondary" asChild>
+            <a href={exportUrl.test(test.id)} download>
+              {t.exportZip}
+            </a>
+          </Button>
           <Button variant="secondary" onClick={() => action.mutate('clone')}>
             {t.clone}
           </Button>

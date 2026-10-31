@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { StatusBadge } from '@/components/admin/status-badge';
+import { TestSetsView } from '@/components/admin/test-sets-view';
+import { useViewPref, ViewToggle } from '@/components/common/view-toggle';
 import { Badge, SourceBadge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DataTable, type Column } from '@/components/ui/data-table';
@@ -16,15 +18,18 @@ import type { TestSummaryDto } from '@/shared/admin';
 import { Skill, TestSource, TestStatus } from '@/shared/enums';
 
 const t = viAdmin.tests;
+const VIEW_KEY = 'bandup.admin.tests.view';
 
 export default function AdminTestsPage() {
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [filters, setFilters] = useState({ q: '', source: '', status: '', skill: '' });
+  const [view, changeView] = useViewPref(VIEW_KEY, 'sets');
   const tests = useQuery({
     queryKey: ['admin', 'tests', page, filters],
     queryFn: () => testsAdminApi.list({ page, ...filters } as never),
     placeholderData: keepPreviousData,
+    enabled: view === 'list',
   });
   const set = (k: keyof typeof filters) => (v: string) => {
     setFilters((f) => ({ ...f, [k]: v }));
@@ -81,6 +86,7 @@ export default function AdminTestsPage() {
         </div>
       </div>
       <div className="flex flex-wrap gap-3">
+        <ViewToggle value={view} onChange={changeView} labels={{ sets: t.viewSets, list: t.viewList }} />
         <Input
           placeholder={t.search}
           aria-label={t.search}
@@ -102,45 +108,53 @@ export default function AdminTestsPage() {
             </option>
           ))}
         </NativeSelect>
-        <NativeSelect
-          aria-label={t.colSkills}
-          value={filters.skill}
-          onChange={(e) => set('skill')(e.target.value)}
-        >
-          <option value="">
-            {t.colSkills}: {t.all}
-          </option>
-          {Skill.options.map((s) => (
-            <option key={s} value={s}>
-              {viAdmin.skill[s]}
-            </option>
-          ))}
-        </NativeSelect>
-        <NativeSelect
-          aria-label={t.colStatus}
-          value={filters.status}
-          onChange={(e) => set('status')(e.target.value)}
-        >
-          <option value="">
-            {t.colStatus}: {t.all}
-          </option>
-          {TestStatus.options.map((s) => (
-            <option key={s} value={s}>
-              {viAdmin.status[s]}
-            </option>
-          ))}
-        </NativeSelect>
+        {view === 'list' && (
+          <>
+            <NativeSelect
+              aria-label={t.colSkills}
+              value={filters.skill}
+              onChange={(e) => set('skill')(e.target.value)}
+            >
+              <option value="">
+                {t.colSkills}: {t.all}
+              </option>
+              {Skill.options.map((s) => (
+                <option key={s} value={s}>
+                  {viAdmin.skill[s]}
+                </option>
+              ))}
+            </NativeSelect>
+            <NativeSelect
+              aria-label={t.colStatus}
+              value={filters.status}
+              onChange={(e) => set('status')(e.target.value)}
+            >
+              <option value="">
+                {t.colStatus}: {t.all}
+              </option>
+              {TestStatus.options.map((s) => (
+                <option key={s} value={s}>
+                  {viAdmin.status[s]}
+                </option>
+              ))}
+            </NativeSelect>
+          </>
+        )}
       </div>
-      <DataTable
-        columns={columns}
-        data={tests.data?.items ?? []}
-        total={tests.data?.total}
-        page={page}
-        pageSize={tests.data?.pageSize}
-        onPageChange={setPage}
-        onRowClick={(row) => router.push(`/admin/tests/${row.id}`)}
-        loading={tests.isPending}
-      />
+      {view === 'sets' ? (
+        <TestSetsView q={filters.q} source={filters.source as TestSource | ''} />
+      ) : (
+        <DataTable
+          columns={columns}
+          data={tests.data?.items ?? []}
+          total={tests.data?.total}
+          page={page}
+          pageSize={tests.data?.pageSize}
+          onPageChange={setPage}
+          onRowClick={(row) => router.push(`/admin/tests/${row.id}`)}
+          loading={tests.isPending}
+        />
+      )}
     </div>
   );
 }
