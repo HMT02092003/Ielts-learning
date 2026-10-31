@@ -7,7 +7,7 @@ import { SOURCE_PRIORITY, type Skill } from '../../shared/enums';
 
 const SKILL_ORDER: Skill[] = ['LISTENING', 'READING', 'WRITING', 'SPEAKING'];
 
-const cardInclude = {
+export const cardInclude = {
   sections: {
     select: {
       id: true,
@@ -24,7 +24,7 @@ const cardInclude = {
 
 type CardRow = Prisma.TestGetPayload<{ include: typeof cardInclude }>;
 
-async function toCards(rows: CardRow[], userId: string): Promise<TestCardDto[]> {
+export async function toCards(rows: CardRow[], userId: string): Promise<TestCardDto[]> {
   const ids = rows.map((r) => r.id);
   const [attempts, marks] = await Promise.all([
     prisma.attempt.findMany({

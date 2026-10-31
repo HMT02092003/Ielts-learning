@@ -14,6 +14,7 @@ import { authRouter } from './modules/auth/auth.routes';
 import { usersRouter } from './modules/users/users.routes';
 import { adminFilesRouter, filesRouter } from './modules/files/files.routes';
 import { adminTestsRouter } from './modules/tests/tests.routes';
+import { adminTestSetsRouter } from './modules/tests/test-sets.routes';
 import { ocrRouter } from './modules/ocr/ocr.routes';
 import { adminBandTablesRouter, bandTablesRouter } from './modules/band-tables/band-tables.routes';
 import { annotationsRouter, attemptAnnotationsRouter } from './modules/annotations/annotations.routes';
@@ -72,6 +73,7 @@ export function createApp() {
   api.use('/admin/users', usersRouter);
   api.use('/admin/files', adminFilesRouter);
   api.use('/admin/tests', adminTestsRouter);
+  api.use('/admin/test-sets', adminTestSetsRouter);
   api.use('/admin/ocr-jobs', ocrRouter);
   api.use('/admin/band-tables', adminBandTablesRouter);
   api.use('/band-tables', bandTablesRouter);
