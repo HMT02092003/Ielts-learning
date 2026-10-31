@@ -61,6 +61,13 @@ Windows nên tự chạy cùng máy.
 
 Muốn chạy riêng từng phần: `yarn dev` trong `backend/` và trong `frontend/` (2 terminal).
 
+### Mở như app
+
+`npm run shortcut` (một lần) tạo icon **BandUp** trên Desktop. Bấm đúp icon: BandUp chạy ngầm (không có cửa sổ
+console) và mở trong một cửa sổ Edge riêng, không thanh địa chỉ. Chuột phải icon → *Ghim vào thanh tác vụ* nếu muốn.
+Đóng cửa sổ là tắt luôn server. Nếu đang chạy sẵn `npm run dev` thì icon chỉ mở cửa sổ, không đụng tới server đó.
+Log ở `data/logs/app-<ngày>.log`; khởi động lỗi thì hiện hộp thoại kèm đường dẫn log. Không có icon thì gõ `npm run app`.
+
 ## Chạy toàn bộ bằng Docker (máy khác, không cần cài Node)
 
 ```powershell
@@ -100,6 +107,8 @@ Mỗi lần đổi `PUBLIC_ORIGIN`, chạy lại lệnh ở bước 2 để back
 | frontend | `yarn test:e2e` | Test trình duyệt (tắt `yarn dev` của frontend trước) |
 | frontend | `yarn run sync-shared` | Chép `backend/src/shared` sang frontend sau khi sửa schema Zod dùng chung |
 | gốc | `npm run check` | `yarn run check` cho cả hai dự án |
+| gốc | `npm run app` / `npm run shortcut` | Mở BandUp như app / tạo icon trên Desktop |
+| gốc | `npm run icons` | Vẽ lại icon (PNG + `BandUp.ico`) từ `frontend/src/app/icon.svg` |
 
 > Luôn gõ `yarn run check`, **không** phải `yarn check` (đó là lệnh có sẵn của Yarn, làm việc khác).
 > Lần đầu chạy e2e: `yarn playwright install chromium` trong `frontend/`.

@@ -52,5 +52,7 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   // Never match /api (uploads must stream through the rewrite untouched), Next internals or static files.
-  matcher: ['/((?!api/|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|webp|ico|woff2|txt)$).*)'],
+  matcher: [
+    '/((?!api/|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|webp|ico|woff2|txt|webmanifest)$).*)',
+  ],
 };

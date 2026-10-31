@@ -16,6 +16,15 @@ export const BACKEND = path.join(ROOT, 'backend');
 export const FRONTEND = path.join(ROOT, 'frontend');
 
 const ENV = { ...process.env };
+// Children must find node/npm/yarn even when PATH is stale (a shortcut or a console opened before installing Node):
+// add this node's folder and the global npm bin folder.
+{
+  const key = Object.keys(ENV).find((k) => k.toUpperCase() === 'PATH') ?? 'PATH';
+  const extra = [path.dirname(process.execPath)];
+  if (process.platform === 'win32' && ENV.APPDATA) extra.push(path.join(ENV.APPDATA, 'npm'));
+  const parts = (ENV[key] ?? '').split(path.delimiter).filter(Boolean);
+  ENV[key] = [...parts, ...extra.filter((d) => !parts.includes(d))].join(path.delimiter);
+}
 
 /**
  * How to invoke Yarn 1: the global `yarn` when installed, otherwise the exact version pinned in
@@ -27,32 +36,38 @@ export const YARN = (() => {
   return `npx --yes ${pinned}`;
 })();
 
-/** Run a command (through the shell, so `yarn`/`docker` resolve the same on Windows and Linux). */
-export function run(command, cwd = ROOT) {
+const toConsole = (text) => process.stdout.write(text);
+
+/**
+ * Run a command (through the shell, so `yarn`/`docker` resolve the same on Windows and Linux). Output goes to the
+ * console, or to `write` (e.g. a log file) when given.
+ */
+export function run(command, cwd = ROOT, write) {
   return new Promise((resolve, reject) => {
-    const child = spawn(command, { cwd, shell: true, stdio: 'inherit', env: ENV });
+    const child = spawn(command, { cwd, shell: true, stdio: write ? ['ignore', 'pipe', 'pipe'] : 'inherit', env: ENV });
+    if (write) for (const stream of [child.stdout, child.stderr]) stream.on('data', (c) => write(c.toString()));
     child.on('error', reject);
     child.on('close', (code) => (code === 0 ? resolve() : reject(new Error(`"${command}" thoát với mã ${code}`))));
   });
 }
 
-/** Start a long-running command whose output lines are prefixed with a coloured tag. */
-export function startPrefixed(tag, colour, command, cwd) {
+/** Start a long-running command whose output lines are prefixed with a coloured tag (to the console or `write`). */
+export function startPrefixed(tag, colour, command, cwd, write = toConsole) {
   // stdin must be 'ignore': with an open stdin pipe `tsx watch` never starts the server.
   const child = spawn(command, {
     cwd,
     shell: true,
     stdio: ['ignore', 'pipe', 'pipe'],
-    env: { ...ENV, FORCE_COLOR: '1' },
+    env: { ...ENV, FORCE_COLOR: write === toConsole ? '1' : '0' },
   });
-  const prefix = `\x1b[${colour}m[${tag}]\x1b[0m `;
+  const prefix = write === toConsole ? `\x1b[${colour}m[${tag}]\x1b[0m ` : `[${tag}] `;
   for (const stream of [child.stdout, child.stderr]) {
     let buf = '';
     stream.on('data', (chunk) => {
       buf += chunk.toString();
       const lines = buf.split(/\r?\n/);
       buf = lines.pop() ?? '';
-      for (const line of lines) process.stdout.write(prefix + line + '\n');
+      for (const line of lines) write(prefix + line + '\n');
     });
   }
   return child;

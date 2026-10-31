@@ -34,7 +34,8 @@ FE dev **30000**, FE build/`next start`/Docker **31000**, BE API **40000** (owne
 ## Commands
 
 - Root (no deps, plain npm): `npm run setup` (env files + installs), `npm run dev` (host PostgreSQL :5432 → migrate/seed → LanguageTool from `.tools/` →
-  API + web in one terminal), `npm run check`, `npm run docker:up|down|logs` (full stack in Docker, profile `app`).
+  API + web in one terminal), `npm run app` (same stack hidden, logs to `data/logs/`, Edge `--app` window; closing it stops
+  the stack it started), `npm run shortcut` (Desktop icon → `BandUp.vbs`), `npm run icons`, `npm run check`, `npm run docker:up|down|logs` (full stack in Docker, profile `app`).
 - Full Docker on any machine: `cp .env.example .env` then `docker compose --profile app up -d --build`
   (the API container runs migrate deploy + idempotent seed on start; web image bakes `API_ORIGIN=http://backend:4000`).
 - Infra: **PostgreSQL 17 installed on the host** (service `postgresql-x64-17`, 127.0.0.1:5432, role `ielts`); LanguageTool 6.6 + portable JRE in git-ignored `.tools/`. Docker is no longer installed on the owner's machine (owner's choice, 2026-10-31); `docker compose` remains only for the optional full-Docker mode.

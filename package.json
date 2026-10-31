@@ -8,6 +8,9 @@
   "scripts": {
     "setup": "node scripts/setup.mjs",
     "dev": "node scripts/dev.mjs",
+    "app": "node scripts/app.mjs",
+    "shortcut": "node scripts/shortcut.mjs",
+    "icons": "node scripts/make-icons.mjs",
     "check": "node scripts/run-both.mjs check",
     "docker:up": "docker compose --profile app up -d --build",
     "docker:down": "docker compose --profile app down",
