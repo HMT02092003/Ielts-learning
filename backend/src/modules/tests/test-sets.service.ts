@@ -11,9 +11,12 @@ import {
   type AdminSetTestDto,
   type AdminTestSetDto,
   type ListSetsQuery,
+  type PublishSetResultDto,
   type StudentTestSetDto,
 } from '../../shared/test-sets';
+import type { ValidationIssue } from '../../shared/errors';
 import { cardInclude, toCards } from '../catalog/catalog.service';
+import { testsService } from './tests.service';
 
 const SKILL_ORDER: Skill[] = ['LISTENING', 'READING', 'WRITING', 'SPEAKING'];
 
@@ -157,5 +160,22 @@ export const testSetsService = {
     return picked
       .sort(byTestNumber)
       .map(({ id, seriesKey, version, status }) => ({ id, seriesKey, version, status }));
+  },
+
+  /** Publish the latest DRAFT of every series in the set; drafts that are not publishable are listed, not fatal. */
+  async publishSet(setKey: string, actorId: string): Promise<PublishSetResultDto> {
+    const result: PublishSetResultDto = { published: [], skipped: [] };
+    for (const t of await this.testsInSet(setKey, 'latest')) {
+      if (t.status !== 'DRAFT') continue;
+      try {
+        await testsService.publish(t.id, actorId);
+        result.published.push({ seriesKey: t.seriesKey, testId: t.id });
+      } catch (err) {
+        if (!(err instanceof AppError) || err.code !== 'TEST_NOT_PUBLISHABLE') throw err;
+        const issues = (err.details as { issues?: ValidationIssue[] } | undefined)?.issues;
+        result.skipped.push({ seriesKey: t.seriesKey, reason: err.message, ...(issues ? { issues } : {}) });
+      }
+    }
+    return result;
   },
 };

@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import { z } from 'zod';
+import { AppError } from '../../lib/errors';
 import { localDate } from '../../lib/tz';
 import { authenticate, requireRole } from '../../middlewares/authenticate';
 import { validate, validated } from '../../middlewares/validate';
@@ -13,6 +15,14 @@ adminTestSetsRouter.use(authenticate, requireRole('ADMIN'));
 adminTestSetsRouter.get('/', validate({ query: ListSetsQuery }), async (_req, res) => {
   res.json(await testSetsService.listAdmin(validated<ListSetsQuery>(res, 'query')));
 });
+adminTestSetsRouter.post(
+  '/:setKey/publish',
+  validate({ params: SetKeyParams, body: z.unknown() }),
+  async (req, res) => {
+    if (!req.user) throw new AppError('UNAUTHENTICATED', 'Bạn cần đăng nhập');
+    res.json(await testSetsService.publishSet(validated<SetKeyParams>(res, 'params').setKey, req.user.id));
+  },
+);
 adminTestSetsRouter.get(
   '/:setKey/export.zip',
   validate({ params: SetKeyParams, query: SetExportQuery }),

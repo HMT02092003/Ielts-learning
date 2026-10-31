@@ -97,3 +97,34 @@ describe('test sets', () => {
     expect((await student.get('/api/v1/admin/test-sets')).status).toBe(404);
   });
 });
+
+describe('publish a whole set', () => {
+  it('publishes ready drafts and lists the ones it skipped', async () => {
+    const agent = await loginAs('admin@test.local');
+    const live = await importAs(agent, { seriesKey: 'cam18-t1-ac', bookNumber: 18, testNumber: 1 });
+    expect((await agent.post(`/api/v1/admin/tests/${live}/publish`).send({})).status).toBe(200);
+    const ready = await importAs(agent, { seriesKey: 'cam18-t2-ac', bookNumber: 18, testNumber: 2 });
+    await importAs(agent, { seriesKey: 'cam18-t3-ac', bookNumber: 18, testNumber: 3 }, (doc) => {
+      const reading = doc.reading as { passages: unknown[] };
+      reading.passages = reading.passages.slice(0, 1);
+    });
+
+    const res = await agent.post('/api/v1/admin/test-sets/CAM-18/publish').send({});
+    expect(res.status).toBe(200);
+    expect(res.body.published).toEqual([{ seriesKey: 'cam18-t2-ac', testId: ready }]);
+    expect(res.body.skipped).toHaveLength(1);
+    expect(res.body.skipped[0]).toMatchObject({
+      seriesKey: 'cam18-t3-ac',
+      reason: 'Đề chưa đủ điều kiện xuất bản',
+    });
+    expect(res.body.skipped[0].issues.length).toBeGreaterThan(0);
+
+    const sets = await agent.get('/api/v1/admin/test-sets');
+    expect(sets.body[0].counts).toEqual({ draft: 1, published: 2 });
+  });
+
+  it('rejects an unknown set', async () => {
+    const agent = await loginAs('admin@test.local');
+    expect((await agent.post('/api/v1/admin/test-sets/CAM-18/publish').send({})).status).toBe(404);
+  });
+});
