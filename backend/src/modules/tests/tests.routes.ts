@@ -25,6 +25,7 @@ adminTestsRouter.get('/', validate({ query: AdminListTestsQuery }), tests.list);
 adminTestsRouter.post('/import/validate', importUpload, validate({ body: Empty }), tests.validateImport);
 adminTestsRouter.post('/import', importUpload, validate({ body: Empty }), tests.importNew);
 adminTestsRouter.get('/:id', validate({ params: IdParams }), tests.get);
+adminTestsRouter.get('/:id/export.zip', validate({ params: IdParams }), tests.exportZip);
 adminTestsRouter.get('/:id/questions', validate({ params: IdParams }), tests.questions);
 adminTestsRouter.put(
   '/:id/content',

@@ -12,6 +12,7 @@ import type {
   UpdateTestMetaBody,
 } from '../../shared/admin';
 import { testsService } from './tests.service';
+import { zipExportService } from './zip-export.service';
 
 const actorId = (req: Request) => {
   if (!req.user) throw new AppError('UNAUTHENTICATED', 'Bạn cần đăng nhập');
@@ -92,4 +93,11 @@ export const hotfix: RequestHandler = async (_req, res) => {
   const { id, questionId } = validated<{ id: string; questionId: string }>(res, 'params');
   await testsService.hotfixQuestion(id, questionId, validated<HotfixQuestionBody>(res, 'body'));
   res.status(204).end();
+};
+
+export const exportZip: RequestHandler = async (_req, res) => {
+  const { id } = validated<IdParams>(res, 'params');
+  const fileName = await zipExportService.testFileName(id);
+  res.attachment(fileName).type('application/zip');
+  await zipExportService.streamZip([id], res);
 };
