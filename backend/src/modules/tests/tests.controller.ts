@@ -13,6 +13,7 @@ import type {
 } from '../../shared/admin';
 import { testsService } from './tests.service';
 import { zipExportService } from './zip-export.service';
+import { zipImportService } from './zip-import.service';
 
 const actorId = (req: Request) => {
   if (!req.user) throw new AppError('UNAUTHENTICATED', 'Bạn cần đăng nhập');
@@ -100,4 +101,20 @@ export const exportZip: RequestHandler = async (_req, res) => {
   const fileName = await zipExportService.testFileName(id);
   res.attachment(fileName).type('application/zip');
   await zipExportService.streamZip([id], res);
+};
+
+async function importZipUpload(req: Request, dryRun: boolean) {
+  const [zip] = uploadedFiles(req);
+  if (!zip?.originalname.toLowerCase().endsWith('.zip')) {
+    throw new AppError('VALIDATION_ERROR', 'Cần một file .zip');
+  }
+  return zipImportService.importZip(zip.path, actorId(req), dryRun);
+}
+
+export const validateZip: RequestHandler = async (req, res) => {
+  res.json(await importZipUpload(req, true));
+};
+
+export const importZip: RequestHandler = async (req, res) => {
+  res.status(201).json(await importZipUpload(req, false));
 };

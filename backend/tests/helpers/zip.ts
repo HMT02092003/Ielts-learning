@@ -53,3 +53,12 @@ export function binary(res: Response, cb: (err: Error | null, body: Buffer) => v
   res.on('data', (c: Buffer) => chunks.push(c));
   res.on('end', () => cb(null, Buffer.concat(chunks)));
 }
+
+/** Rename an entry in place (same byte length) — yazl refuses hostile names, so tests forge them this way. */
+export function renameEntry(zip: Buffer, from: string, to: string): Buffer {
+  if (Buffer.byteLength(from) !== Buffer.byteLength(to)) throw new Error('names must have the same length');
+  const out = Buffer.from(zip);
+  const needle = Buffer.from(from);
+  for (let i = out.indexOf(needle); i !== -1; i = out.indexOf(needle, i + 1)) out.write(to, i);
+  return out;
+}

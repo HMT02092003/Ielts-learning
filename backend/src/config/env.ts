@@ -53,6 +53,7 @@ const EnvSchema = z.object({
   UPLOAD_MAX_IMAGE_MB: int(15, 1),
   UPLOAD_MAX_PDF_MB: int(50, 1),
   UPLOAD_MAX_RECORDING_MB: int(25, 1),
+  UPLOAD_MAX_ZIP_MB: int(1024, 1),
   IMPORT_MAX_JSON_MB: int(5, 1),
 
   OCR_WORKER_ENABLED: bool.default(true),

@@ -15,6 +15,7 @@ import { Uuid } from '../../shared/primitives';
 import * as tests from './tests.controller';
 
 const importUpload = upload({ field: 'files', maxFiles: 60, maxBytes: env.UPLOAD_MAX_AUDIO_MB * 1_048_576 });
+const zipUpload = upload({ field: 'file', maxFiles: 1, maxBytes: env.UPLOAD_MAX_ZIP_MB * 1_048_576 });
 const Empty = z.unknown();
 
 /** Mounted at /admin/tests. */
@@ -23,6 +24,8 @@ export const adminTestsRouter = Router();
 adminTestsRouter.use(authenticate, requireRole('ADMIN'));
 adminTestsRouter.get('/', validate({ query: AdminListTestsQuery }), tests.list);
 adminTestsRouter.post('/import/validate', importUpload, validate({ body: Empty }), tests.validateImport);
+adminTestsRouter.post('/import-zip/validate', zipUpload, validate({ body: Empty }), tests.validateZip);
+adminTestsRouter.post('/import-zip', zipUpload, validate({ body: Empty }), tests.importZip);
 adminTestsRouter.post('/import', importUpload, validate({ body: Empty }), tests.importNew);
 adminTestsRouter.get('/:id', validate({ params: IdParams }), tests.get);
 adminTestsRouter.get('/:id/export.zip', validate({ params: IdParams }), tests.exportZip);
