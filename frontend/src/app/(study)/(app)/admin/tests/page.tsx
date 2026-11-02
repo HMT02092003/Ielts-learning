@@ -63,7 +63,15 @@ export default function AdminTestsPage() {
         </div>
       ),
     },
-    { header: t.colStatus, cell: ({ row }) => <StatusBadge status={row.original.status} /> },
+    {
+      header: t.colStatus,
+      cell: ({ row }) => (
+        <span className="flex flex-wrap items-center gap-1.5">
+          <StatusBadge status={row.original.status} />
+          {row.original.workingDocAt && <Badge variant="info">{t.working}</Badge>}
+        </span>
+      ),
+    },
     {
       header: t.colUpdated,
       cell: ({ row }) => (
@@ -76,12 +84,15 @@ export default function AdminTestsPage() {
     <div className="flex flex-col gap-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="font-display text-h2 font-light">{t.title}</h1>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Button variant="secondary" asChild>
             <Link href="/admin/ocr">{t.importOcr}</Link>
           </Button>
-          <Button asChild>
+          <Button variant="secondary" asChild>
             <Link href="/admin/tests/import">{t.importJson}</Link>
+          </Button>
+          <Button asChild>
+            <Link href="/admin/tests/new">{t.newTest}</Link>
           </Button>
         </div>
       </div>

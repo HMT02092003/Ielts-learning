@@ -44,6 +44,11 @@ export const viAdmin = {
     colSkills: 'Kỹ năng',
     colStatus: 'Trạng thái',
     colUpdated: 'Cập nhật',
+    newTest: 'Soạn đề mới',
+    openBuilder: 'Mở trình soạn đề',
+    working: 'Đang soạn',
+    workingBanner: (at: string) =>
+      `Đề có bản soạn dở chưa hoàn chỉnh (lưu lúc ${at}). Nội dung bên dưới là bản soạn dở; đề chỉ được cập nhật khi bản soạn đủ và được lưu trong trình soạn.`,
     importJson: 'Nhập JSON / .zip',
     importOcr: 'Nhập từ ảnh/PDF',
     viewSets: 'Theo bộ',

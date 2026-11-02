@@ -257,3 +257,94 @@ describe('OCR jobs', () => {
     expect(res.body.error.code).toBe('VALIDATION_ERROR');
   });
 });
+
+describe('admin tests: builder working document', () => {
+  const unfinished = {
+    schemaVersion: 1,
+    seriesKey: 'builder-wip',
+    source: 'CUSTOM',
+    type: 'ACADEMIC',
+    title: 'Đề đang soạn',
+    reading: { passages: [{ title: '', paragraphs: [{ label: 'A', text: '' }], groups: [] }] },
+  };
+
+  it('creates a draft from an unfinished document, keeps it, applies it once complete', async () => {
+    const agent = await admin();
+    const created = await agent.post('/api/v1/admin/tests/working').send({ doc: unfinished });
+    expect(created.status).toBe(201);
+    const testId = created.body.testId as string;
+    expect(await prisma.section.count({ where: { testId } })).toBe(0);
+
+    const detail = await agent.get(`/api/v1/admin/tests/${testId}`);
+    expect(detail.body.doc).toEqual(unfinished);
+    expect(detail.body.test.workingDocAt).not.toBeNull();
+    expect(detail.body.publishIssues.length).toBeGreaterThan(0);
+
+    // nothing stored yet → nothing to export
+    const zip = await agent.get(`/api/v1/admin/tests/${testId}/export.zip`);
+    expect(zip.body.error.code).toBe('VALIDATION_ERROR');
+
+    const list = await agent.get('/api/v1/admin/tests?q=builder-wip');
+    expect(list.body.items[0]).toMatchObject({ title: 'Đề đang soạn', status: 'DRAFT' });
+    expect(list.body.items[0].workingDocAt).not.toBeNull();
+
+    // save again with a new title: the row metadata follows
+    const saved = await agent
+      .put(`/api/v1/admin/tests/${testId}/working`)
+      .send({ doc: { ...unfinished, title: 'Đề đang soạn 2' } });
+    expect(saved.body).toMatchObject({ title: 'Đề đang soạn 2', workingDocAt: expect.any(String) });
+
+    // publishing is blocked while the working document exists
+    const blocked = await agent.post(`/api/v1/admin/tests/${testId}/publish`).send({});
+    expect(blocked.body.error.code).toBe('TEST_NOT_PUBLISHABLE');
+    expect(blocked.body.error.details.issues[0].code).toBe('working_doc');
+
+    // the complete document is applied through /content, which ends the working document
+    const full = JSON.parse(fixture('dummy-reading.json').toString('utf8')) as Record<string, unknown>;
+    const applied = await agent
+      .put(`/api/v1/admin/tests/${testId}/content`)
+      .send({ doc: { ...full, seriesKey: 'builder-wip' } });
+    expect(applied.status).toBe(200);
+    const row = await prisma.test.findUniqueOrThrow({ where: { id: testId } });
+    expect(row.workingDoc).toBeNull();
+    expect(row.workingDocAt).toBeNull();
+    expect(await prisma.question.count({ where: { section: { testId } } })).toBe(40);
+    const pub = await agent.post(`/api/v1/admin/tests/${testId}/publish`).send({});
+    expect(pub.body.status).toBe('PUBLISHED');
+  });
+
+  it('keeps the stored content untouched and can be discarded', async () => {
+    const { agent, testId } = await importReading();
+    const before = await prisma.question.count({ where: { section: { testId } } });
+    const res = await agent
+      .put(`/api/v1/admin/tests/${testId}/working`)
+      .send({ doc: { ...unfinished, seriesKey: 'dummy-reading-ac' } });
+    expect(res.status).toBe(200);
+    expect(await prisma.question.count({ where: { section: { testId } } })).toBe(before);
+    expect((await agent.get(`/api/v1/admin/tests/${testId}`)).body.doc.title).toBe('Đề đang soạn');
+
+    const dropped = await agent.delete(`/api/v1/admin/tests/${testId}/working`);
+    expect(dropped.body.workingDocAt).toBeNull();
+    const detail = await agent.get(`/api/v1/admin/tests/${testId}`);
+    expect(detail.body.doc.seriesKey).toBe('dummy-reading-ac');
+    expect(detail.body.publishIssues).toEqual([]);
+  });
+
+  it('validates metadata, the series key and the test status', async () => {
+    const { agent, testId } = await importReading();
+    const noTitle = await agent
+      .post('/api/v1/admin/tests/working')
+      .send({ doc: { ...unfinished, title: ' ' } });
+    expect(noTitle.body.error.code).toBe('IMPORT_INVALID');
+    expect(noTitle.body.error.details.issues[0].path).toBe('title');
+
+    const otherKey = await agent.put(`/api/v1/admin/tests/${testId}/working`).send({ doc: unfinished });
+    expect(otherKey.body.error.details.issues[0].code).toBe('immutable');
+
+    await agent.post(`/api/v1/admin/tests/${testId}/publish`).send({});
+    const locked = await agent
+      .put(`/api/v1/admin/tests/${testId}/working`)
+      .send({ doc: { ...unfinished, seriesKey: 'dummy-reading-ac' } });
+    expect(locked.body.error.code).toBe('TEST_LOCKED');
+  });
+});

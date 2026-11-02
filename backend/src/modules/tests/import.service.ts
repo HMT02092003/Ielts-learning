@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { prisma } from '../../config/prisma';
-import type { Prisma } from '../../generated/prisma/client';
+import { Prisma } from '../../generated/prisma/client';
 import { AppError } from '../../lib/errors';
 import { expandOptionalParts, fitsWordLimit, normalizeForCompare } from '../../lib/scoring/text';
 import type { FilePurpose, Skill, TestStatus } from '../../shared/enums';
@@ -250,6 +250,9 @@ export async function importTest(doc: TestImportDoc, opts: ImportOptions): Promi
         description: doc.description ?? null,
         contentHash,
         publishedById: opts.status === 'PUBLISHED' ? (opts.createdById ?? null) : null,
+        // applying a complete document ends any unfinished builder draft
+        workingDoc: Prisma.DbNull,
+        workingDocAt: null,
       };
       let test: { id: string };
       if (opts.replaceTestId) {

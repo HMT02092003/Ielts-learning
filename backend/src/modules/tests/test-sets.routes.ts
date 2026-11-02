@@ -29,7 +29,7 @@ adminTestSetsRouter.get(
   async (_req, res) => {
     const { setKey } = validated<SetKeyParams>(res, 'params');
     const { include } = validated<SetExportQuery>(res, 'query');
-    const tests = await testSetsService.testsInSet(setKey, include);
+    const tests = await testSetsService.testsInSet(setKey, include, { withContent: true });
     res.attachment(`BandUp-${setKey}-${localDate(new Date())}.zip`).type('application/zip');
     await zipExportService.streamZip(
       tests.map((t) => t.id),

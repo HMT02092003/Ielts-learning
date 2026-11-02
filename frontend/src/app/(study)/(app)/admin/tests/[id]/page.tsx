@@ -1,6 +1,7 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useMemo, useState, type FormEvent } from 'react';
 import { toast } from 'sonner';
@@ -139,6 +140,9 @@ function TestEditor({ id, data }: { id: string; data: TestDetail }) {
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
+          <Button variant="secondary" asChild>
+            <Link href={`/admin/tests/${test.id}/builder`}>{t.openBuilder}</Link>
+          </Button>
           {test.status !== 'PUBLISHED' && (
             <Button loading={action.isPending} onClick={() => action.mutate('publish')}>
               {t.publish}
@@ -149,11 +153,13 @@ function TestEditor({ id, data }: { id: string; data: TestDetail }) {
               {t.unpublish}
             </Button>
           )}
-          <Button variant="secondary" asChild>
-            <a href={exportUrl.test(test.id)} download>
-              {t.exportZip}
-            </a>
-          </Button>
+          {test.sections.length > 0 && (
+            <Button variant="secondary" asChild>
+              <a href={exportUrl.test(test.id)} download>
+                {t.exportZip}
+              </a>
+            </Button>
+          )}
           <Button variant="secondary" onClick={() => action.mutate('clone')}>
             {t.clone}
           </Button>
@@ -169,6 +175,17 @@ function TestEditor({ id, data }: { id: string; data: TestDetail }) {
           )}
         </div>
       </div>
+
+      {test.workingDocAt && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-warning bg-warning-soft px-4 py-3">
+          <p className="text-body text-warning-ink">
+            {t.workingBanner(new Date(test.workingDocAt).toLocaleString('vi-VN'))}
+          </p>
+          <Button size="sm" asChild>
+            <Link href={`/admin/tests/${test.id}/builder`}>{t.openBuilder}</Link>
+          </Button>
+        </div>
+      )}
 
       <Card>
         <CardLabel>{t.meta}</CardLabel>

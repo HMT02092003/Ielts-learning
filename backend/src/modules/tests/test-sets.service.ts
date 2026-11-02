@@ -144,13 +144,21 @@ export const testSetsService = {
     }));
   },
 
-  /** One test per series of the set: its latest version, or its published one. */
+  /**
+   * One test per series of the set: its latest version, or its published one. `withContent` skips versions that
+   * only hold an unfinished builder document (no content tables yet) — the zip export has nothing to write for them.
+   */
   async testsInSet(
     setKey: string,
     include: 'latest' | 'published',
+    opts: { withContent?: boolean } = {},
   ): Promise<{ id: string; seriesKey: string; version: number; status: string }[]> {
     const rows = await prisma.test.findMany({
-      where: { ...setWhere(setKey), ...(include === 'published' ? { status: 'PUBLISHED' } : {}) },
+      where: {
+        ...setWhere(setKey),
+        ...(include === 'published' ? { status: 'PUBLISHED' } : {}),
+        ...(opts.withContent ? { sections: { some: {} } } : {}),
+      },
       select: { id: true, seriesKey: true, version: true, status: true, testNumber: true, title: true },
       orderBy: { version: 'desc' },
     });

@@ -1,6 +1,7 @@
 import path from 'node:path';
 import { prisma } from '../../config/prisma';
-import type { Prisma } from '../../generated/prisma/client';
+import { env } from '../../config/env';
+import { Prisma } from '../../generated/prisma/client';
 import { AppError, notFound } from '../../lib/errors';
 import type {
   AdminListTestsQuery,
@@ -11,7 +12,14 @@ import type {
   UpdateTestMetaBody,
 } from '../../shared/admin';
 import type { FilePurpose, Skill } from '../../shared/enums';
-import { checkPublishable, type FileRef, type TestImportDoc } from '../../shared/test-import';
+import { zodIssues } from '../../shared/errors';
+import {
+  checkPublishable,
+  TestImportDoc as TestImportDocSchema,
+  WorkingDoc,
+  type FileRef,
+  type TestImportDoc,
+} from '../../shared/test-import';
 import { filesService } from '../files/files.service';
 import { exportTest } from './export.service';
 import { importTest, parseTestImport, type FileResolver } from './import.service';
@@ -26,7 +34,10 @@ const summaryInclude = {
   _count: { select: { attempts: { where: { isPreview: false } } } },
 } as const satisfies Prisma.TestInclude;
 
-type SummaryRow = Prisma.TestGetPayload<{ include: typeof summaryInclude }>;
+type SummaryRow = Omit<Prisma.TestGetPayload<{ include: typeof summaryInclude }>, 'workingDoc'>;
+
+/** Summary queries never load the (possibly large) working document. */
+const omitWorking = { workingDoc: true } as const;
 
 const SKILL_ORDER: Skill[] = ['LISTENING', 'READING', 'WRITING', 'SPEAKING'];
 
@@ -47,6 +58,7 @@ export function toSummary(t: SummaryRow): TestSummaryDto {
       .map((s) => ({ skill: s.skill, questions: s._count.questions, parts: s._count.parts })),
     attemptCount: t._count.attempts,
     publishedAt: t.publishedAt?.toISOString() ?? null,
+    workingDocAt: t.workingDocAt?.toISOString() ?? null,
     updatedAt: t.updatedAt.toISOString(),
   };
 }
@@ -115,6 +127,49 @@ function sectionsOf(doc: TestImportDoc): ImportResultDto['summary'] {
   return { sections };
 }
 
+/** Content can change only on a DRAFT test without real attempts (published tests are immutable, M1). */
+async function editableDraft(id: string) {
+  const t = await prisma.test.findUnique({ where: { id }, omit: omitWorking });
+  if (!t) throw notFound('Đề');
+  if (t.status !== 'DRAFT') {
+    throw new AppError('TEST_LOCKED', 'Đề đã xuất bản không sửa nội dung được — hãy nhân bản thành bản mới');
+  }
+  if (await hasRealAttempts(id))
+    throw new AppError('TEST_LOCKED', 'Đề đã có người làm, hãy nhân bản thành bản mới');
+  return t;
+}
+
+function parseWorking(raw: unknown): WorkingDoc {
+  const parsed = WorkingDoc.safeParse(raw);
+  if (!parsed.success) {
+    throw new AppError('IMPORT_INVALID', 'Thông tin đề chưa hợp lệ', { issues: zodIssues(parsed.error) });
+  }
+  if (JSON.stringify(parsed.data).length > env.IMPORT_MAX_JSON_MB * 1_048_576) {
+    throw new AppError('FILE_TOO_LARGE', `Bản soạn vượt quá ${env.IMPORT_MAX_JSON_MB} MB`);
+  }
+  return parsed.data;
+}
+
+/** Test row metadata mirrored from the working document (the list and search show what is being edited). */
+function workingMeta(doc: WorkingDoc) {
+  return {
+    title: doc.title,
+    source: doc.source,
+    type: doc.type,
+    sourceRef: doc.sourceRef ?? null,
+    bookNumber: doc.bookNumber ?? null,
+    testNumber: doc.testNumber ?? null,
+    description: doc.description ?? null,
+  };
+}
+
+/** Issues of a working document: the full schema first, then the publish checks. */
+function workingIssues(doc: unknown) {
+  const parsed = TestImportDocSchema.safeParse(doc);
+  if (!parsed.success) return zodIssues(parsed.error);
+  return checkPublishable(parsed.data);
+}
+
 export const testsService = {
   async list(q: AdminListTestsQuery): Promise<Paginated<TestSummaryDto>> {
     const where: Prisma.TestWhereInput = {
@@ -136,6 +191,7 @@ export const testsService = {
       prisma.test.findMany({
         where,
         include: summaryInclude,
+        omit: omitWorking,
         orderBy: [{ updatedAt: 'desc' }],
         skip: (q.page - 1) * q.pageSize,
         take: q.pageSize,
@@ -145,11 +201,69 @@ export const testsService = {
     return { items: rows.map(toSummary), page: q.page, pageSize: q.pageSize, total };
   },
 
-  async get(id: string): Promise<{ test: TestSummaryDto; doc: TestImportDoc; publishIssues: unknown[] }> {
+  /** While the builder holds an unfinished working document, it is what the admin screens edit. */
+  async get(id: string): Promise<{ test: TestSummaryDto; doc: unknown; publishIssues: unknown[] }> {
     const t = await prisma.test.findUnique({ where: { id }, include: summaryInclude });
     if (!t) throw notFound('Đề');
+    if (t.workingDoc !== null) {
+      return { test: toSummary(t), doc: t.workingDoc, publishIssues: workingIssues(t.workingDoc) };
+    }
     const doc = await exportTest(id);
     return { test: toSummary(t), doc, publishIssues: checkPublishable(doc) };
+  },
+
+  /** Builder: create a DRAFT test from an unfinished document (no content tables yet). */
+  async createWorking(raw: unknown, actorId: string): Promise<ImportResultDto> {
+    const doc = parseWorking(raw);
+    const last = await prisma.test.findFirst({
+      where: { seriesKey: doc.seriesKey },
+      orderBy: { version: 'desc' },
+      select: { version: true },
+    });
+    const t = await prisma.test.create({
+      data: {
+        ...workingMeta(doc),
+        seriesKey: doc.seriesKey,
+        version: (last?.version ?? 0) + 1,
+        status: 'DRAFT',
+        createdById: actorId,
+        workingDoc: doc as Prisma.InputJsonValue,
+        workingDocAt: new Date(),
+      },
+      select: { id: true },
+    });
+    return { valid: true, testId: t.id };
+  },
+
+  /** Builder: save an unfinished document on a DRAFT test; the content tables stay as they are. */
+  async saveWorking(id: string, raw: unknown): Promise<TestSummaryDto> {
+    const t = await editableDraft(id);
+    const doc = parseWorking(raw);
+    if (doc.seriesKey !== t.seriesKey) {
+      throw new AppError('IMPORT_INVALID', 'File đề không hợp lệ', {
+        issues: [{ path: 'seriesKey', code: 'immutable', message: `seriesKey phải giữ là "${t.seriesKey}"` }],
+      });
+    }
+    const updated = await prisma.test.update({
+      where: { id },
+      data: { ...workingMeta(doc), workingDoc: doc as Prisma.InputJsonValue, workingDocAt: new Date() },
+      include: summaryInclude,
+      omit: omitWorking,
+    });
+    return toSummary(updated);
+  },
+
+  /** Builder: drop the unfinished document and go back to the stored content. */
+  async discardWorking(id: string): Promise<TestSummaryDto> {
+    const t = await prisma.test.findUnique({ where: { id }, select: { id: true } });
+    if (!t) throw notFound('Đề');
+    const updated = await prisma.test.update({
+      where: { id },
+      data: { workingDoc: Prisma.DbNull, workingDocAt: null },
+      include: summaryInclude,
+      omit: omitWorking,
+    });
+    return toSummary(updated);
   },
 
   /** Dry run: validation only, nothing is stored. */
@@ -176,16 +290,7 @@ export const testsService = {
 
   /** JSON editor: only DRAFT tests without real attempts can change content (published ones are immutable, M1). */
   async replaceContent(id: string, raw: unknown, actorId: string): Promise<ImportResultDto> {
-    const t = await prisma.test.findUnique({ where: { id } });
-    if (!t) throw notFound('Đề');
-    if (t.status !== 'DRAFT') {
-      throw new AppError(
-        'TEST_LOCKED',
-        'Đề đã xuất bản không sửa nội dung được — hãy nhân bản thành bản mới',
-      );
-    }
-    if (await hasRealAttempts(id))
-      throw new AppError('TEST_LOCKED', 'Đề đã có người làm, hãy nhân bản thành bản mới');
+    const t = await editableDraft(id);
     const doc = parseTestImport(raw, { requirePublishable: false });
     if (doc.seriesKey !== t.seriesKey) {
       throw new AppError('IMPORT_INVALID', 'File đề không hợp lệ', {
@@ -211,9 +316,21 @@ export const testsService = {
 
   /** Publish = full "publishable" checks; older published versions of the same series become ARCHIVED. */
   async publish(id: string, actorId: string): Promise<TestSummaryDto> {
-    const t = await prisma.test.findUnique({ where: { id } });
+    const t = await prisma.test.findUnique({ where: { id }, omit: omitWorking });
     if (!t) throw notFound('Đề');
     if (t.status === 'PUBLISHED') return this.get(id).then((r) => r.test);
+    if (t.workingDocAt) {
+      throw new AppError('TEST_NOT_PUBLISHABLE', 'Đề chưa đủ điều kiện xuất bản', {
+        issues: [
+          {
+            path: '',
+            code: 'working_doc',
+            message:
+              'Còn bản soạn dở chưa hoàn chỉnh — hoàn thành và lưu vào đề (hoặc bỏ bản soạn dở) trước khi xuất bản',
+          },
+        ],
+      });
+    }
     const doc = parseTestImport(await exportTest(id), { requirePublishable: false });
     const issues = checkPublishable(doc);
     if (issues.length > 0)

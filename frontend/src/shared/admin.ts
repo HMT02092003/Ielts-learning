@@ -84,6 +84,8 @@ export const TestSummaryDto = z.object({
   sections: z.array(SectionSummary),
   attemptCount: z.number(),
   publishedAt: z.iso.datetime().nullable(),
+  /** Set while the test builder holds an unfinished working document (content tables unchanged). */
+  workingDocAt: z.iso.datetime().nullable(),
   updatedAt: z.iso.datetime(),
 });
 export type TestSummaryDto = z.infer<typeof TestSummaryDto>;
@@ -111,6 +113,10 @@ export type UpdateTestMetaBody = z.infer<typeof UpdateTestMetaBody>;
 /** Replace the content of a DRAFT test with an import document (the JSON editor). */
 export const ReplaceTestContentBody = z.strictObject({ doc: z.unknown() });
 export type ReplaceTestContentBody = z.infer<typeof ReplaceTestContentBody>;
+
+/** Test builder: save an unfinished document (see WorkingDoc in test-import.ts). */
+export const SaveWorkingDocBody = z.strictObject({ doc: z.unknown() });
+export type SaveWorkingDocBody = z.infer<typeof SaveWorkingDocBody>;
 
 /** Hotfix on a PUBLISHED test (M1): only answer variants and explanation. */
 export const HotfixQuestionBody = z.strictObject({

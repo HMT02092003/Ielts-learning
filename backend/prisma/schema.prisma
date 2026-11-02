@@ -284,6 +284,8 @@ model Test {
   description        String?
   contentHash        String? /// sha256 of the canonical import document
   bandTableId        String?    @db.Uuid /// optional per-test override of the active band table
+  workingDoc         Json? /// test builder: incomplete document saved without touching the content tables (DRAFT only)
+  workingDocAt       DateTime?  @db.Timestamptz(3) /// set together with workingDoc; null = no unfinished draft
   publishedAt        DateTime?  @db.Timestamptz(3)
   createdById        String?    @db.Uuid
   publishedById      String?    @db.Uuid

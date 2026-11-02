@@ -4,7 +4,7 @@
 import type { Writable } from 'node:stream';
 import yazl from 'yazl';
 import { prisma } from '../../config/prisma';
-import { notFound } from '../../lib/errors';
+import { AppError, notFound } from '../../lib/errors';
 import { storage } from '../../lib/storage';
 import type { TestImportDoc } from '../../shared/test-import';
 import { exportTest } from './export.service';
@@ -51,9 +51,11 @@ export const zipExportService = {
   async testFileName(testId: string): Promise<string> {
     const t = await prisma.test.findUnique({
       where: { id: testId },
-      select: { seriesKey: true, version: true },
+      select: { seriesKey: true, version: true, _count: { select: { sections: true } } },
     });
     if (!t) throw notFound('Đề');
+    // A test that only holds an unfinished builder document has no content to export yet.
+    if (t._count.sections === 0) throw new AppError('VALIDATION_ERROR', 'Đề chưa có nội dung đã lưu để xuất');
     return `BandUp-${t.seriesKey}-v${t.version}.zip`;
   },
 

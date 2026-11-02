@@ -1,7 +1,25 @@
 # Hướng dẫn nhập đề
 
-Hai cách, đều ra **đề Nháp** để kiểm tra trước khi học viên thấy. Đề thật (CAM/VOL…) chỉ để trên máy / trong DB —
+Ba cách, đều ra **đề Nháp** để kiểm tra trước khi học viên thấy. Đề thật (CAM/VOL…) chỉ để trên máy / trong DB —
 **không** commit vào git (thư mục `data/` đã bị bỏ qua).
+
+## 0. Trình soạn đề (không cần biết JSON)
+
+**Quản trị → Đề thi → Soạn đề mới** (hoặc **Mở trình soạn đề** ở trang một đề Nháp). Ba cột: dàn ý đề | form soạn |
+xem trước như học viên thấy + danh sách lỗi (bấm lỗi để nhảy tới chỗ sửa).
+
+- Bật kỹ năng ở "Thông tin đề & kỹ năng" → tạo sẵn khung chuẩn (3 passage / 4 part / Task 1 + 2 / Part 1–3).
+- Đủ 12 dạng câu hỏi; chọn dạng là có sẵn instructions chuẩn IELTS (tự cập nhật theo giới hạn số từ, số lựa chọn…
+  cho tới khi bạn tự sửa). **Số câu tự đánh liên tục 1–40**, không cần nhập.
+- **Dán nhanh**: cả bài đọc (tự tách đoạn A, B, C), lựa chọn A–D, danh sách tiêu đề i–xv, nhận định T/F/NG,
+  đoạn tóm tắt / ghi chú / bảng có chỗ trống `……` (tự thành ô trống), và **answer key** dạng `14 TRUE 15 NG`.
+- Ô trống là `{{n}}`; nút "Chèn ô trống" chèn tại con trỏ. Map/Diagram: tải ảnh rồi bấm lên ảnh để đặt vị trí.
+- "Giải thích & chỗ chứa đáp án": bôi đen câu trong bài để gắn bằng chứng cho màn kết quả.
+- **Lưu nháp** (`Ctrl + S`) lúc nào cũng được, chỉ cần tên đề + mã series. Đề chưa đủ được lưu thành **bản soạn dở**
+  (`Test.workingDoc`) — chưa đụng tới nội dung đề; danh sách đề gắn nhãn "Đang soạn". Khi đủ cấu trúc, lần lưu sau
+  áp dụng vào đề và xóa bản soạn dở. Không xuất bản được khi còn bản soạn dở; xuất .zip chỉ chứa nội dung đã áp
+  dụng (đề chưa từng áp dụng thì không có gì để xuất). Nút "Bỏ bản soạn dở" quay về nội dung đã lưu. Bản tạm trong trình duyệt vẫn giữ những gì chưa bấm lưu. Tab **JSON** để sửa thẳng khi cần.
+- Đề đã xuất bản chỉ xem được trong trình soạn — dùng "Nhân bản để sửa".
 
 ## 1. Nhập từ JSON (nhanh, chính xác nhất)
 

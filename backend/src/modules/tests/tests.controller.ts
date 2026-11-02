@@ -9,6 +9,7 @@ import type {
   HotfixQuestionBody,
   IdParams,
   ReplaceTestContentBody,
+  SaveWorkingDocBody,
   UpdateTestMetaBody,
 } from '../../shared/admin';
 import { testsService } from './tests.service';
@@ -117,4 +118,20 @@ export const validateZip: RequestHandler = async (req, res) => {
 
 export const importZip: RequestHandler = async (req, res) => {
   res.status(201).json(await importZipUpload(req, false));
+};
+
+// ───── Test builder: unfinished working document ─────
+export const createWorking: RequestHandler = async (req, res) => {
+  const { doc } = validated<SaveWorkingDocBody>(res, 'body');
+  res.status(201).json(await testsService.createWorking(doc, actorId(req)));
+};
+
+export const saveWorking: RequestHandler = async (_req, res) => {
+  const { id } = validated<IdParams>(res, 'params');
+  const { doc } = validated<SaveWorkingDocBody>(res, 'body');
+  res.json(await testsService.saveWorking(id, doc));
+};
+
+export const discardWorking: RequestHandler = async (_req, res) => {
+  res.json(await testsService.discardWorking(validated<IdParams>(res, 'params').id));
 };

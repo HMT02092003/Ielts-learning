@@ -9,6 +9,7 @@ import {
   HotfixQuestionBody,
   IdParams,
   ReplaceTestContentBody,
+  SaveWorkingDocBody,
   UpdateTestMetaBody,
 } from '../../shared/admin';
 import { Uuid } from '../../shared/primitives';
@@ -27,7 +28,14 @@ adminTestsRouter.post('/import/validate', importUpload, validate({ body: Empty }
 adminTestsRouter.post('/import-zip/validate', zipUpload, validate({ body: Empty }), tests.validateZip);
 adminTestsRouter.post('/import-zip', zipUpload, validate({ body: Empty }), tests.importZip);
 adminTestsRouter.post('/import', importUpload, validate({ body: Empty }), tests.importNew);
+adminTestsRouter.post('/working', validate({ body: SaveWorkingDocBody }), tests.createWorking);
 adminTestsRouter.get('/:id', validate({ params: IdParams }), tests.get);
+adminTestsRouter.put(
+  '/:id/working',
+  validate({ params: IdParams, body: SaveWorkingDocBody }),
+  tests.saveWorking,
+);
+adminTestsRouter.delete('/:id/working', validate({ params: IdParams }), tests.discardWorking);
 adminTestsRouter.get('/:id/export.zip', validate({ params: IdParams }), tests.exportZip);
 adminTestsRouter.get('/:id/questions', validate({ params: IdParams }), tests.questions);
 adminTestsRouter.put(

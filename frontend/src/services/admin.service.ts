@@ -90,6 +90,13 @@ export const testsAdminApi = {
   clone: (id: string) =>
     api(`/admin/tests/${id}/clone`, { method: 'POST', body: {}, schema: ImportResultDto }),
   remove: (id: string) => api(`/admin/tests/${id}`, { method: 'DELETE' }),
+  /** Test builder: unfinished documents (stored apart from the content tables until complete). */
+  createWorking: (doc: unknown) =>
+    api('/admin/tests/working', { method: 'POST', body: { doc }, schema: ImportResultDto }),
+  saveWorking: (id: string, doc: unknown) =>
+    api(`/admin/tests/${id}/working`, { method: 'PUT', body: { doc }, schema: TestSummaryDto }),
+  discardWorking: (id: string) =>
+    api(`/admin/tests/${id}/working`, { method: 'DELETE', schema: TestSummaryDto }),
   hotfix: (id: string, questionId: string, body: HotfixQuestionBody) =>
     api(`/admin/tests/${id}/questions/${questionId}`, { method: 'PATCH', body }),
 };

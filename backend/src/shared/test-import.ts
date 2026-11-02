@@ -233,11 +233,13 @@ export const ImportSpeakingPart = z.discriminatedUnion('part', [
   }),
 ]);
 
+export const SeriesKey = z
+  .string()
+  .regex(/^[a-z0-9][a-z0-9-]{2,63}$/, 'seriesKey: chữ thường, số, dấu gạch ngang (3–64 ký tự)');
+
 const TestImportDocBase = z.strictObject({
   schemaVersion: z.literal(1),
-  seriesKey: z
-    .string()
-    .regex(/^[a-z0-9][a-z0-9-]{2,63}$/, 'seriesKey: chữ thường, số, dấu gạch ngang (3–64 ký tự)'),
+  seriesKey: SeriesKey,
   source: TestSource,
   type: TestType,
   title: z.string().trim().min(1).max(300),
@@ -457,6 +459,23 @@ export const TestImportDoc = TestImportDocBase.superRefine((doc, ctx) => {
 export type TestImportDoc = z.infer<typeof TestImportDoc>;
 
 const range = (from: number, to: number) => Array.from({ length: to - from + 1 }, (_, i) => from + i);
+
+/**
+ * Test builder "working document": an unfinished test saved as-is (Test.workingDoc). Only the metadata the Test row
+ * needs is checked; the content is validated in full when it is applied (TestImportDoc) or published.
+ */
+export const WorkingDoc = z.looseObject({
+  schemaVersion: z.literal(1),
+  seriesKey: SeriesKey,
+  source: TestSource,
+  type: TestType,
+  title: z.string().trim().min(1, 'Chưa nhập tên đề').max(300),
+  sourceRef: z.string().trim().max(300).optional(),
+  bookNumber: z.number().int().positive().optional(),
+  testNumber: z.number().int().positive().optional(),
+  description: z.string().max(2000).optional(),
+});
+export type WorkingDoc = z.infer<typeof WorkingDoc>;
 
 /** Publish-level checks on an already-parsed doc: complete sections, numbering 1–40. */
 export function checkPublishable(doc: TestImportDoc): ValidationIssue[] {
